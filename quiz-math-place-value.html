@@ -46,7 +46,7 @@
 </header>
 <main>
   <section id="start-screen" class="card center">
-    <p style="font-size:1.15rem; line-height:1.5;">10 questions about place value, expanded form, comparing, and rounding.<br>Answer each one and you'll find out right away if you got it right!</p>
+    <p style="font-size:1.15rem; line-height:1.5;">10 questions about place value, expanded form, comparing, and rounding.<br>Answer each one and you'll find out right away if you got it right!<br>The questions mix themselves up every time you play &mdash; a fresh quiz each try!</p>
     <button class="btn" id="start-btn">Start the Quiz</button>
     <br><a class="home-link" href="index.html">&larr; All quizzes</a>
   </section>
@@ -65,45 +65,138 @@
     <div class="stars" id="stars"></div>
     <div class="score-big" id="score-text"></div>
     <p id="end-message" style="font-size:1.12rem; line-height:1.5;"></p>
-    <button class="btn" id="again-btn">Try Again</button>
+    <button class="btn" id="again-btn">Try Again &mdash; New Mix!</button>
     <br><a class="home-link" href="index.html">&larr; All quizzes</a>
   </section>
 </main>
 
 <script>
 const QUESTIONS = [
-  { type: "choice", q: "In the number <strong>4,891</strong>, what digit is in the <strong>hundreds place</strong>?",
-    options: ["4", "8", "9", "1"],
-    correct: 1, why: "The 8 is in the hundreds place." },
-  { type: "choice", q: "In the number <strong>4,891</strong>, what is the <strong>value</strong> of the 8?",
-    options: ["8", "80", "800", "8,000"],
-    correct: 2, why: "The 8 sits in the hundreds place, so its value is 800." },
-  { type: "choice", q: "Which shows <strong>5,562</strong> in expanded form?",
-    options: ["500 + 500 + 60 + 2", "5,000 + 500 + 60 + 2", "5,000 + 500 + 6 + 2", "5 + 5 + 6 + 2"],
-    correct: 1, why: "5,562 = 5,000 + 500 + 60 + 2." },
-  { type: "choice", q: "True or False: The <em>place</em> a digit is in and the <em>value</em> of that digit always mean the same thing.",
-    options: ["True", "False"],
-    correct: 1, why: "False. Place is WHERE the digit sits; value is what it is worth." },
-  { type: "text", q: "Write the number <strong>9,185</strong> in word form.",
-    accept: ["nine thousand one hundred eighty-five", "nine thousand one hundred eighty five", "nine thousand, one hundred eighty-five"],
-    display: "nine thousand, one hundred eighty-five",
-    why: "9,185 in word form is nine thousand, one hundred eighty-five." },
-  { type: "choice", q: "Which comparison is true?",
-    options: ["2,357 &lt; 1,863", "2,357 &gt; 1,863", "2,357 = 1,863", "1,863 &gt; 2,357"],
-    correct: 1, why: "Compare the thousands place first: 2 is greater than 1, so 2,357 &gt; 1,863." },
-  { type: "choice", q: "Round <strong>897</strong> to the nearest hundred.",
-    options: ["800", "890", "900", "1,000"],
-    correct: 2, why: "897 is closer to 900, so it rounds up to 900." },
-  { type: "choice", q: "Round <strong>1,826</strong> to the nearest thousand.",
-    options: ["1,000", "1,800", "1,900", "2,000"],
-    correct: 3, why: "1,826 is closer to 2,000, so it rounds up to 2,000." },
-  { type: "choice", q: "<em>About</em> how much is 68 + 23? (Round first, then add.)",
-    options: ["80", "90", "91", "100"],
-    correct: 1, why: "Round 68 to 70 and 23 to 20. 70 + 20 = 90." },
-  { type: "text", q: "What are the next three numbers in this pattern?<br>1, 4, 7, 10, 13, ___, ___, ___",
-    accept: ["16 19 22", "16, 19, 22"],
-    display: "16, 19, 22 (the rule is: add 3 each time)",
-    why: "Each number is 3 more than the one before: 16, 19, 22." }
+ {
+  "type": "choice",
+  "q": "In the number <strong>4,891</strong>, what digit is in the <strong>hundreds place</strong>?",
+  "alt": "Look at the number <strong>4,891</strong>. Which digit sits in the <strong>hundreds place</strong>?",
+  "options": [
+   "4",
+   "8",
+   "9",
+   "1"
+  ],
+  "correct": 1,
+  "why": "The 8 is in the hundreds place."
+ },
+ {
+  "type": "choice",
+  "q": "In the number <strong>4,891</strong>, what is the <strong>value</strong> of the 8?",
+  "alt": "In the number <strong>4,891</strong>, how much is the digit 8 worth?",
+  "options": [
+   "8",
+   "80",
+   "800",
+   "8,000"
+  ],
+  "correct": 2,
+  "why": "The 8 sits in the hundreds place, so its value is 800."
+ },
+ {
+  "type": "choice",
+  "q": "Which shows <strong>5,562</strong> in expanded form?",
+  "alt": "Which choice is <strong>5,562</strong> written in expanded form?",
+  "options": [
+   "500 + 500 + 60 + 2",
+   "5,000 + 500 + 60 + 2",
+   "5,000 + 500 + 6 + 2",
+   "5 + 5 + 6 + 2"
+  ],
+  "correct": 1,
+  "why": "5,562 = 5,000 + 500 + 60 + 2."
+ },
+ {
+  "type": "choice",
+  "q": "True or False: The <em>place</em> a digit is in and the <em>value</em> of that digit always mean the same thing.",
+  "alt": "True or False: A digit's <em>place</em> and its <em>value</em> are the same idea.",
+  "options": [
+   "True",
+   "False"
+  ],
+  "correct": 1,
+  "why": "False. Place is WHERE the digit sits; value is what it is worth."
+ },
+ {
+  "type": "text",
+  "q": "Write the number <strong>9,185</strong> in word form.",
+  "alt": "How do you write the number <strong>9,185</strong> in words?",
+  "accept": [
+   "nine thousand one hundred eighty-five",
+   "nine thousand one hundred eighty five",
+   "nine thousand, one hundred eighty-five"
+  ],
+  "display": "nine thousand, one hundred eighty-five",
+  "why": "9,185 in word form is nine thousand, one hundred eighty-five."
+ },
+ {
+  "type": "choice",
+  "q": "Which comparison is true?",
+  "alt": "Which number sentence is true?",
+  "options": [
+   "2,357 &lt; 1,863",
+   "2,357 &gt; 1,863",
+   "2,357 = 1,863",
+   "1,863 &gt; 2,357"
+  ],
+  "correct": 1,
+  "why": "Compare the thousands place first: 2 is greater than 1, so 2,357 &gt; 1,863."
+ },
+ {
+  "type": "choice",
+  "q": "Round <strong>897</strong> to the nearest hundred.",
+  "alt": "What is <strong>897</strong> when you round it to the nearest hundred?",
+  "options": [
+   "800",
+   "890",
+   "900",
+   "1,000"
+  ],
+  "correct": 2,
+  "why": "897 is closer to 900, so it rounds up to 900."
+ },
+ {
+  "type": "choice",
+  "q": "Round <strong>1,826</strong> to the nearest thousand.",
+  "alt": "What is <strong>1,826</strong> when you round it to the nearest thousand?",
+  "options": [
+   "1,000",
+   "1,800",
+   "1,900",
+   "2,000"
+  ],
+  "correct": 3,
+  "why": "1,826 is closer to 2,000, so it rounds up to 2,000."
+ },
+ {
+  "type": "choice",
+  "q": "<em>About</em> how much is 68 + 23? (Round first, then add.)",
+  "alt": "Estimate first (round, then add): about how much is 68 + 23?",
+  "options": [
+   "80",
+   "90",
+   "91",
+   "100"
+  ],
+  "correct": 1,
+  "why": "Round 68 to 70 and 23 to 20. 70 + 20 = 90."
+ },
+ {
+  "type": "text",
+  "q": "What are the next three numbers in this pattern?<br>1, 4, 7, 10, 13, ___, ___, ___",
+  "alt": "Keep the pattern going: 1, 4, 7, 10, 13, ___, ___, ___",
+  "accept": [
+   "16 19 22",
+   "16, 19, 22"
+  ],
+  "display": "16, 19, 22 (the rule is: add 3 each time)",
+  "why": "Each number is 3 more than the one before: 16, 19, 22."
+ }
 ];
 
 const startScreen = document.getElementById("start-screen");
@@ -115,7 +208,7 @@ const feedback = document.getElementById("feedback");
 const nextBtn = document.getElementById("next-btn");
 const progressLabel = document.getElementById("progress-label");
 const progressBar = document.getElementById("progress-bar");
-let idx = 0, score = 0;
+let idx = 0, score = 0, RUN = [];
 
 function shuffle(arr) {
   const a = arr.slice();
@@ -126,8 +219,19 @@ function shuffle(arr) {
   return a;
 }
 
+function buildRun() {
+  // Fresh mix on every play: shuffled question order, and each question
+  // randomly uses its main wording or its alternate wording.
+  RUN = shuffle(QUESTIONS).map(function (item) {
+    const copy = Object.assign({}, item);
+    if (item.alt && Math.random() < 0.5) copy.q = item.alt;
+    return copy;
+  });
+}
+
 function startQuiz() {
   idx = 0; score = 0;
+  buildRun();
   startScreen.hidden = true;
   endScreen.hidden = true;
   quizScreen.hidden = false;
@@ -142,14 +246,14 @@ function showFeedback(ok, why) {
 
 function finishQuestion() {
   nextBtn.hidden = false;
-  nextBtn.textContent = (idx === QUESTIONS.length - 1) ? "See My Score \u2192" : "Next Question \u2192";
+  nextBtn.textContent = (idx === RUN.length - 1) ? "See My Score \u2192" : "Next Question \u2192";
   nextBtn.focus();
 }
 
 function renderQuestion() {
-  const item = QUESTIONS[idx];
-  progressLabel.textContent = "Question " + (idx + 1) + " of " + QUESTIONS.length;
-  progressBar.style.width = ((idx / QUESTIONS.length) * 100) + "%";
+  const item = RUN[idx];
+  progressLabel.textContent = "Question " + (idx + 1) + " of " + RUN.length;
+  progressBar.style.width = ((idx / RUN.length) * 100) + "%";
   qText.innerHTML = item.q;
   feedback.hidden = true;
   nextBtn.hidden = true;
@@ -245,7 +349,7 @@ function showEnd() {
   quizScreen.hidden = true;
   endScreen.hidden = false;
   progressBar.style.width = "100%";
-  const total = QUESTIONS.length;
+  const total = RUN.length;
   document.getElementById("score-text").textContent = "You got " + score + " out of " + total + "!";
   const stars = document.getElementById("stars");
   const msg = document.getElementById("end-message");
@@ -259,7 +363,7 @@ document.getElementById("start-btn").addEventListener("click", startQuiz);
 document.getElementById("again-btn").addEventListener("click", startQuiz);
 nextBtn.addEventListener("click", function () {
   idx++;
-  if (idx >= QUESTIONS.length) showEnd(); else renderQuestion();
+  if (idx >= RUN.length) showEnd(); else renderQuestion();
 });
 </script>
 </body>

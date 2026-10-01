@@ -46,7 +46,7 @@
 </header>
 <main>
   <section id="start-screen" class="card center">
-    <p style="font-size:1.15rem; line-height:1.5;">10 questions about cause and effect, prefixes, spelling, and story words.<br>Answer each one and you'll find out right away if you got it right!</p>
+    <p style="font-size:1.15rem; line-height:1.5;">10 questions about cause and effect, prefixes, spelling, and story words.<br>Answer each one and you'll find out right away if you got it right!<br>The questions mix themselves up every time you play &mdash; a fresh quiz each try!</p>
     <button class="btn" id="start-btn">Start the Quiz</button>
     <br><a class="home-link" href="index.html">&larr; All quizzes</a>
   </section>
@@ -65,43 +65,135 @@
     <div class="stars" id="stars"></div>
     <div class="score-big" id="score-text"></div>
     <p id="end-message" style="font-size:1.12rem; line-height:1.5;"></p>
-    <button class="btn" id="again-btn">Try Again</button>
+    <button class="btn" id="again-btn">Try Again &mdash; New Mix!</button>
     <br><a class="home-link" href="index.html">&larr; All quizzes</a>
   </section>
 </main>
 
 <script>
 const QUESTIONS = [
-  { type: "choice", q: "What does <strong>anxious</strong> mean?",
-    options: ["Very happy and excited", "Uneasy, worried, or fearful about what may happen", "Ready to run a race", "Tired and sleepy"],
-    correct: 1, why: "Anxious means uneasy, worried, or fearful about what may happen." },
-  { type: "choice", q: "In the sentence \"The firefighters <strong>seized</strong> the hose,\" what does <strong>seized</strong> mean?",
-    options: ["Let go of it", "Washed it", "Grabbed or took hold of it", "Looked at it"],
-    correct: 2, why: "Seized means grabbed or took hold of something." },
-  { type: "choice", q: "The prefix <strong>non-</strong> means&hellip;",
-    options: ["out or former", "not or without", "again", "very big"],
-    correct: 1, why: "Non- means \"not\" or \"without\" &mdash; like nonfiction and nonstop." },
-  { type: "choice", q: "What does the word <strong>exhale</strong> mean?",
-    options: ["To hold your breath", "To breathe out", "To breathe in deeply", "To stop breathing"],
-    correct: 1, why: "Ex- means \"out,\" so exhale means to breathe out." },
-  { type: "choice", q: "True or False: The prefix <strong>ex-</strong> can mean \"former,\" so an \"ex-teammate\" is someone who is no longer on the team.",
-    options: ["True", "False"],
-    correct: 0, why: "True! Ex- can mean \"former\" &mdash; an ex-teammate used to be on the team." },
-  { type: "choice", q: "\"It rained all night long, ___________ the soccer game was canceled.\" Which words best complete the sentence?",
-    options: ["before", "because", "as a result", "instead"],
-    correct: 2, why: "\"As a result\" shows the effect that happened because of a cause." },
-  { type: "choice", q: "Read this sentence: \"Ben missed the bus <strong>because</strong> he overslept.\" What is the <strong>cause</strong>?",
-    options: ["Ben missed the bus", "Ben overslept", "The bus", "School started"],
-    correct: 1, why: "The cause is WHY something happened: Ben overslept." },
-  { type: "choice", q: "Which word is spelled correctly?",
-    options: ["gentel", "gentle", "gentil", "jentle"],
-    correct: 1, why: "The correct spelling is g-e-n-t-l-e: gentle." },
-  { type: "choice", q: "Read this sentence: \"Maria studied hard for the test, so she felt ready on Friday.\" What is the <strong>effect</strong>?",
-    options: ["Maria studied hard", "The test was on Friday", "Maria felt ready", "The test was difficult"],
-    correct: 2, why: "The effect is what happened as a result: Maria felt ready." },
-  { type: "selfcheck", q: "Finish this cause-and-effect sentence with an ending of your own: \"I was very thirsty because&hellip;\"",
-    sample: "&hellip;because I played outside in the hot sun. (Any true reason works!)",
-    why: "Your ending should tell WHY you were thirsty &mdash; that's the cause." }
+ {
+  "type": "choice",
+  "q": "What does <strong>anxious</strong> mean?",
+  "alt": "Which choice tells what the word <strong>anxious</strong> means?",
+  "options": [
+   "Very happy and excited",
+   "Uneasy, worried, or fearful about what may happen",
+   "Ready to run a race",
+   "Tired and sleepy"
+  ],
+  "correct": 1,
+  "why": "Anxious means uneasy, worried, or fearful about what may happen."
+ },
+ {
+  "type": "choice",
+  "q": "In the sentence &quot;The firefighters <strong>seized</strong> the hose,&quot; what does <strong>seized</strong> mean?",
+  "alt": "&quot;The firefighters <strong>seized</strong> the hose.&quot; In this sentence, <strong>seized</strong> means they&hellip;",
+  "options": [
+   "Let go of it",
+   "Washed it",
+   "Grabbed or took hold of it",
+   "Looked at it"
+  ],
+  "correct": 2,
+  "why": "Seized means grabbed or took hold of something."
+ },
+ {
+  "type": "choice",
+  "q": "The prefix <strong>non-</strong> means&hellip;",
+  "alt": "What does the prefix <strong>non-</strong> mean?",
+  "options": [
+   "out or former",
+   "not or without",
+   "again",
+   "very big"
+  ],
+  "correct": 1,
+  "why": "Non- means &quot;not&quot; or &quot;without&quot; &mdash; like nonfiction and nonstop."
+ },
+ {
+  "type": "choice",
+  "q": "What does the word <strong>exhale</strong> mean?",
+  "alt": "The word <strong>exhale</strong> means&hellip;",
+  "options": [
+   "To hold your breath",
+   "To breathe out",
+   "To breathe in deeply",
+   "To stop breathing"
+  ],
+  "correct": 1,
+  "why": "Ex- means &quot;out,&quot; so exhale means to breathe out."
+ },
+ {
+  "type": "choice",
+  "q": "True or False: The prefix <strong>ex-</strong> can mean &quot;former,&quot; so an &quot;ex-teammate&quot; is someone who is no longer on the team.",
+  "alt": "True or False: An &quot;ex-teammate&quot; is someone who used to be on the team (ex- can mean &quot;former&quot;).",
+  "options": [
+   "True",
+   "False"
+  ],
+  "correct": 0,
+  "why": "True! Ex- can mean &quot;former&quot; &mdash; an ex-teammate used to be on the team."
+ },
+ {
+  "type": "choice",
+  "q": "&quot;It rained all night long, ___________ the soccer game was canceled.&quot; Which words best complete the sentence?",
+  "alt": "&quot;It rained all night long, ___________ the soccer game was canceled.&quot; Pick the best words to finish the sentence.",
+  "options": [
+   "before",
+   "because",
+   "as a result",
+   "instead"
+  ],
+  "correct": 2,
+  "why": "&quot;As a result&quot; shows the effect that happened because of a cause."
+ },
+ {
+  "type": "choice",
+  "q": "Read this sentence: &quot;Ben missed the bus <strong>because</strong> he overslept.&quot; What is the <strong>cause</strong>?",
+  "alt": "In the sentence &quot;Ben missed the bus <strong>because</strong> he overslept,&quot; which part tells the <strong>cause</strong>?",
+  "options": [
+   "Ben missed the bus",
+   "Ben overslept",
+   "The bus",
+   "School started"
+  ],
+  "correct": 1,
+  "why": "The cause is WHY something happened: Ben overslept."
+ },
+ {
+  "type": "choice",
+  "q": "Which word is spelled correctly?",
+  "alt": "Pick the word that is spelled the right way.",
+  "options": [
+   "gentel",
+   "gentle",
+   "gentil",
+   "jentle"
+  ],
+  "correct": 1,
+  "why": "The correct spelling is g-e-n-t-l-e: gentle."
+ },
+ {
+  "type": "choice",
+  "q": "Read this sentence: &quot;Maria studied hard for the test, so she felt ready on Friday.&quot; What is the <strong>effect</strong>?",
+  "alt": "Read: &quot;Maria studied hard for the test, so she felt ready on Friday.&quot; What happened as the <strong>effect</strong>?",
+  "options": [
+   "Maria studied hard",
+   "The test was on Friday",
+   "Maria felt ready",
+   "The test was difficult"
+  ],
+  "correct": 2,
+  "why": "The effect is what happened as a result: Maria felt ready."
+ },
+ {
+  "type": "selfcheck",
+  "q": "Finish this cause-and-effect sentence with an ending of your own: &quot;I was very thirsty because&hellip;&quot;",
+  "alt": "Finish the sentence with a cause of your own: &quot;I was very thirsty because&hellip;&quot;",
+  "sample": "&hellip;because I played outside in the hot sun. (Any true reason works!)",
+  "why": "Your ending should tell WHY you were thirsty &mdash; that's the cause."
+ }
 ];
 
 const startScreen = document.getElementById("start-screen");
@@ -113,7 +205,7 @@ const feedback = document.getElementById("feedback");
 const nextBtn = document.getElementById("next-btn");
 const progressLabel = document.getElementById("progress-label");
 const progressBar = document.getElementById("progress-bar");
-let idx = 0, score = 0;
+let idx = 0, score = 0, RUN = [];
 
 function shuffle(arr) {
   const a = arr.slice();
@@ -124,8 +216,19 @@ function shuffle(arr) {
   return a;
 }
 
+function buildRun() {
+  // Fresh mix on every play: shuffled question order, and each question
+  // randomly uses its main wording or its alternate wording.
+  RUN = shuffle(QUESTIONS).map(function (item) {
+    const copy = Object.assign({}, item);
+    if (item.alt && Math.random() < 0.5) copy.q = item.alt;
+    return copy;
+  });
+}
+
 function startQuiz() {
   idx = 0; score = 0;
+  buildRun();
   startScreen.hidden = true;
   endScreen.hidden = true;
   quizScreen.hidden = false;
@@ -140,14 +243,14 @@ function showFeedback(ok, why) {
 
 function finishQuestion() {
   nextBtn.hidden = false;
-  nextBtn.textContent = (idx === QUESTIONS.length - 1) ? "See My Score \u2192" : "Next Question \u2192";
+  nextBtn.textContent = (idx === RUN.length - 1) ? "See My Score \u2192" : "Next Question \u2192";
   nextBtn.focus();
 }
 
 function renderQuestion() {
-  const item = QUESTIONS[idx];
-  progressLabel.textContent = "Question " + (idx + 1) + " of " + QUESTIONS.length;
-  progressBar.style.width = ((idx / QUESTIONS.length) * 100) + "%";
+  const item = RUN[idx];
+  progressLabel.textContent = "Question " + (idx + 1) + " of " + RUN.length;
+  progressBar.style.width = ((idx / RUN.length) * 100) + "%";
   qText.innerHTML = item.q;
   feedback.hidden = true;
   nextBtn.hidden = true;
@@ -243,7 +346,7 @@ function showEnd() {
   quizScreen.hidden = true;
   endScreen.hidden = false;
   progressBar.style.width = "100%";
-  const total = QUESTIONS.length;
+  const total = RUN.length;
   document.getElementById("score-text").textContent = "You got " + score + " out of " + total + "!";
   const stars = document.getElementById("stars");
   const msg = document.getElementById("end-message");
@@ -257,7 +360,7 @@ document.getElementById("start-btn").addEventListener("click", startQuiz);
 document.getElementById("again-btn").addEventListener("click", startQuiz);
 nextBtn.addEventListener("click", function () {
   idx++;
-  if (idx >= QUESTIONS.length) showEnd(); else renderQuestion();
+  if (idx >= RUN.length) showEnd(); else renderQuestion();
 });
 </script>
 </body>
