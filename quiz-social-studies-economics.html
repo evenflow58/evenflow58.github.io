@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Social Studies Quiz: Economics</title>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: ui-rounded, "Segoe UI", system-ui, -apple-system, sans-serif; background: #eef4ff; color: #1e293b; }
+  header { background: linear-gradient(135deg, #047857, #14b8a6); color: #fff; padding: 28px 20px 24px; text-align: center; border-radius: 0 0 28px 28px; }
+  header h1 { margin: 0 0 6px; font-size: 1.8rem; }
+  header p { margin: 0; font-size: 1.05rem; opacity: .92; }
+  main { max-width: 720px; margin: 0 auto; padding: 24px 16px 48px; }
+  .card { background: #fff; border-radius: 20px; box-shadow: 0 4px 16px rgba(30, 41, 59, .08); padding: 26px 24px; }
+  .btn { display: inline-block; background: #4f46e5; color: #fff; border: none; font: inherit; font-size: 1.2rem; font-weight: 700; padding: 14px 32px; border-radius: 999px; cursor: pointer; box-shadow: 0 4px 0 #312e81; text-decoration: none; }
+  .btn:active { transform: translateY(2px); box-shadow: 0 2px 0 #312e81; }
+  .btn.secondary { background: #e0e7ff; color: #3730a3; box-shadow: 0 4px 0 #a5b4fc; }
+  .progress-wrap { background: #e2e8f0; border-radius: 999px; height: 14px; overflow: hidden; margin: 14px 0 6px; }
+  .progress-bar { background: linear-gradient(90deg, #4f46e5, #06b6d4); height: 100%; width: 0%; transition: width .3s ease; }
+  .progress-label { font-size: .95rem; color: #64748b; font-weight: 600; }
+  .question { font-size: 1.3rem; line-height: 1.45; margin: 14px 0 18px; }
+  .options { display: grid; gap: 12px; }
+  .option { font: inherit; font-size: 1.15rem; text-align: left; padding: 16px 18px; border-radius: 14px; border: 3px solid #e2e8f0; background: #f8fafc; cursor: pointer; width: 100%; }
+  .option:hover:not(:disabled) { border-color: #818cf8; }
+  .option:disabled { cursor: default; }
+  .option.correct { background: #dcfce7; border-color: #22c55e; font-weight: 700; }
+  .option.wrong { background: #fee2e2; border-color: #ef4444; }
+  .feedback { margin-top: 18px; padding: 14px 16px; border-radius: 14px; font-size: 1.08rem; line-height: 1.45; }
+  .feedback.good { background: #f0fdf4; border: 2px solid #86efac; }
+  .feedback.bad { background: #fef2f2; border: 2px solid #fca5a5; }
+  .next-row { margin-top: 20px; text-align: right; }
+  input[type="text"], textarea { font: inherit; font-size: 1.15rem; width: 100%; padding: 14px 16px; border-radius: 14px; border: 3px solid #e2e8f0; background: #f8fafc; }
+  input[type="text"]:focus, textarea:focus { outline: none; border-color: #818cf8; background: #fff; }
+  .check-row { margin-top: 14px; }
+  .stars { font-size: 2.2rem; color: #f59e0b; letter-spacing: .15em; margin: 10px 0; }
+  .score-big { font-size: 2rem; font-weight: 800; margin: 6px 0; }
+  .center { text-align: center; }
+  .home-link { display: inline-block; margin-top: 18px; font-weight: 700; color: #4f46e5; }
+  [hidden] { display: none !important; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Social Studies: Economics</h1>
+  <p>Economics Quick Check Thu, Oct 8</p>
+</header>
+<main>
+  <section id="start-screen" class="card center">
+    <p style="font-size:1.15rem; line-height:1.5;">10 questions about goods, services, producers, consumers, and choices.<br>Answer each one and you'll find out right away if you got it right!<br>The questions mix themselves up every time you play &mdash; a fresh quiz each try!</p>
+    <button class="btn" id="start-btn">Start the Quiz</button>
+    <br><a class="home-link" href="index.html">&larr; All quizzes</a>
+  </section>
+
+  <section id="quiz-screen" class="card" hidden>
+    <div class="progress-label" id="progress-label">Question 1 of 10</div>
+    <div class="progress-wrap"><div class="progress-bar" id="progress-bar"></div></div>
+    <div class="question" id="question-text"></div>
+    <div id="answer-area"></div>
+    <div class="feedback" id="feedback" aria-live="polite" hidden></div>
+    <div class="next-row"><button class="btn" id="next-btn" hidden>Next Question &rarr;</button></div>
+  </section>
+
+  <section id="end-screen" class="card center" hidden>
+    <div style="font-size:1.2rem; font-weight:700;">All done!</div>
+    <div class="stars" id="stars"></div>
+    <div class="score-big" id="score-text"></div>
+    <p id="end-message" style="font-size:1.12rem; line-height:1.5;"></p>
+    <button class="btn" id="again-btn">Try Again &mdash; New Mix!</button>
+    <br><a class="home-link" href="index.html">&larr; All quizzes</a>
+  </section>
+</main>
+
+<script>
+const QUESTIONS = [
+ {
+  "type": "choice",
+  "q": "What are <strong>goods</strong>?",
+  "alt": "Which choice best tells what <strong>goods</strong> are?",
+  "options": [
+   "Activities people do for others",
+   "Things people make or use to satisfy needs and wants",
+   "People who buy things",
+   "Tools used to make things"
+  ],
+  "correct": 1,
+  "why": "Goods are things people make or use to satisfy needs and wants &mdash; like food, toys, and clothes."
+ },
+ {
+  "type": "choice",
+  "q": "What are <strong>services</strong>?",
+  "alt": "Which of these tells what a <strong>service</strong> is?",
+  "options": [
+   "Things you can hold in your hand",
+   "Activities people do for others to satisfy needs and wants",
+   "Money you save",
+   "Things found in nature"
+  ],
+  "correct": 1,
+  "why": "Services are activities people do for others &mdash; like a haircut, a checkup, or teaching."
+ },
+ {
+  "type": "choice",
+  "q": "A <strong>producer</strong> is&hellip;",
+  "alt": "Which person is acting as a <strong>producer</strong>?",
+  "options": [
+   "A person who buys or uses goods and services",
+   "A person who makes goods or offers services",
+   "A person who wants everything",
+   "A person who saves money"
+  ],
+  "correct": 1,
+  "why": "A producer makes goods or offers services. A consumer is the person who buys or uses them."
+ },
+ {
+  "type": "choice",
+  "q": "When you buy a book at the store and read it, you are a&hellip;",
+  "alt": "You buy and use a toy to satisfy a want. In economics, you are a&hellip;",
+  "options": [
+   "Producer",
+   "Consumer",
+   "Natural resource",
+   "Capital resource"
+  ],
+  "correct": 1,
+  "why": "A consumer is a person who buys or uses goods and services to satisfy their wants."
+ },
+ {
+  "type": "choice",
+  "q": "What is <strong>specialization</strong>?",
+  "alt": "<strong>Specialization</strong> means people&hellip;",
+  "options": [
+   "Try to do every job themselves",
+   "Focus on ONE job because they cannot do everything themselves",
+   "Give up what they want",
+   "Buy everything they see"
+  ],
+  "correct": 1,
+  "why": "Specialization is focusing on one job. The United States specializes in creating technology; long ago, Native Americans specialized in making pottery, jewelry, and weapons."
+ },
+ {
+  "type": "choice",
+  "q": "<strong>Interdependence</strong> means&hellip;",
+  "alt": "What does the word <strong>interdependence</strong> mean in economics?",
+  "options": [
+   "Depending on others for what you need or want",
+   "Never needing anyone's help",
+   "Having to give something up",
+   "Not having enough of something"
+  ],
+  "correct": 0,
+  "why": "Interdependence means depending on others for what you need or want &mdash; which is why people specialize."
+ },
+ {
+  "type": "choice",
+  "q": "What is <strong>scarcity</strong>?",
+  "alt": "<strong>Scarcity</strong> is when&hellip;",
+  "options": [
+   "People can have everything they want",
+   "People cannot have everything they want",
+   "A store has a big sale",
+   "People make smart choices"
+  ],
+  "correct": 1,
+  "why": "Scarcity is when people cannot have everything they want, so they have to make choices."
+ },
+ {
+  "type": "choice",
+  "q": "You choose to buy a toy <em>instead of</em> a book. What is the <strong>opportunity cost</strong> of your choice?",
+  "alt": "If you pick the toy and give up the book, the <strong>opportunity cost</strong> is&hellip;",
+  "options": [
+   "The toy",
+   "The money",
+   "The book you gave up",
+   "The store"
+  ],
+  "correct": 2,
+  "why": "Opportunity cost is the thing you GIVE UP when you make a choice &mdash; here, the book."
+ },
+ {
+  "type": "choice",
+  "q": "Timber taken from forests, and cocoa beans grown in Ghana, are examples of&hellip;",
+  "alt": "Which kind of resource comes from nature, like timber from forests?",
+  "options": [
+   "Human resources",
+   "Capital resources",
+   "Natural resources",
+   "Services"
+  ],
+  "correct": 2,
+  "why": "Natural resources come from nature. Human resources are the people who do the work, and capital resources are man-made tools and buildings, like a tractor or a fishing boat."
+ },
+ {
+  "type": "selfcheck",
+  "q": "Give one example of a <strong>human resource</strong> and one example of a <strong>capital resource</strong>.",
+  "alt": "Name a person who does work (a <strong>human resource</strong>) and a man-made tool used to create things (a <strong>capital resource</strong>).",
+  "sample": "Human resource: a teacher (or a rice farmer in India). Capital resource: a tractor (or a fishing boat in Japan).",
+  "why": "Human resources are people who do the work. Capital resources are man-made tools and buildings used to create other things."
+ }
+];
+
+const startScreen = document.getElementById("start-screen");
+const quizScreen = document.getElementById("quiz-screen");
+const endScreen = document.getElementById("end-screen");
+const qText = document.getElementById("question-text");
+const answerArea = document.getElementById("answer-area");
+const feedback = document.getElementById("feedback");
+const nextBtn = document.getElementById("next-btn");
+const progressLabel = document.getElementById("progress-label");
+const progressBar = document.getElementById("progress-bar");
+let idx = 0, score = 0, RUN = [];
+
+function shuffle(arr) {
+  const a = arr.slice();
+  for (let j = a.length - 1; j > 0; j--) {
+    const k = Math.floor(Math.random() * (j + 1));
+    [a[j], a[k]] = [a[k], a[j]];
+  }
+  return a;
+}
+
+function buildRun() {
+  // Fresh mix on every play: shuffled question order, and each question
+  // randomly uses its main wording or its alternate wording.
+  RUN = shuffle(QUESTIONS).map(function (item) {
+    const copy = Object.assign({}, item);
+    if (item.alt && Math.random() < 0.5) copy.q = item.alt;
+    return copy;
+  });
+}
+
+function startQuiz() {
+  idx = 0; score = 0;
+  buildRun();
+  startScreen.hidden = true;
+  endScreen.hidden = true;
+  quizScreen.hidden = false;
+  renderQuestion();
+}
+
+function showFeedback(ok, why) {
+  feedback.hidden = false;
+  feedback.className = "feedback " + (ok ? "good" : "bad");
+  feedback.innerHTML = (ok ? "<strong>That's right!</strong> " : "<strong>Not quite.</strong> ") + why;
+}
+
+function finishQuestion() {
+  nextBtn.hidden = false;
+  nextBtn.textContent = (idx === RUN.length - 1) ? "See My Score \u2192" : "Next Question \u2192";
+  nextBtn.focus();
+}
+
+function renderQuestion() {
+  const item = RUN[idx];
+  progressLabel.textContent = "Question " + (idx + 1) + " of " + RUN.length;
+  progressBar.style.width = ((idx / RUN.length) * 100) + "%";
+  qText.innerHTML = item.q;
+  feedback.hidden = true;
+  nextBtn.hidden = true;
+  answerArea.innerHTML = "";
+
+  if (item.type === "choice") {
+    const wrap = document.createElement("div");
+    wrap.className = "options";
+    const order = shuffle(item.options.map(function (_, i) { return i; }));
+    order.forEach(function (origIdx) {
+      const btn = document.createElement("button");
+      btn.className = "option";
+      btn.innerHTML = item.options[origIdx];
+      btn.addEventListener("click", function () {
+        const all = wrap.querySelectorAll(".option");
+        all.forEach(function (b) { b.disabled = true; });
+        const ok = origIdx === item.correct;
+        if (ok) { score++; btn.classList.add("correct"); }
+        else {
+          btn.classList.add("wrong");
+          all.forEach(function (b) { if (b.innerHTML === item.options[item.correct]) b.classList.add("correct"); });
+        }
+        showFeedback(ok, item.why);
+        finishQuestion();
+      });
+      wrap.appendChild(btn);
+    });
+    answerArea.appendChild(wrap);
+  } else if (item.type === "text") {
+    const input = document.createElement("input");
+    input.type = "text";
+    input.placeholder = "Type your answer here";
+    input.setAttribute("aria-label", "Your answer");
+    const row = document.createElement("div");
+    row.className = "check-row";
+    const checkBtn = document.createElement("button");
+    checkBtn.className = "btn";
+    checkBtn.textContent = "Check My Answer";
+    row.appendChild(checkBtn);
+    answerArea.appendChild(input);
+    answerArea.appendChild(row);
+    const norm = function (s) { return s.toLowerCase().replace(/[^a-z0-9 ]/g, " ").replace(/\s+/g, " ").trim(); };
+    checkBtn.addEventListener("click", function () {
+      if (!input.value.trim()) { input.focus(); return; }
+      const ok = item.accept.map(norm).indexOf(norm(input.value)) !== -1;
+      if (ok) score++;
+      input.disabled = true;
+      checkBtn.disabled = true;
+      showFeedback(ok, item.why + (ok ? "" : " The answer is: <strong>" + item.display + "</strong>"));
+      finishQuestion();
+    });
+    input.addEventListener("keydown", function (e) { if (e.key === "Enter") checkBtn.click(); });
+    input.focus();
+  } else if (item.type === "selfcheck") {
+    const ta = document.createElement("textarea");
+    ta.rows = 3;
+    ta.placeholder = "Type (or say out loud) your answer";
+    ta.setAttribute("aria-label", "Your answer");
+    const row = document.createElement("div");
+    row.className = "check-row";
+    const showBtn = document.createElement("button");
+    showBtn.className = "btn";
+    showBtn.textContent = "Show a Sample Answer";
+    row.appendChild(showBtn);
+    answerArea.appendChild(ta);
+    answerArea.appendChild(row);
+    showBtn.addEventListener("click", function () {
+      showBtn.disabled = true;
+      ta.disabled = true;
+      feedback.hidden = false;
+      feedback.className = "feedback good";
+      feedback.innerHTML = "<strong>Sample answer:</strong> " + item.sample + "<br><br>" + item.why;
+      const judge = document.createElement("div");
+      judge.className = "check-row";
+      const gotIt = document.createElement("button");
+      gotIt.className = "btn";
+      gotIt.textContent = "I got it!";
+      const keepBtn = document.createElement("button");
+      keepBtn.className = "btn secondary";
+      keepBtn.textContent = "Keep practicing";
+      keepBtn.style.marginLeft = "10px";
+      judge.appendChild(gotIt);
+      judge.appendChild(keepBtn);
+      answerArea.appendChild(judge);
+      gotIt.addEventListener("click", function () { score++; gotIt.disabled = true; keepBtn.disabled = true; finishQuestion(); });
+      keepBtn.addEventListener("click", function () { gotIt.disabled = true; keepBtn.disabled = true; finishQuestion(); });
+    });
+    ta.focus();
+  }
+}
+
+function showEnd() {
+  quizScreen.hidden = true;
+  endScreen.hidden = false;
+  progressBar.style.width = "100%";
+  const total = RUN.length;
+  document.getElementById("score-text").textContent = "You got " + score + " out of " + total + "!";
+  const stars = document.getElementById("stars");
+  const msg = document.getElementById("end-message");
+  if (score === total) { stars.textContent = "\u2605\u2605\u2605"; msg.textContent = "Perfect score! You are ready for the test. Amazing work!"; }
+  else if (score >= total - 2) { stars.textContent = "\u2605\u2605\u2606"; msg.textContent = "Great job! Look back at the ones you missed and you'll have them down in no time."; }
+  else if (score >= Math.ceil(total / 2)) { stars.textContent = "\u2605\u2606\u2606"; msg.textContent = "Good work! Try the quiz again, or look at the study guide, and watch your score grow."; }
+  else { stars.textContent = "\u2606\u2606\u2606"; msg.textContent = "Good try! Read through the study guide, then take the quiz again. You'll get it!"; }
+}
+
+document.getElementById("start-btn").addEventListener("click", startQuiz);
+document.getElementById("again-btn").addEventListener("click", startQuiz);
+nextBtn.addEventListener("click", function () {
+  idx++;
+  if (idx >= RUN.length) showEnd(); else renderQuestion();
+});
+</script>
+</body>
+</html>

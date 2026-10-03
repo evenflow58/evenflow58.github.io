@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Math Quiz: Word Problems &amp; Estimating</title>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: ui-rounded, "Segoe UI", system-ui, -apple-system, sans-serif; background: #eef4ff; color: #1e293b; }
+  header { background: linear-gradient(135deg, #b45309, #f59e0b); color: #fff; padding: 28px 20px 24px; text-align: center; border-radius: 0 0 28px 28px; }
+  header h1 { margin: 0 0 6px; font-size: 1.8rem; }
+  header p { margin: 0; font-size: 1.05rem; opacity: .92; }
+  main { max-width: 720px; margin: 0 auto; padding: 24px 16px 48px; }
+  .card { background: #fff; border-radius: 20px; box-shadow: 0 4px 16px rgba(30, 41, 59, .08); padding: 26px 24px; }
+  .btn { display: inline-block; background: #4f46e5; color: #fff; border: none; font: inherit; font-size: 1.2rem; font-weight: 700; padding: 14px 32px; border-radius: 999px; cursor: pointer; box-shadow: 0 4px 0 #312e81; text-decoration: none; }
+  .btn:active { transform: translateY(2px); box-shadow: 0 2px 0 #312e81; }
+  .btn.secondary { background: #e0e7ff; color: #3730a3; box-shadow: 0 4px 0 #a5b4fc; }
+  .progress-wrap { background: #e2e8f0; border-radius: 999px; height: 14px; overflow: hidden; margin: 14px 0 6px; }
+  .progress-bar { background: linear-gradient(90deg, #4f46e5, #06b6d4); height: 100%; width: 0%; transition: width .3s ease; }
+  .progress-label { font-size: .95rem; color: #64748b; font-weight: 600; }
+  .question { font-size: 1.3rem; line-height: 1.45; margin: 14px 0 18px; }
+  .options { display: grid; gap: 12px; }
+  .option { font: inherit; font-size: 1.15rem; text-align: left; padding: 16px 18px; border-radius: 14px; border: 3px solid #e2e8f0; background: #f8fafc; cursor: pointer; width: 100%; }
+  .option:hover:not(:disabled) { border-color: #818cf8; }
+  .option:disabled { cursor: default; }
+  .option.correct { background: #dcfce7; border-color: #22c55e; font-weight: 700; }
+  .option.wrong { background: #fee2e2; border-color: #ef4444; }
+  .feedback { margin-top: 18px; padding: 14px 16px; border-radius: 14px; font-size: 1.08rem; line-height: 1.45; }
+  .feedback.good { background: #f0fdf4; border: 2px solid #86efac; }
+  .feedback.bad { background: #fef2f2; border: 2px solid #fca5a5; }
+  .next-row { margin-top: 20px; text-align: right; }
+  input[type="text"], textarea { font: inherit; font-size: 1.15rem; width: 100%; padding: 14px 16px; border-radius: 14px; border: 3px solid #e2e8f0; background: #f8fafc; }
+  input[type="text"]:focus, textarea:focus { outline: none; border-color: #818cf8; background: #fff; }
+  .check-row { margin-top: 14px; }
+  .stars { font-size: 2.2rem; color: #f59e0b; letter-spacing: .15em; margin: 10px 0; }
+  .score-big { font-size: 2rem; font-weight: 800; margin: 6px 0; }
+  .center { text-align: center; }
+  .home-link { display: inline-block; margin-top: 18px; font-weight: 700; color: #4f46e5; }
+  [hidden] { display: none !important; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Math: Word Problems</h1>
+  <p>Word Problem Quiz Wed, Oct 7</p>
+</header>
+<main>
+  <section id="start-screen" class="card center">
+    <p style="font-size:1.15rem; line-height:1.5;">10 questions about estimating, adding, subtracting, comparing, and ordering.<br>Answer each one and you'll find out right away if you got it right!<br>The questions mix themselves up every time you play &mdash; a fresh quiz each try!</p>
+    <button class="btn" id="start-btn">Start the Quiz</button>
+    <br><a class="home-link" href="index.html">&larr; All quizzes</a>
+  </section>
+
+  <section id="quiz-screen" class="card" hidden>
+    <div class="progress-label" id="progress-label">Question 1 of 10</div>
+    <div class="progress-wrap"><div class="progress-bar" id="progress-bar"></div></div>
+    <div class="question" id="question-text"></div>
+    <div id="answer-area"></div>
+    <div class="feedback" id="feedback" aria-live="polite" hidden></div>
+    <div class="next-row"><button class="btn" id="next-btn" hidden>Next Question &rarr;</button></div>
+  </section>
+
+  <section id="end-screen" class="card center" hidden>
+    <div style="font-size:1.2rem; font-weight:700;">All done!</div>
+    <div class="stars" id="stars"></div>
+    <div class="score-big" id="score-text"></div>
+    <p id="end-message" style="font-size:1.12rem; line-height:1.5;"></p>
+    <button class="btn" id="again-btn">Try Again &mdash; New Mix!</button>
+    <br><a class="home-link" href="index.html">&larr; All quizzes</a>
+  </section>
+</main>
+
+<script>
+const QUESTIONS = [
+ {
+  "type": "choice",
+  "q": "Mia made $414 on Monday and $289 on Tuesday. <em>About</em> how much did she make in all? (Round first, then add.)",
+  "alt": "<em>About</em> how much is $414 + $289? Round each number to the nearest hundred first.",
+  "options": [
+   "About $600",
+   "About $700",
+   "About $703",
+   "About $800"
+  ],
+  "correct": 1,
+  "why": "414 rounds to 400 and 289 rounds to 300. 400 + 300 = 700, so Mia made about $700. (The exact answer would be $703.)"
+ },
+ {
+  "type": "choice",
+  "q": "Which words in a problem tell you the answer should be an <strong>estimate</strong>, not an exact answer?",
+  "alt": "A problem asks for an <strong>estimate</strong> when it uses words like&hellip;",
+  "options": [
+   "in all and altogether",
+   "about, approximately, and round",
+   "difference and fewer",
+   "exactly and precisely"
+  ],
+  "correct": 1,
+  "why": "Round, about, approximately, and estimate are the clue words that an estimate is wanted."
+ },
+ {
+  "type": "choice",
+  "q": "What is 527 + 273?",
+  "alt": "Add: 527 + 273 = ?",
+  "options": [
+   "790",
+   "800",
+   "810",
+   "700"
+  ],
+  "correct": 1,
+  "why": "527 + 273 = 800. Ones: 7 + 3 = 10, regroup; tens: 2 + 7 + 1 = 10, regroup; hundreds: 5 + 2 + 1 = 8."
+ },
+ {
+  "type": "choice",
+  "q": "What is 87 &minus; 49?",
+  "alt": "Subtract: 87 &minus; 49 = ?",
+  "options": [
+   "48",
+   "38",
+   "36",
+   "42"
+  ],
+  "correct": 1,
+  "why": "87 - 49 = 38. You regroup: 7 ones is not enough to take away 9, so borrow a ten: 17 - 9 = 8, then 7 - 4 = 3."
+ },
+ {
+  "type": "choice",
+  "q": "Which comparison is true?",
+  "alt": "Which number sentence correctly compares the numbers?",
+  "options": [
+   "928 &gt; 1,021",
+   "928 &lt; 1,021",
+   "928 = 1,021",
+   "1,021 &lt; 928"
+  ],
+  "correct": 1,
+  "why": "928 has no digit in the thousands place, and 1,021 has a 1 there, so 928 is less than 1,021. Always start comparing at the greatest place value."
+ },
+ {
+  "type": "choice",
+  "q": "Put these numbers in order from <strong>least to greatest</strong>: 873, 839, 897",
+  "alt": "Which list shows 873, 839, and 897 ordered from <strong>least to greatest</strong>?",
+  "options": [
+   "897, 873, 839",
+   "839, 897, 873",
+   "839, 873, 897",
+   "873, 839, 897"
+  ],
+  "correct": 2,
+  "why": "All have 8 hundreds. Compare the tens: 839 has 3 tens, 873 has 7 tens, 897 has 9 tens. Least to greatest: 839, 873, 897."
+ },
+ {
+  "type": "choice",
+  "q": "Tamera counted 347 apples that fell on Monday and 868 apples that fell on Tuesday. How many <strong>more</strong> apples fell on Tuesday than on Monday?",
+  "alt": "868 apples fell on Tuesday and 347 fell on Monday. What is the <strong>difference</strong>?",
+  "options": [
+   "521",
+   "421",
+   "1,215",
+   "531"
+  ],
+  "correct": 0,
+  "why": "&quot;How many more&quot; means subtract: 868 - 347 = 521."
+ },
+ {
+  "type": "text",
+  "q": "The cafeteria served 54 students at 1:00 and 67 students at 2:00. How many students did it serve <strong>in all</strong>? (Type just the number.)",
+  "alt": "54 students were served at 1:00 and 67 at 2:00. How many students <strong>altogether</strong>? (Type just the number.)",
+  "accept": [
+   "121",
+   "121 students"
+  ],
+  "display": "121",
+  "why": "&quot;In all&quot; means add: 54 + 67 = 121 students."
+ },
+ {
+  "type": "choice",
+  "q": "True or False: 3 + 4 and 15 &minus; 8 have the same value, so 3 + 4 = 15 &minus; 8.",
+  "alt": "True or False: The two sides of 3 + 4 = 15 &minus; 8 are equal.",
+  "options": [
+   "True",
+   "False"
+  ],
+  "correct": 0,
+  "why": "True! Solve each side first: 3 + 4 = 7 and 15 - 8 = 7. Both sides are 7, so they are equal."
+ },
+ {
+  "type": "selfcheck",
+  "q": "Burger King sold 489 burgers on Monday and 325 on Tuesday. <em>About</em> how many more burgers were sold on Monday? Explain how you estimated.",
+  "alt": "<em>About</em> how many more: 489 burgers Monday vs. 325 Tuesday. How would you estimate the difference?",
+  "sample": "Round first: 489 rounds to 500 and 325 rounds to 300. 500 - 300 = 200, so about 200 more burgers on Monday.",
+  "why": "When a problem says &quot;about,&quot; round each number first, then subtract."
+ }
+];
+
+const startScreen = document.getElementById("start-screen");
+const quizScreen = document.getElementById("quiz-screen");
+const endScreen = document.getElementById("end-screen");
+const qText = document.getElementById("question-text");
+const answerArea = document.getElementById("answer-area");
+const feedback = document.getElementById("feedback");
+const nextBtn = document.getElementById("next-btn");
+const progressLabel = document.getElementById("progress-label");
+const progressBar = document.getElementById("progress-bar");
+let idx = 0, score = 0, RUN = [];
+
+function shuffle(arr) {
+  const a = arr.slice();
+  for (let j = a.length - 1; j > 0; j--) {
+    const k = Math.floor(Math.random() * (j + 1));
+    [a[j], a[k]] = [a[k], a[j]];
+  }
+  return a;
+}
+
+function buildRun() {
+  // Fresh mix on every play: shuffled question order, and each question
+  // randomly uses its main wording or its alternate wording.
+  RUN = shuffle(QUESTIONS).map(function (item) {
+    const copy = Object.assign({}, item);
+    if (item.alt && Math.random() < 0.5) copy.q = item.alt;
+    return copy;
+  });
+}
+
+function startQuiz() {
+  idx = 0; score = 0;
+  buildRun();
+  startScreen.hidden = true;
+  endScreen.hidden = true;
+  quizScreen.hidden = false;
+  renderQuestion();
+}
+
+function showFeedback(ok, why) {
+  feedback.hidden = false;
+  feedback.className = "feedback " + (ok ? "good" : "bad");
+  feedback.innerHTML = (ok ? "<strong>That's right!</strong> " : "<strong>Not quite.</strong> ") + why;
+}
+
+function finishQuestion() {
+  nextBtn.hidden = false;
+  nextBtn.textContent = (idx === RUN.length - 1) ? "See My Score \u2192" : "Next Question \u2192";
+  nextBtn.focus();
+}
+
+function renderQuestion() {
+  const item = RUN[idx];
+  progressLabel.textContent = "Question " + (idx + 1) + " of " + RUN.length;
+  progressBar.style.width = ((idx / RUN.length) * 100) + "%";
+  qText.innerHTML = item.q;
+  feedback.hidden = true;
+  nextBtn.hidden = true;
+  answerArea.innerHTML = "";
+
+  if (item.type === "choice") {
+    const wrap = document.createElement("div");
+    wrap.className = "options";
+    const order = shuffle(item.options.map(function (_, i) { return i; }));
+    order.forEach(function (origIdx) {
+      const btn = document.createElement("button");
+      btn.className = "option";
+      btn.innerHTML = item.options[origIdx];
+      btn.addEventListener("click", function () {
+        const all = wrap.querySelectorAll(".option");
+        all.forEach(function (b) { b.disabled = true; });
+        const ok = origIdx === item.correct;
+        if (ok) { score++; btn.classList.add("correct"); }
+        else {
+          btn.classList.add("wrong");
+          all.forEach(function (b) { if (b.innerHTML === item.options[item.correct]) b.classList.add("correct"); });
+        }
+        showFeedback(ok, item.why);
+        finishQuestion();
+      });
+      wrap.appendChild(btn);
+    });
+    answerArea.appendChild(wrap);
+  } else if (item.type === "text") {
+    const input = document.createElement("input");
+    input.type = "text";
+    input.placeholder = "Type your answer here";
+    input.setAttribute("aria-label", "Your answer");
+    const row = document.createElement("div");
+    row.className = "check-row";
+    const checkBtn = document.createElement("button");
+    checkBtn.className = "btn";
+    checkBtn.textContent = "Check My Answer";
+    row.appendChild(checkBtn);
+    answerArea.appendChild(input);
+    answerArea.appendChild(row);
+    const norm = function (s) { return s.toLowerCase().replace(/[^a-z0-9 ]/g, " ").replace(/\s+/g, " ").trim(); };
+    checkBtn.addEventListener("click", function () {
+      if (!input.value.trim()) { input.focus(); return; }
+      const ok = item.accept.map(norm).indexOf(norm(input.value)) !== -1;
+      if (ok) score++;
+      input.disabled = true;
+      checkBtn.disabled = true;
+      showFeedback(ok, item.why + (ok ? "" : " The answer is: <strong>" + item.display + "</strong>"));
+      finishQuestion();
+    });
+    input.addEventListener("keydown", function (e) { if (e.key === "Enter") checkBtn.click(); });
+    input.focus();
+  } else if (item.type === "selfcheck") {
+    const ta = document.createElement("textarea");
+    ta.rows = 3;
+    ta.placeholder = "Type (or say out loud) your answer";
+    ta.setAttribute("aria-label", "Your answer");
+    const row = document.createElement("div");
+    row.className = "check-row";
+    const showBtn = document.createElement("button");
+    showBtn.className = "btn";
+    showBtn.textContent = "Show a Sample Answer";
+    row.appendChild(showBtn);
+    answerArea.appendChild(ta);
+    answerArea.appendChild(row);
+    showBtn.addEventListener("click", function () {
+      showBtn.disabled = true;
+      ta.disabled = true;
+      feedback.hidden = false;
+      feedback.className = "feedback good";
+      feedback.innerHTML = "<strong>Sample answer:</strong> " + item.sample + "<br><br>" + item.why;
+      const judge = document.createElement("div");
+      judge.className = "check-row";
+      const gotIt = document.createElement("button");
+      gotIt.className = "btn";
+      gotIt.textContent = "I got it!";
+      const keepBtn = document.createElement("button");
+      keepBtn.className = "btn secondary";
+      keepBtn.textContent = "Keep practicing";
+      keepBtn.style.marginLeft = "10px";
+      judge.appendChild(gotIt);
+      judge.appendChild(keepBtn);
+      answerArea.appendChild(judge);
+      gotIt.addEventListener("click", function () { score++; gotIt.disabled = true; keepBtn.disabled = true; finishQuestion(); });
+      keepBtn.addEventListener("click", function () { gotIt.disabled = true; keepBtn.disabled = true; finishQuestion(); });
+    });
+    ta.focus();
+  }
+}
+
+function showEnd() {
+  quizScreen.hidden = true;
+  endScreen.hidden = false;
+  progressBar.style.width = "100%";
+  const total = RUN.length;
+  document.getElementById("score-text").textContent = "You got " + score + " out of " + total + "!";
+  const stars = document.getElementById("stars");
+  const msg = document.getElementById("end-message");
+  if (score === total) { stars.textContent = "\u2605\u2605\u2605"; msg.textContent = "Perfect score! You are ready for the test. Amazing work!"; }
+  else if (score >= total - 2) { stars.textContent = "\u2605\u2605\u2606"; msg.textContent = "Great job! Look back at the ones you missed and you'll have them down in no time."; }
+  else if (score >= Math.ceil(total / 2)) { stars.textContent = "\u2605\u2606\u2606"; msg.textContent = "Good work! Try the quiz again, or look at the study guide, and watch your score grow."; }
+  else { stars.textContent = "\u2606\u2606\u2606"; msg.textContent = "Good try! Read through the study guide, then take the quiz again. You'll get it!"; }
+}
+
+document.getElementById("start-btn").addEventListener("click", startQuiz);
+document.getElementById("again-btn").addEventListener("click", startQuiz);
+nextBtn.addEventListener("click", function () {
+  idx++;
+  if (idx >= RUN.length) showEnd(); else renderQuestion();
+});
+</script>
+</body>
+</html>
