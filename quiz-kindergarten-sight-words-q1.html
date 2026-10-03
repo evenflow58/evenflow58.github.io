@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kindergarten Sight Words Quiz: Quarter 1</title>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: ui-rounded, "Segoe UI", system-ui, -apple-system, sans-serif; background: #fff7ed; color: #1e293b; }
+  header { background: linear-gradient(135deg, #059669, #22c55e); color: #fff; padding: 28px 20px 24px; text-align: center; border-radius: 0 0 28px 28px; }
+  header h1 { margin: 0 0 6px; font-size: 1.9rem; }
+  header p { margin: 0; font-size: 1.1rem; opacity: .92; }
+  main { max-width: 720px; margin: 0 auto; padding: 24px 16px 48px; }
+  .card { background: #fff; border-radius: 20px; box-shadow: 0 4px 16px rgba(30, 41, 59, .08); padding: 26px 24px; }
+  .btn { display: inline-block; background: #059669; color: #fff; border: none; font: inherit; font-size: 1.3rem; font-weight: 700; padding: 16px 36px; border-radius: 999px; cursor: pointer; box-shadow: 0 4px 0 #065f46; text-decoration: none; }
+  .btn:active { transform: translateY(2px); box-shadow: 0 2px 0 #065f46; }
+  .btn.secondary { background: #d1fae5; color: #065f46; box-shadow: 0 4px 0 #6ee7b7; }
+  .progress-wrap { background: #e2e8f0; border-radius: 999px; height: 14px; overflow: hidden; margin: 14px 0 6px; }
+  .progress-bar { background: linear-gradient(90deg, #059669, #22c55e); height: 100%; width: 0%; transition: width .3s ease; }
+  .progress-label { font-size: 1rem; color: #64748b; font-weight: 600; }
+  .question { font-size: 1.5rem; line-height: 1.45; margin: 14px 0 18px; }
+  .question strong { font-size: 1.7rem; }
+  .options { display: grid; gap: 14px; }
+  .option { font: inherit; font-size: 1.7rem; font-weight: 600; text-align: center; padding: 18px 18px; border-radius: 14px; border: 3px solid #e2e8f0; background: #f8fafc; cursor: pointer; width: 100%; }
+  .option:hover:not(:disabled) { border-color: #34d399; }
+  .option:disabled { cursor: default; }
+  .option.correct { background: #dcfce7; border-color: #22c55e; font-weight: 700; }
+  .option.wrong { background: #fee2e2; border-color: #ef4444; }
+  .feedback { margin-top: 18px; padding: 14px 16px; border-radius: 14px; font-size: 1.15rem; line-height: 1.45; }
+  .feedback.good { background: #f0fdf4; border: 2px solid #86efac; }
+  .feedback.bad { background: #fef2f2; border: 2px solid #fca5a5; }
+  .next-row { margin-top: 20px; text-align: right; }
+  .stars { font-size: 2.4rem; color: #f59e0b; letter-spacing: .15em; margin: 10px 0; }
+  .score-big { font-size: 2rem; font-weight: 800; margin: 6px 0; }
+  .center { text-align: center; }
+  .home-link { display: inline-block; margin-top: 18px; font-weight: 700; color: #059669; }
+  [hidden] { display: none !important; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Sight Words: Quarter 1</h1>
+  <p>Kindergarten &middot; Read the word, tap the match!</p>
+</header>
+<main>
+  <section id="start-screen" class="card center">
+    <p style="font-size:1.2rem; line-height:1.5;">12 questions about the Quarter 1 sight words:<br><strong>a &middot; the &middot; and &middot; go &middot; had &middot; he &middot; I &middot; see &middot; has &middot; you</strong><br><br>Listen to each question, then tap the word that matches.<br>The questions mix themselves up every time you play!</p>
+    <button class="btn" id="start-btn">Start the Quiz</button>
+    <div style="margin-top:14px;"><button class="btn secondary" id="listen-btn" style="font-size:1.1rem; padding:12px 26px;">&#128266; Hear How It Works</button></div>
+    <br><a class="home-link" href="index.html">&larr; All quizzes</a>
+  </section>
+
+  <section id="quiz-screen" class="card" hidden>
+    <div class="progress-label" id="progress-label">Question 1 of 12</div>
+    <div class="progress-wrap"><div class="progress-bar" id="progress-bar"></div></div>
+    <div class="question" id="question-text"></div>
+    <div style="margin: 0 0 16px;"><button class="btn secondary" id="speak-btn" style="font-size:1.1rem; padding:12px 26px;">&#128266; Hear It Again</button></div>
+    <div id="answer-area"></div>
+    <div class="feedback" id="feedback" aria-live="polite" hidden></div>
+    <div class="next-row"><button class="btn" id="next-btn" hidden>Next Question &rarr;</button></div>
+  </section>
+
+  <section id="end-screen" class="card center" hidden>
+    <div style="font-size:1.3rem; font-weight:700;">All done!</div>
+    <div class="stars" id="stars"></div>
+    <div class="score-big" id="score-text"></div>
+    <p id="end-message" style="font-size:1.15rem; line-height:1.5;"></p>
+    <button class="btn" id="again-btn">Try Again &mdash; New Mix!</button>
+    <br><a class="home-link" href="index.html">&larr; All quizzes</a>
+  </section>
+</main>
+
+<script>
+const QUESTIONS = [
+ {
+  "type": "choice",
+  "q": "Tap the word that says: <strong>a</strong>",
+  "alt": "Find the word: <strong>a</strong>. Tap it!",
+  "options": ["a", "I", "and", "the"],
+  "correct": 0,
+  "why": "That is the word <strong>a</strong>. It is a tiny word with just one letter!"
+ },
+ {
+  "type": "choice",
+  "q": "Tap the word that says: <strong>the</strong>",
+  "alt": "Find the word: <strong>the</strong>. Tap it!",
+  "options": ["the", "he", "see", "and"],
+  "correct": 0,
+  "why": "That is the word <strong>the</strong>. Careful &mdash; <strong>he</strong> looks a lot like it!"
+ },
+ {
+  "type": "choice",
+  "q": "Tap the word that says: <strong>and</strong>",
+  "alt": "Find the word: <strong>and</strong>. Tap it!",
+  "options": ["and", "a", "had", "the"],
+  "correct": 0,
+  "why": "That is the word <strong>and</strong>. We say it in the middle: you <strong>and</strong> me!"
+ },
+ {
+  "type": "choice",
+  "q": "Tap the word that says: <strong>go</strong>",
+  "alt": "Find the word: <strong>go</strong>. Tap it!",
+  "options": ["go", "you", "see", "had"],
+  "correct": 0,
+  "why": "That is the word <strong>go</strong>. Ready, set, <strong>go</strong>!"
+ },
+ {
+  "type": "choice",
+  "q": "Tap the word that says: <strong>had</strong>",
+  "alt": "Find the word: <strong>had</strong>. Tap it!",
+  "options": ["had", "has", "and", "he"],
+  "correct": 0,
+  "why": "That is the word <strong>had</strong>. Look at the last letter &mdash; <strong>had</strong> ends with d, <strong>has</strong> ends with s!"
+ },
+ {
+  "type": "choice",
+  "q": "Tap the word that says: <strong>he</strong>",
+  "alt": "Find the word: <strong>he</strong>. Tap it!",
+  "options": ["he", "the", "see", "has"],
+  "correct": 0,
+  "why": "That is the word <strong>he</strong>. It starts with h. <strong>The</strong> starts with t!"
+ },
+ {
+  "type": "choice",
+  "q": "Tap the word that says: <strong>I</strong>",
+  "alt": "Find the word: <strong>I</strong>. Tap it!",
+  "options": ["I", "a", "you", "see"],
+  "correct": 0,
+  "why": "That is the word <strong>I</strong>. It is the only word that is always a capital letter!"
+ },
+ {
+  "type": "choice",
+  "q": "Tap the word that says: <strong>see</strong>",
+  "alt": "Find the word: <strong>see</strong>. Tap it!",
+  "options": ["see", "he", "the", "you"],
+  "correct": 0,
+  "why": "That is the word <strong>see</strong>. It has two e's in the middle &mdash; like two eyes to see with!"
+ },
+ {
+  "type": "choice",
+  "q": "Tap the word that says: <strong>has</strong>",
+  "alt": "Find the word: <strong>has</strong>. Tap it!",
+  "options": ["has", "had", "he", "and"],
+  "correct": 0,
+  "why": "That is the word <strong>has</strong>. Look at the last letter &mdash; <strong>has</strong> ends with s, <strong>had</strong> ends with d!"
+ },
+ {
+  "type": "choice",
+  "q": "Tap the word that says: <strong>you</strong>",
+  "alt": "Find the word: <strong>you</strong>. Tap it!",
+  "options": ["you", "go", "I", "the"],
+  "correct": 0,
+  "why": "That is the word <strong>you</strong>. It starts with y: <strong>you</strong> can read it!"
+ },
+ {
+  "type": "choice",
+  "q": "Read this sentence: <strong>I ___ you.</strong> Which word fills the blank?",
+  "alt": "Which word makes this sentence work? <strong>I ___ you.</strong>",
+  "options": ["see", "and", "the", "a"],
+  "correct": 0,
+  "why": "<strong>I see you!</strong> The word <strong>see</strong> fits best."
+ },
+ {
+  "type": "choice",
+  "q": "Read this sentence: <strong>He ___ a hat.</strong> Which word fills the blank?",
+  "alt": "Which word makes this sentence work? <strong>He ___ a hat.</strong>",
+  "options": ["has", "and", "go", "a"],
+  "correct": 0,
+  "why": "<strong>He has a hat.</strong> The word <strong>has</strong> fits best."
+ }
+];
+
+const startScreen = document.getElementById("start-screen");
+const quizScreen = document.getElementById("quiz-screen");
+const endScreen = document.getElementById("end-screen");
+const qText = document.getElementById("question-text");
+const answerArea = document.getElementById("answer-area");
+const feedback = document.getElementById("feedback");
+const nextBtn = document.getElementById("next-btn");
+const progressLabel = document.getElementById("progress-label");
+const progressBar = document.getElementById("progress-bar");
+let idx = 0, score = 0, RUN = [];
+
+// --- Voice prompts (built-in speech, no files needed) ---
+function speechText(html) {
+  const tmp = document.createElement("div");
+  tmp.innerHTML = String(html).replace(/___/g, " blank ");
+  return tmp.textContent.replace(/\s+/g, " ").trim();
+}
+function speak(text) {
+  try {
+    if (!("speechSynthesis" in window)) return;
+    const synth = window.speechSynthesis;
+    synth.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    u.rate = 0.92;
+    u.pitch = 1.05;
+    u.lang = "en-US";
+    const voices = synth.getVoices().filter(function (v) { return v.lang && v.lang.indexOf("en") === 0; });
+    if (voices.length) u.voice = voices[0];
+    synth.speak(u);
+  } catch (e) { /* voice is a bonus; quiz works without it */ }
+}
+if ("speechSynthesis" in window) { window.speechSynthesis.onvoiceschanged = function () {}; }
+function speakQuestion() {
+  const item = RUN[idx];
+  if (item) speak(speechText(item.q));
+}
+
+function shuffle(arr) {
+  const a = arr.slice();
+  for (let j = a.length - 1; j > 0; j--) {
+    const k = Math.floor(Math.random() * (j + 1));
+    [a[j], a[k]] = [a[k], a[j]];
+  }
+  return a;
+}
+
+function buildRun() {
+  // Fresh mix on every play: shuffled question order, and each question
+  // randomly uses its main wording or its alternate wording.
+  RUN = shuffle(QUESTIONS).map(function (item) {
+    const copy = Object.assign({}, item);
+    if (item.alt && Math.random() < 0.5) copy.q = item.alt;
+    return copy;
+  });
+}
+
+function startQuiz() {
+  idx = 0; score = 0;
+  buildRun();
+  startScreen.hidden = true;
+  endScreen.hidden = true;
+  quizScreen.hidden = false;
+  renderQuestion();
+}
+
+function showFeedback(ok, why) {
+  feedback.hidden = false;
+  feedback.className = "feedback " + (ok ? "good" : "bad");
+  feedback.innerHTML = (ok ? "<strong>That's right!</strong> " : "<strong>Not quite.</strong> ") + why;
+  speak((ok ? "That's right! " : "Not quite. ") + speechText(why));
+}
+
+function finishQuestion() {
+  nextBtn.hidden = false;
+  nextBtn.textContent = (idx === RUN.length - 1) ? "See My Score \u2192" : "Next Question \u2192";
+  nextBtn.focus();
+}
+
+function renderQuestion() {
+  const item = RUN[idx];
+  progressLabel.textContent = "Question " + (idx + 1) + " of " + RUN.length;
+  progressBar.style.width = ((idx / RUN.length) * 100) + "%";
+  qText.innerHTML = item.q;
+  feedback.hidden = true;
+  nextBtn.hidden = true;
+  answerArea.innerHTML = "";
+
+  if (item.type === "choice") {
+    const wrap = document.createElement("div");
+    wrap.className = "options";
+    const order = shuffle(item.options.map(function (_, i) { return i; }));
+    order.forEach(function (origIdx) {
+      const btn = document.createElement("button");
+      btn.className = "option";
+      btn.innerHTML = item.options[origIdx];
+      btn.addEventListener("click", function () {
+        const all = wrap.querySelectorAll(".option");
+        all.forEach(function (b) { b.disabled = true; });
+        const ok = origIdx === item.correct;
+        if (ok) { score++; btn.classList.add("correct"); }
+        else {
+          btn.classList.add("wrong");
+          all.forEach(function (b) { if (b.innerHTML === item.options[item.correct]) b.classList.add("correct"); });
+        }
+        showFeedback(ok, item.why);
+        finishQuestion();
+      });
+      wrap.appendChild(btn);
+    });
+    answerArea.appendChild(wrap);
+    speakQuestion();
+  }
+}
+
+function showEnd() {
+  quizScreen.hidden = true;
+  endScreen.hidden = false;
+  progressBar.style.width = "100%";
+  const total = RUN.length;
+  document.getElementById("score-text").textContent = "You got " + score + " out of " + total + "!";
+  const stars = document.getElementById("stars");
+  const msg = document.getElementById("end-message");
+  if (score === total) { stars.textContent = "\u2605\u2605\u2605"; msg.textContent = "Perfect score! You know all your Quarter 1 words. Amazing reading!"; }
+  else if (score >= total - 2) { stars.textContent = "\u2605\u2605\u2606"; msg.textContent = "Great job! Look back at the ones you missed and you'll have them down in no time."; }
+  else if (score >= Math.ceil(total / 2)) { stars.textContent = "\u2605\u2606\u2606"; msg.textContent = "Good work! Play again and watch your score grow."; }
+  else { stars.textContent = "\u2606\u2606\u2606"; msg.textContent = "Good try! Practice the words on the list, then play again. You'll get it!"; }
+  speak(document.getElementById("score-text").textContent + " " + msg.textContent);
+}
+
+document.getElementById("start-btn").addEventListener("click", startQuiz);
+document.getElementById("again-btn").addEventListener("click", startQuiz);
+document.getElementById("listen-btn").addEventListener("click", function () {
+  speak("Sight Words Quiz! Listen to each question. I will read a word out loud. Tap the word that matches. Tap Start the Quiz when you are ready!");
+});
+document.getElementById("speak-btn").addEventListener("click", speakQuestion);
+// Best-effort welcome prompt when the page opens. Some browsers wait for a
+// first tap before allowing sound, so the spoken questions begin on Start.
+window.addEventListener("load", function () {
+  speak("Sight Words Quiz! Tap Start the Quiz to play.");
+});
+nextBtn.addEventListener("click", function () {
+  idx++;
+  if (idx >= RUN.length) showEnd(); else renderQuestion();
+});
+</script>
+</body>
+</html>
