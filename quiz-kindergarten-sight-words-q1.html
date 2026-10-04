@@ -74,80 +74,90 @@
 const QUESTIONS = [
  {
   "type": "choice",
-  "q": "Tap the word that says: <strong>a</strong>",
-  "alt": "Find the word: <strong>a</strong>. Tap it!",
+  "q": "\uD83D\uDD0A Listen! Tap the word you hear.",
+  "alt": "\uD83D\uDD0A What word did you hear? Tap it!",
+  "say": "Tap the word that says: a",
   "options": ["a", "I", "and", "the"],
   "correct": 0,
   "why": "That is the word <strong>a</strong>. It is a tiny word with just one letter!"
  },
  {
   "type": "choice",
-  "q": "Tap the word that says: <strong>the</strong>",
-  "alt": "Find the word: <strong>the</strong>. Tap it!",
+  "q": "\uD83D\uDD0A Listen! Tap the word you hear.",
+  "alt": "\uD83D\uDD0A What word did you hear? Tap it!",
+  "say": "Tap the word that says: the",
   "options": ["the", "he", "see", "and"],
   "correct": 0,
   "why": "That is the word <strong>the</strong>. Careful &mdash; <strong>he</strong> looks a lot like it!"
  },
  {
   "type": "choice",
-  "q": "Tap the word that says: <strong>and</strong>",
-  "alt": "Find the word: <strong>and</strong>. Tap it!",
+  "q": "\uD83D\uDD0A Listen! Tap the word you hear.",
+  "alt": "\uD83D\uDD0A What word did you hear? Tap it!",
+  "say": "Tap the word that says: and",
   "options": ["and", "a", "had", "the"],
   "correct": 0,
   "why": "That is the word <strong>and</strong>. We say it in the middle: you <strong>and</strong> me!"
  },
  {
   "type": "choice",
-  "q": "Tap the word that says: <strong>go</strong>",
-  "alt": "Find the word: <strong>go</strong>. Tap it!",
+  "q": "\uD83D\uDD0A Listen! Tap the word you hear.",
+  "alt": "\uD83D\uDD0A What word did you hear? Tap it!",
+  "say": "Tap the word that says: go",
   "options": ["go", "you", "see", "had"],
   "correct": 0,
   "why": "That is the word <strong>go</strong>. Ready, set, <strong>go</strong>!"
  },
  {
   "type": "choice",
-  "q": "Tap the word that says: <strong>had</strong>",
-  "alt": "Find the word: <strong>had</strong>. Tap it!",
+  "q": "\uD83D\uDD0A Listen! Tap the word you hear.",
+  "alt": "\uD83D\uDD0A What word did you hear? Tap it!",
+  "say": "Tap the word that says: had",
   "options": ["had", "has", "and", "he"],
   "correct": 0,
   "why": "That is the word <strong>had</strong>. Look at the last letter &mdash; <strong>had</strong> ends with d, <strong>has</strong> ends with s!"
  },
  {
   "type": "choice",
-  "q": "Tap the word that says: <strong>he</strong>",
-  "alt": "Find the word: <strong>he</strong>. Tap it!",
+  "q": "\uD83D\uDD0A Listen! Tap the word you hear.",
+  "alt": "\uD83D\uDD0A What word did you hear? Tap it!",
+  "say": "Tap the word that says: he",
   "options": ["he", "the", "see", "has"],
   "correct": 0,
   "why": "That is the word <strong>he</strong>. It starts with h. <strong>The</strong> starts with t!"
  },
  {
   "type": "choice",
-  "q": "Tap the word that says: <strong>I</strong>",
-  "alt": "Find the word: <strong>I</strong>. Tap it!",
+  "q": "\uD83D\uDD0A Listen! Tap the word you hear.",
+  "alt": "\uD83D\uDD0A What word did you hear? Tap it!",
+  "say": "Tap the word that says: I",
   "options": ["I", "a", "you", "see"],
   "correct": 0,
   "why": "That is the word <strong>I</strong>. It is the only word that is always a capital letter!"
  },
  {
   "type": "choice",
-  "q": "Tap the word that says: <strong>see</strong>",
-  "alt": "Find the word: <strong>see</strong>. Tap it!",
+  "q": "\uD83D\uDD0A Listen! Tap the word you hear.",
+  "alt": "\uD83D\uDD0A What word did you hear? Tap it!",
+  "say": "Tap the word that says: see",
   "options": ["see", "he", "the", "you"],
   "correct": 0,
   "why": "That is the word <strong>see</strong>. It has two e's in the middle &mdash; like two eyes to see with!"
  },
  {
   "type": "choice",
-  "q": "Tap the word that says: <strong>has</strong>",
-  "alt": "Find the word: <strong>has</strong>. Tap it!",
+  "q": "\uD83D\uDD0A Listen! Tap the word you hear.",
+  "alt": "\uD83D\uDD0A What word did you hear? Tap it!",
+  "say": "Tap the word that says: has",
   "options": ["has", "had", "he", "and"],
   "correct": 0,
   "why": "That is the word <strong>has</strong>. Look at the last letter &mdash; <strong>has</strong> ends with s, <strong>had</strong> ends with d!"
  },
  {
   "type": "choice",
-  "q": "Tap the word that says: <strong>you</strong>",
-  "alt": "Find the word: <strong>you</strong>. Tap it!",
+  "q": "\uD83D\uDD0A Listen! Tap the word you hear.",
+  "alt": "\uD83D\uDD0A What word did you hear? Tap it!",
+  "say": "Tap the word that says: you",
   "options": ["you", "go", "I", "the"],
   "correct": 0,
   "why": "That is the word <strong>you</strong>. It starts with y: <strong>you</strong> can read it!"
@@ -204,7 +214,7 @@ function speak(text) {
 if ("speechSynthesis" in window) { window.speechSynthesis.onvoiceschanged = function () {}; }
 function speakQuestion() {
   const item = RUN[idx];
-  if (item) speak(speechText(item.q));
+  if (item) speak(speechText(item.say || item.q));
 }
 
 function shuffle(arr) {
