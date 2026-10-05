@@ -198,7 +198,7 @@ function recordMiss(item, theirs) {
   if (item.type === "choice") correct = plainText(item.options[item.correct]);
   else if (item.type === "text") correct = item.display;
   else correct = item.sample || "";
-  MISSED.push("Q: " + plainText(item.q) + " | Their answer: " + plainText(theirs) + " | Correct answer: " + correct);
+  MISSED.push("Q: " + plainText(item.say || item.q) + " | Their answer: " + plainText(theirs) + " | Correct answer: " + correct);
 }
 function submitResult() {
   if (resultSent) return; resultSent = true;
