@@ -204,6 +204,27 @@ const nextBtn = document.getElementById("next-btn");
 const progressLabel = document.getElementById("progress-label");
 const progressBar = document.getElementById("progress-bar");
 let idx = 0, score = 0, RUN = [];
+let MISSED = [], resultSent = false;
+const RESULT_FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLScsrQlyXtxRugh8Z5kY2S6tbJ-zMoqVnNcbe4rsf6Vtc0x0Jg/formResponse";
+function plainText(html) { const d = document.createElement("div"); d.innerHTML = String(html); return d.textContent.replace(/\s+/g, " ").trim(); }
+function recordMiss(item, theirs) {
+  let correct = "";
+  if (item.type === "choice") correct = plainText(item.options[item.correct]);
+  else if (item.type === "text") correct = item.display;
+  else correct = item.sample || "";
+  MISSED.push("Q: " + plainText(item.q) + " | Their answer: " + plainText(theirs) + " | Correct answer: " + correct);
+}
+function submitResult() {
+  if (resultSent) return; resultSent = true;
+  try {
+    const body = new URLSearchParams();
+    body.set("entry.1802018837", document.title);
+    body.set("entry.592121264", score + " / " + RUN.length);
+    body.set("entry.856671312", MISSED.length ? MISSED.join("\n") : "None - perfect score");
+    fetch(RESULT_FORM_URL, { method: "POST", mode: "no-cors", headers: { "Content-Type": "application/x-www-form-urlencoded" }, body: body.toString(), keepalive: true }).catch(function () {});
+  } catch (e) {}
+}
+
 
 function shuffle(arr) {
   const a = arr.slice();
@@ -226,6 +247,7 @@ function buildRun() {
 
 function startQuiz() {
   idx = 0; score = 0;
+  MISSED = []; resultSent = false;
   buildRun();
   startScreen.hidden = true;
   endScreen.hidden = true;
@@ -240,6 +262,7 @@ function showFeedback(ok, why) {
 }
 
 function finishQuestion() {
+  if (idx === RUN.length - 1) submitResult();
   nextBtn.hidden = false;
   nextBtn.textContent = (idx === RUN.length - 1) ? "See My Score \u2192" : "Next Question \u2192";
   nextBtn.focus();
@@ -269,6 +292,7 @@ function renderQuestion() {
         if (ok) { score++; btn.classList.add("correct"); }
         else {
           btn.classList.add("wrong");
+          recordMiss(item, item.options[origIdx]);
           all.forEach(function (b) { if (b.innerHTML === item.options[item.correct]) b.classList.add("correct"); });
         }
         showFeedback(ok, item.why);
@@ -294,7 +318,7 @@ function renderQuestion() {
     checkBtn.addEventListener("click", function () {
       if (!input.value.trim()) { input.focus(); return; }
       const ok = item.accept.map(norm).indexOf(norm(input.value)) !== -1;
-      if (ok) score++;
+      if (ok) score++; else recordMiss(item, input.value);
       input.disabled = true;
       checkBtn.disabled = true;
       showFeedback(ok, item.why + (ok ? "" : " The answer is: <strong>" + item.display + "</strong>"));
@@ -334,7 +358,7 @@ function renderQuestion() {
       judge.appendChild(keepBtn);
       answerArea.appendChild(judge);
       gotIt.addEventListener("click", function () { score++; gotIt.disabled = true; keepBtn.disabled = true; finishQuestion(); });
-      keepBtn.addEventListener("click", function () { gotIt.disabled = true; keepBtn.disabled = true; finishQuestion(); });
+      keepBtn.addEventListener("click", function () { recordMiss(item, ta.value || "(answered out loud)"); gotIt.disabled = true; keepBtn.disabled = true; finishQuestion(); });
     });
     ta.focus();
   }
