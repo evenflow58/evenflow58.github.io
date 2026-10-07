@@ -193,6 +193,154 @@ const QUESTIONS = [
   "alt": "Finish the sentence with a cause of your own: &quot;I was very thirsty because&hellip;&quot;",
   "sample": "&hellip;because I played outside in the hot sun. (Any true reason works!)",
   "why": "Your ending should tell WHY you were thirsty &mdash; that's the cause."
+ },
+ {
+  "type": "choice",
+  "q": "The prefix <strong>re-</strong> means <em>again</em>. What does <strong>reread</strong> mean?",
+  "alt": "If you <strong>reread</strong> a book, what are you doing?",
+  "options": [
+   "Reading it before anyone else",
+   "Reading it again",
+   "Never reading it",
+   "Reading it out loud"
+  ],
+  "correct": 1,
+  "why": "Re- means again, so reread means to read again."
+ },
+ {
+  "type": "choice",
+  "q": "What does <strong>unhappy</strong> mean?",
+  "alt": "The prefix <strong>un-</strong> means <em>not</em>. So <strong>unhappy</strong> means&hellip;",
+  "options": [
+   "Very happy",
+   "Not happy",
+   "Happy again",
+   "Happy before"
+  ],
+  "correct": 1,
+  "why": "Un- means not. Unhappy means not happy."
+ },
+ {
+  "type": "choice",
+  "q": "The prefix <strong>pre-</strong> means <em>before</em>. A <strong>preview</strong> is&hellip;",
+  "alt": "Using the prefix <strong>pre-</strong> (before), what is a <strong>preview</strong>?",
+  "options": [
+   "A look after something ends",
+   "A look before something is fully shown",
+   "A broken view",
+   "A second ending"
+  ],
+  "correct": 1,
+  "why": "Pre- means before. A preview lets you look at part of something before the whole thing."
+ },
+ {
+  "type": "choice",
+  "q": "<strong>Disagree</strong> means&hellip;",
+  "alt": "The prefix <strong>dis-</strong> can mean <em>not</em>. To <strong>disagree</strong> is to&hellip;",
+  "options": [
+   "agree again",
+   "agree first",
+   "not agree",
+   "agree quietly"
+  ],
+  "correct": 2,
+  "why": "Dis- means not or the opposite of. Disagree means to not agree."
+ },
+ {
+  "type": "choice",
+  "q": "Read this sentence: &quot;The ground was wet <strong>because</strong> it rained all night.&quot; What is the <strong>cause</strong>?",
+  "alt": "In &quot;The ground was wet <strong>because</strong> it rained all night,&quot; WHY was the ground wet?",
+  "options": [
+   "The ground was wet",
+   "It rained all night",
+   "The night ended",
+   "The ground dried up"
+  ],
+  "correct": 1,
+  "why": "The cause is the reason something happens. Rain all night is WHY the ground was wet."
+ },
+ {
+  "type": "choice",
+  "q": "Read this sentence: &quot;Ben forgot his umbrella, <strong>so</strong> he got soaked on the way home.&quot; What is the <strong>effect</strong>?",
+  "alt": "In the sentence about Ben and his umbrella, what HAPPENED as a result?",
+  "options": [
+   "Ben forgot his umbrella",
+   "He got soaked",
+   "He went home",
+   "Umbrellas keep you dry"
+  ],
+  "correct": 1,
+  "why": "The effect is what happens as a result. Forgetting the umbrella was the cause; getting soaked was the effect."
+ },
+ {
+  "type": "choice",
+  "q": "Which words signal that an <strong>effect</strong> is coming?",
+  "alt": "Which pair of words often comes right before an <strong>effect</strong>?",
+  "options": [
+   "because and since",
+   "so and as a result",
+   "first and next",
+   "under and over"
+  ],
+  "correct": 1,
+  "why": "&quot;So&quot; and &quot;as a result&quot; signal an effect. &quot;Because&quot; and &quot;since&quot; signal a cause."
+ },
+ {
+  "type": "choice",
+  "q": "Which word is spelled correctly?",
+  "alt": "Only one of these words is spelled the right way. Which one?",
+  "options": [
+   "becaus",
+   "because",
+   "becuase",
+   "becuz"
+  ],
+  "correct": 1,
+  "why": "Because is spelled b-e-c-a-u-s-e."
+ },
+ {
+  "type": "choice",
+  "q": "What does <strong>inhale</strong> mean?",
+  "alt": "When you <strong>inhale</strong>, you&hellip;",
+  "options": [
+   "breathe in",
+   "breathe out",
+   "hold your breath",
+   "cough"
+  ],
+  "correct": 0,
+  "why": "Inhale means to breathe in. Exhale (with ex-) means to breathe out."
+ },
+ {
+  "type": "choice",
+  "q": "True or False: In &quot;She was late because the bus broke down,&quot; the bus breaking down is the effect.",
+  "alt": "True or False: The bus breaking down is the EFFECT in &quot;She was late because the bus broke down.&quot;",
+  "options": [
+   "True",
+   "False"
+  ],
+  "correct": 1,
+  "why": "False. The bus breaking down is the CAUSE. Being late is the effect \u2014 the part after &quot;because&quot; gives the reason."
+ },
+ {
+  "type": "selfcheck",
+  "q": "Finish this sentence with a cause of your own: &quot;The flowers grew tall because&hellip;&quot;",
+  "alt": "Complete the cause-and-effect sentence: &quot;The flowers grew tall because&hellip;&quot;",
+  "sample": "The flowers grew tall because they got plenty of sunshine and water.",
+  "why": "The part after &quot;because&quot; tells WHY something happened \u2014 that is the cause."
+ },
+ {
+  "type": "choice",
+  "q": "Which sentence shows <strong>cause and effect</strong>?",
+  "alt": "Which of these sentences has something happen BECAUSE of something else?",
+  "options": [
+   "Maria has a red backpack.",
+   "The ice melted because the sun was hot.",
+   "We went to the park on Saturday.",
+   "He likes pizza and pasta."
+  ],
+  "correct": 1,
+  "why": "The sun being hot is the cause, and the ice melting is the effect. The other sentences just tell facts."
  }
 ];
 
@@ -237,12 +385,218 @@ function shuffle(arr) {
   return a;
 }
 
+// ---- Procedural question generation + helpers (inserted into quiz template) ----
+function ri(a, b) { return a + Math.floor(Math.random() * (b - a + 1)); }
+function pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+function fmt(n) { const s = String(Math.abs(n)); let out = ""; for (let i = 0; i < s.length; i++) { if (i > 0 && (s.length - i) % 3 === 0) out += ","; out += s[i]; } return (n < 0 ? "-" : "") + out; }
+function roundTo(n, p) { const f = Math.pow(10, p); return Math.round(n / f) * f; }
+function dedupeOpts(list) { const seen = {}; const out = []; list.forEach(function (v) { const s = String(v); if (!seen[s]) { seen[s] = 1; out.push(s); } }); return out; }
+function padTo4(arr, cands) { const out = arr.slice(); for (const cand of cands) { if (out.length >= 4) break; const s = String(cand); if (!out.includes(s)) out.push(s); } return out; }
+function optsNum(correct, wrongs) {
+  let out = dedupeOpts([correct].concat(wrongs));
+  let bump = 20;
+  while (out.length < 4) { out = dedupeOpts(out.concat([correct + bump, correct - bump])); bump += 20; }
+  return out.slice(0, 4);
+}
+function noCarrySum(a, b) { let out = 0, mult = 1, x = a, y = b; while (x > 0 || y > 0) { out += (((x % 10) + (y % 10)) % 10) * mult; mult *= 10; x = Math.floor(x / 10); y = Math.floor(y / 10); } return out; }
+function noBorrowDiff(a, b) { let out = 0, mult = 1, x = a, y = b; while (x > 0 || y > 0) { out += Math.abs((x % 10) - (y % 10)) * mult; mult *= 10; x = Math.floor(x / 10); y = Math.floor(y / 10); } return out; }
+function hasCarry(a, b) { let x = a, y = b; while (x > 0 || y > 0) { if ((x % 10) + (y % 10) >= 10) return true; x = Math.floor(x / 10); y = Math.floor(y / 10); } return false; }
+function hasBorrow(a, b) { let x = a, y = b; while (x > 0) { if ((x % 10) < (y % 10)) return true; x = Math.floor(x / 10); y = Math.floor(y / 10); } return false; }
+const ONES_W = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen"];
+const TENS_W = ["", "", "twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eighty", "ninety"];
+function twoWords(n) { if (n < 20) return ONES_W[n]; const t = Math.floor(n / 10), o = n % 10; return TENS_W[t] + (o ? "-" + ONES_W[o] : ""); }
+function numWords(n) { let out = ""; const th = Math.floor(n / 1000), h = Math.floor((n % 1000) / 100), rest = n % 100; if (th) out += ONES_W[th] + " thousand"; if (h) out += (out ? ", " : "") + ONES_W[h] + " hundred"; if (rest) out += (out ? " " : "") + twoWords(rest); return out; }
+function distinctDigits4(minEach) { let ds; do { ds = [ri(1, 9), ri(0, 9), ri(0, 9), ri(0, 9)]; } while (new Set(ds).size < 4 || (minEach && (ds[1] === 0 || ds[2] === 0 || ds[3] === 0))); return ds; }
+const GEN_NAMES = ["Mia", "Liam", "Sofia", "Noah", "Ava", "Ethan", "Zoe", "Lucas", "Ruby", "Owen"];
+const PLACE_NAMES = ["ones", "tens", "hundreds", "thousands"];
+
+const GEN = {
+  genAdd3: function () {
+    let a, b; do { a = ri(125, 899); b = ri(125, 899); } while (!hasCarry(a, b));
+    const c = a + b;
+    return { type: "choice", q: "What is " + fmt(a) + " + " + fmt(b) + "?", alt: "Add: " + fmt(a) + " + " + fmt(b) + " = ?",
+      options: optsNum(c, [noCarrySum(a, b), c + 10, c - 10]), correct: 0,
+      why: fmt(a) + " + " + fmt(b) + " = " + fmt(c) + ". Add each place, and regroup (carry) whenever a column makes ten or more." };
+  },
+  genAdd3Word: function () {
+    let a, b; do { a = ri(135, 799); b = ri(125, 699); } while (!hasCarry(a, b));
+    const c = a + b, name = pick(GEN_NAMES), thing = pick(["marbles", "stickers", "seashells", "baseball cards", "crayons"]);
+    return { type: "choice", q: name + " collected " + fmt(a) + " " + thing + " last summer and " + fmt(b) + " " + thing + " this summer. How many " + thing + " in all?",
+      alt: name + " has " + fmt(a) + " " + thing + " and gets " + fmt(b) + " more. How many " + thing + " now?",
+      options: optsNum(c, [noCarrySum(a, b), c + 10, c - 10]), correct: 0,
+      why: "In all means add: " + fmt(a) + " + " + fmt(b) + " = " + fmt(c) + ". Regroup when a column makes ten or more." };
+  },
+  genSub2: function () {
+    let a, b; do { a = ri(45, 98); b = ri(24, 89); } while (!(b < a && (b % 10) > (a % 10) && (a - b) >= 15));
+    const c = a - b, ta = Math.floor(a / 10), oa = a % 10, tb = Math.floor(b / 10), ob = b % 10;
+    return { type: "choice", q: "What is " + a + " &minus; " + b + "?", alt: "Subtract: " + a + " &minus; " + b + " = ?",
+      options: optsNum(c, [noBorrowDiff(a, b), c + 10, c + 2]), correct: 0,
+      why: a + " - " + b + " = " + c + ". Regroup: " + oa + " ones is not enough to take away " + ob + ", so borrow a ten: " + (oa + 10) + " - " + ob + " = " + (oa + 10 - ob) + ". Then " + (ta - 1) + " - " + tb + " = " + (ta - 1 - tb) + " tens." };
+  },
+  genSub3: function () {
+    let a, b; do { a = ri(350, 980); b = ri(150, 899); } while (!(b < a && hasBorrow(a, b)));
+    const c = a - b;
+    return { type: "choice", q: "What is " + fmt(a) + " &minus; " + fmt(b) + "?", alt: "Subtract: " + fmt(a) + " &minus; " + fmt(b) + " = ?",
+      options: optsNum(c, [noBorrowDiff(a, b), c + 10, c - 10]), correct: 0,
+      why: fmt(a) + " - " + fmt(b) + " = " + fmt(c) + ". Subtract place by place, regrouping (borrowing) whenever a top digit is too small." };
+  },
+  genDiffWord: function () {
+    const tue = ri(320, 960); const mon = ri(140, tue - 130); const c = tue - mon; const name = pick(GEN_NAMES);
+    return { type: "choice", q: name + " counted " + fmt(mon) + " apples that fell on Monday and " + fmt(tue) + " apples that fell on Tuesday. How many <strong>more</strong> apples fell on Tuesday than on Monday?",
+      alt: fmt(tue) + " apples fell on Tuesday and " + fmt(mon) + " fell on Monday. What is the <strong>difference</strong>?",
+      options: dedupeOpts([fmt(c), fmt(tue + mon), fmt(c - 100), fmt(c + 10)]), correct: 0,
+      why: "How many more means subtract: " + fmt(tue) + " - " + fmt(mon) + " = " + fmt(c) + "." };
+  },
+  genSumText: function () {
+    const a = ri(35, 95), b = ri(35, 95), s = a + b;
+    return { type: "text", q: "The cafeteria served " + a + " students at 1:00 and " + b + " students at 2:00. How many students did it serve <strong>in all</strong>? (Type just the number.)",
+      alt: a + " students were served at 1:00 and " + b + " at 2:00. How many students <strong>altogether</strong>? (Type just the number.)",
+      accept: [String(s)], display: String(s),
+      why: "In all means add: " + a + " + " + b + " = " + s + "." };
+  },
+  genEstSum100: function () {
+    const a = ri(150, 950), b = ri(150, 950), ra = roundTo(a, 2), rb = roundTo(b, 2), c = ra + rb, name = pick(GEN_NAMES);
+    const raw = padTo4(dedupeOpts(["About $" + fmt(c), "About $" + fmt(c - 100), "About $" + fmt(c + 100), "About $" + fmt(a + b)]), ["About $" + fmt(c + 200), "About $" + fmt(c - 200), "About $" + fmt(c + 300)]);
+    return { type: "choice", q: name + " made $" + fmt(a) + " on Monday and $" + fmt(b) + " on Tuesday. <em>About</em> how much did " + (name === "Mia" || name === "Sofia" || name === "Ava" || name === "Zoe" || name === "Ruby" ? "she" : "he") + " make in all? (Round first, then add.)",
+      alt: "<em>About</em> how much is $" + fmt(a) + " + $" + fmt(b) + "? Round each number to the nearest hundred first.",
+      options: raw.slice(0, 4), correct: raw.indexOf("About $" + fmt(c)),
+      why: "Round " + fmt(a) + " to " + fmt(ra) + " and " + fmt(b) + " to " + fmt(rb) + ". Then " + fmt(ra) + " + " + fmt(rb) + " = " + fmt(c) + "." };
+  },
+  genEstDiff100: function () {
+    const a = ri(320, 920), b = ri(140, a - 90), ra = roundTo(a, 2), rb = roundTo(b, 2), c = ra - rb;
+    const raw = padTo4(dedupeOpts(["About " + fmt(c), "About " + fmt(a - b), "About " + fmt(c + 100), "About " + fmt(c - 100)]), ["About " + fmt(c + 200), "About " + fmt(c + 300)]);
+    return { type: "choice", q: "A burger shop sold " + fmt(a) + " burgers on Monday and " + fmt(b) + " on Tuesday. <em>About</em> how many more burgers were sold on Monday? (Round first, then subtract.)",
+      alt: "<em>About</em> what is " + fmt(a) + " &minus; " + fmt(b) + "? Round each number to the nearest hundred first.",
+      options: raw.slice(0, 4), correct: raw.indexOf("About " + fmt(c)),
+      why: "Round " + fmt(a) + " to " + fmt(ra) + " and " + fmt(b) + " to " + fmt(rb) + ". Then " + fmt(ra) + " - " + fmt(rb) + " = " + fmt(c) + "." };
+  },
+  genEstSum10: function () {
+    const a = ri(24, 95), b = ri(24, 95), ra = roundTo(a, 1), rb = roundTo(b, 1), c = ra + rb;
+    return { type: "choice", q: "<em>About</em> how much is " + a + " + " + b + "? (Round first, then add.)", alt: "Estimate first (round to the nearest ten, then add): about how much is " + a + " + " + b + "?",
+      options: optsNum(c, [a + b, c + 10, c - 10]), correct: 0,
+      why: "Round " + a + " to " + ra + " and " + b + " to " + rb + ". " + ra + " + " + rb + " = " + c + "." };
+  },
+  genCompare: function () {
+    let x = ri(1000, 9999), y = ri(1000, 9999); if (x === y) y += 7; if (x < y) { const t = x; x = y; y = t; }
+    const sx = String(x), sy = String(y); let place = "thousands", i = 0;
+    while (sx[i] === sy[i]) i++;
+    place = ["thousands", "hundreds", "tens", "ones"][i];
+    return { type: "choice", q: "Which comparison is true?", alt: "Which number sentence is true?",
+      options: [fmt(x) + " &lt; " + fmt(y), fmt(x) + " &gt; " + fmt(y), fmt(x) + " = " + fmt(y), fmt(y) + " &gt; " + fmt(x)], correct: 1,
+      why: "Compare from the left. The first place where " + fmt(x) + " and " + fmt(y) + " differ is the " + place + " place, and " + sx[i] + " is greater than " + sy[i] + ", so " + fmt(x) + " &gt; " + fmt(y) + "." };
+  },
+  genOrder: function () {
+    const H = ri(3, 9) * 100; const tens = shuffle([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]).slice(0, 3);
+    const nums = tens.map(function (t) { return H + t * 10 + ri(0, 9); });
+    const asc = nums.slice().sort(function (p, q) { return p - q; });
+    const ascS = asc.join(", "), descS = asc.slice().reverse().join(", ");
+    const swap1 = [asc[1], asc[0], asc[2]].join(", "), swap2 = [asc[0], asc[2], asc[1]].join(", ");
+    return { type: "choice", q: "Put these numbers in order from <strong>least to greatest</strong>: " + nums.join(", "),
+      alt: "Which list shows " + nums.join(", ") + " ordered from <strong>least to greatest</strong>?",
+      options: dedupeOpts([ascS, descS, swap1, swap2]), correct: 0,
+      why: "All three numbers have " + (H / 100) + " hundreds, so compare the tens place next, then the ones: " + ascS + "." };
+  },
+  genEqualExpr: function () {
+    const a = ri(2, 9), b = ri(2, 9), s = a + b, c = ri(s + 4, s + 14);
+    const dTrue = c - s; const makeTrue = Math.random() < 0.5; const d = makeTrue ? dTrue : dTrue + pick([1, 2, 3]);
+    const right = c - d;
+    return { type: "choice", q: "True or False: " + a + " + " + b + " and " + c + " &minus; " + d + " have the same value, so " + a + " + " + b + " = " + c + " &minus; " + d + ".",
+      alt: "True or False: The two sides of " + a + " + " + b + " = " + c + " &minus; " + d + " are equal.",
+      options: ["True", "False"], correct: (s === right) ? 0 : 1,
+      why: (s === right) ? "True! Solve each side first: " + a + " + " + b + " = " + s + " and " + c + " - " + d + " = " + right + ". Both sides are " + s + ", so they are equal."
+                         : "False. Solve each side first: " + a + " + " + b + " = " + s + ", but " + c + " - " + d + " = " + right + ". " + s + " and " + right + " are not equal." };
+  },
+  genDigitPlace: function () {
+    const ds = distinctDigits4(false), n = ds[0] * 1000 + ds[1] * 100 + ds[2] * 10 + ds[3];
+    const p = ri(0, 3), digit = ds[3 - p];
+    const others = ds.filter(function (d) { return d !== digit; }).map(String);
+    return { type: "choice", q: "In the number <strong>" + fmt(n) + "</strong>, what digit is in the <strong>" + PLACE_NAMES[p] + " place</strong>?",
+      alt: "Look at the number <strong>" + fmt(n) + "</strong>. Which digit sits in the <strong>" + PLACE_NAMES[p] + " place</strong>?",
+      options: [String(digit)].concat(others), correct: 0,
+      why: "Places from the right are ones, tens, hundreds, thousands. In " + fmt(n) + ", the digit in the " + PLACE_NAMES[p] + " place is " + digit + "." };
+  },
+  genDigitValue: function () {
+    const ds = distinctDigits4(false), n = ds[0] * 1000 + ds[1] * 100 + ds[2] * 10 + ds[3];
+    const p = pick([0, 1, 2, 3].filter(function (pp) { return ds[3 - pp] !== 0; })), digit = ds[3 - p], value = digit * Math.pow(10, p);
+    return { type: "choice", q: "In the number <strong>" + fmt(n) + "</strong>, what is the <strong>value</strong> of the " + digit + "?",
+      alt: "In the number <strong>" + fmt(n) + "</strong>, how much is the digit " + digit + " worth?",
+      options: optsNum(value, [digit, digit * 10, digit * 100, digit * 1000].filter(function (v) { return v !== value; })), correct: 0,
+      why: "The " + digit + " sits in the " + PLACE_NAMES[p] + " place, so its value is " + fmt(value) + "." };
+  },
+  genValueDigit: function () {
+    const ds = distinctDigits4(false), n = ds[0] * 1000 + ds[1] * 100 + ds[2] * 10 + ds[3];
+    const p = pick([1, 2, 3].filter(function (pp) { return ds[3 - pp] !== 0; })), digit = ds[3 - p], value = digit * Math.pow(10, p);
+    return { type: "choice", q: "In the number <strong>" + fmt(n) + "</strong>, which digit has a value of <strong>" + fmt(value) + "</strong>?",
+      alt: "Which digit in <strong>" + fmt(n) + "</strong> is worth <strong>" + fmt(value) + "</strong>?",
+      options: ds.map(String), correct: 3 - p,
+      why: "A value of " + fmt(value) + " means the digit sits in the " + PLACE_NAMES[p] + " place. In " + fmt(n) + " that digit is " + digit + "." };
+  },
+  genExpanded: function () {
+    const ds = distinctDigits4(true), n = ds[0] * 1000 + ds[1] * 100 + ds[2] * 10 + ds[3];
+    const parts = [ds[0] * 1000, ds[1] * 100, ds[2] * 10, ds[3]];
+    const correct = parts.map(fmt).join(" + ");
+    const swapped = [ds[0] * 1000, ds[2] * 100, ds[1] * 10, ds[3]].map(fmt).join(" + ");
+    const digitsOnly = ds.join(" + ");
+    const merged = [ds[0] * 1000, ds[1] * 100, ds[2] * 10 + ds[3]].map(fmt).join(" + ");
+    return { type: "choice", q: "Which shows <strong>" + fmt(n) + "</strong> in expanded form?", alt: "Which choice is <strong>" + fmt(n) + "</strong> written in expanded form?",
+      options: [correct, swapped, digitsOnly, merged], correct: 0,
+      why: fmt(n) + " = " + correct + ". Each digit is written with its place value." };
+  },
+  genWordForm: function () {
+    const ds = distinctDigits4(true), n = ds[0] * 1000 + ds[1] * 100 + ds[2] * 10 + ds[3];
+    return { type: "text", q: "Write the number <strong>" + fmt(n) + "</strong> in word form.", alt: "How do you write the number <strong>" + fmt(n) + "</strong> in words?",
+      accept: [numWords(n)], display: numWords(n),
+      why: fmt(n) + " in word form is: " + numWords(n) + "." };
+  },
+  genRound100: function () {
+    let n; do { n = ri(120, 990); } while (n % 100 === 0);
+    const c = roundTo(n, 2), fl = Math.floor(n / 100) * 100, ce = fl + 100, ten = roundTo(n, 1);
+    const raw = padTo4(dedupeOpts([fmt(c), fmt(fl), fmt(ce), fmt(ten)]), [c + 100, c - 100, c + 2 * 100, c - 2 * 100, c + 3 * 100].filter(function (v) { return v >= 0; }).map(fmt));
+    return { type: "choice", q: "Round <strong>" + fmt(n) + "</strong> to the nearest hundred.", alt: "What is <strong>" + fmt(n) + "</strong> when you round it to the nearest hundred?",
+      options: raw.slice(0, 4), correct: raw.indexOf(fmt(c)),
+      why: "Look at the tens digit of " + n + ": " + n + " is closer to " + fmt(c) + ", so it rounds to " + fmt(c) + "." };
+  },
+  genRound1000: function () {
+    let n; do { n = ri(1100, 9800); } while (n % 1000 === 0);
+    const c = roundTo(n, 3), fl = Math.floor(n / 1000) * 1000, ce = fl + 1000, hund = roundTo(n, 2);
+    const raw = padTo4(dedupeOpts([fmt(c), fmt(fl), fmt(ce), fmt(hund)]), [c + 1000, c - 1000, c + 2 * 1000, c - 2 * 1000, c + 3 * 1000].filter(function (v) { return v >= 0; }).map(fmt));
+    return { type: "choice", q: "Round <strong>" + fmt(n) + "</strong> to the nearest thousand.", alt: "What is <strong>" + fmt(n) + "</strong> when you round it to the nearest thousand?",
+      options: raw.slice(0, 4), correct: raw.indexOf(fmt(c)),
+      why: "Look at the hundreds digit of " + fmt(n) + ": it is closer to " + fmt(c) + ", so it rounds to " + fmt(c) + "." };
+  },
+  genRound10: function () {
+    let n; do { n = ri(35, 995); } while (n % 10 === 0);
+    const c = roundTo(n, 1), fl = Math.floor(n / 10) * 10, ce = fl + 10, hund = roundTo(n, 2);
+    const raw = padTo4(dedupeOpts([fmt(c), fmt(fl), fmt(ce), fmt(hund)]), [c + 10, c - 10, c + 2 * 10, c - 2 * 10, c + 3 * 10].filter(function (v) { return v >= 0; }).map(fmt));
+    return { type: "choice", q: "Round <strong>" + fmt(n) + "</strong> to the nearest ten.", alt: "What is <strong>" + fmt(n) + "</strong> when you round it to the nearest ten?",
+      options: raw.slice(0, 4), correct: raw.indexOf(fmt(c)),
+      why: "Look at the ones digit of " + n + ": it is closer to " + fmt(c) + ", so it rounds to " + fmt(c) + "." };
+  },
+  genPattern: function () {
+    const step = pick([3, 4, 5, 6, 9, 10]); const start = ri(2, 60);
+    const terms = [0, 1, 2, 3, 4].map(function (i) { return start + i * step; });
+    const last = terms[4];
+    const next = [last + step, last + 2 * step, last + 3 * step];
+    const wrong1 = [last + step + 1, last + 2 * (step + 1), last + 3 * (step + 1)];
+    const wrong2 = [last + step - 1, last + 2 * (step - 1), last + 3 * (step - 1)];
+    const wrong3 = [last + step, last + 2 * step, last + 4 * step];
+    return { type: "choice", q: "What are the next three numbers in this pattern?<br>" + terms.join(", ") + ", ___, ___, ___",
+      alt: "This pattern counts by " + step + "s. What three numbers come next?<br>" + terms.join(", ") + ", ___, ___, ___",
+      options: [next.join(", "), wrong1.join(", "), wrong2.join(", "), wrong3.join(", ")], correct: 0,
+      why: "Each number grows by " + step + ": " + last + " + " + step + " = " + next[0] + ", then " + next[1] + ", then " + next[2] + "." };
+  }
+};
+
+const PLAY_N = 10;
 function buildRun() {
-  // Fresh mix on every play: shuffled question order, and each question
-  // randomly uses its main wording or its alternate wording.
-  RUN = shuffle(QUESTIONS).map(function (item) {
-    const copy = Object.assign({}, item);
-    if (item.alt && Math.random() < 0.5) copy.q = item.alt;
+  // Fresh mix on every play: sample from the bank when it is bigger than
+  // one play, shuffle the order, generate fresh numbers for "gen" items,
+  // and randomly use each question's main or alternate wording.
+  let pool = shuffle(QUESTIONS);
+  if (pool.length > PLAY_N) pool = pool.slice(0, PLAY_N);
+  RUN = pool.map(function (item) {
+    const copy = item.gen ? GEN[item.gen]() : Object.assign({}, item);
+    if (copy.alt && Math.random() < 0.5) copy.q = copy.alt;
     return copy;
   });
 }
