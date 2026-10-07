@@ -71,102 +71,93 @@
 </main>
 
 <script>
-const QUESTIONS = [
- {
-  "type": "choice",
-  "q": "\uD83D\uDD0A Listen! Tap the word you hear.",
-  "alt": "\uD83D\uDD0A What word did you hear? Tap it!",
-  "say": "Tap the word that says: a",
-  "options": ["a", "I", "and", "the"],
-  "correct": 0,
-  "why": "That is the word <strong>a</strong>. It is a tiny word with just one letter!"
- },
- {
-  "type": "choice",
-  "q": "\uD83D\uDD0A Listen! Tap the word you hear.",
-  "alt": "\uD83D\uDD0A What word did you hear? Tap it!",
-  "say": "Tap the word that says: the",
-  "options": ["the", "he", "see", "and"],
-  "correct": 0,
-  "why": "That is the word <strong>the</strong>. Careful &mdash; <strong>he</strong> looks a lot like it!"
- },
- {
-  "type": "choice",
-  "q": "\uD83D\uDD0A Listen! Tap the word you hear.",
-  "alt": "\uD83D\uDD0A What word did you hear? Tap it!",
-  "say": "Tap the word that says: and",
-  "options": ["and", "a", "had", "the"],
-  "correct": 0,
-  "why": "That is the word <strong>and</strong>. We say it in the middle: you <strong>and</strong> me!"
- },
- {
-  "type": "choice",
-  "q": "\uD83D\uDD0A Listen! Tap the word you hear.",
-  "alt": "\uD83D\uDD0A What word did you hear? Tap it!",
-  "say": "Tap the word that says: go",
-  "options": ["go", "you", "see", "had"],
-  "correct": 0,
-  "why": "That is the word <strong>go</strong>. Ready, set, <strong>go</strong>!"
- },
- {
-  "type": "choice",
-  "q": "\uD83D\uDD0A Listen! Tap the word you hear.",
-  "alt": "\uD83D\uDD0A What word did you hear? Tap it!",
-  "say": "Tap the word that says: had",
-  "options": ["had", "has", "and", "he"],
-  "correct": 0,
-  "why": "That is the word <strong>had</strong>. Look at the last letter &mdash; <strong>had</strong> ends with d, <strong>has</strong> ends with s!"
- },
- {
-  "type": "choice",
-  "q": "\uD83D\uDD0A Listen! Tap the word you hear.",
-  "alt": "\uD83D\uDD0A What word did you hear? Tap it!",
-  "say": "Tap the word that says: he",
-  "options": ["he", "the", "see", "has"],
-  "correct": 0,
-  "why": "That is the word <strong>he</strong>. It starts with h. <strong>The</strong> starts with t!"
- },
- {
-  "type": "choice",
-  "q": "\uD83D\uDD0A Listen! Tap the word you hear.",
-  "alt": "\uD83D\uDD0A What word did you hear? Tap it!",
-  "say": "Tap the word that says: I",
-  "options": ["I", "a", "you", "see"],
-  "correct": 0,
-  "why": "That is the word <strong>I</strong>. It is the only word that is always a capital letter!"
- },
- {
-  "type": "choice",
-  "q": "\uD83D\uDD0A Listen! Tap the word you hear.",
-  "alt": "\uD83D\uDD0A What word did you hear? Tap it!",
-  "say": "Tap the word that says: see",
-  "options": ["see", "he", "the", "you"],
-  "correct": 0,
-  "why": "That is the word <strong>see</strong>. It has two e's in the middle &mdash; like two eyes to see with!"
- },
- {
-  "type": "choice",
-  "q": "\uD83D\uDD0A Listen! Tap the word you hear.",
-  "alt": "\uD83D\uDD0A What word did you hear? Tap it!",
-  "say": "Tap the word that says: has",
-  "options": ["has", "had", "he", "and"],
-  "correct": 0,
-  "why": "That is the word <strong>has</strong>. Look at the last letter &mdash; <strong>has</strong> ends with s, <strong>had</strong> ends with d!"
- },
- {
-  "type": "choice",
-  "q": "\uD83D\uDD0A Listen! Tap the word you hear.",
-  "alt": "\uD83D\uDD0A What word did you hear? Tap it!",
-  "say": "Tap the word that says: you",
-  "options": ["you", "go", "I", "the"],
-  "correct": 0,
-  "why": "That is the word <strong>you</strong>. It starts with y: <strong>you</strong> can read it!"
- },
+const WORDS_Q1 = [
+ "a",
+ "the",
+ "and",
+ "go",
+ "had",
+ "he",
+ "I",
+ "see",
+ "has",
+ "you"
+];
+const CONFUSE = {
+ "a": [
+  "and",
+  "I",
+  "the"
+ ],
+ "the": [
+  "he",
+  "and",
+  "a"
+ ],
+ "and": [
+  "a",
+  "had",
+  "the"
+ ],
+ "go": [
+  "you",
+  "see",
+  "had"
+ ],
+ "had": [
+  "has",
+  "and",
+  "he"
+ ],
+ "he": [
+  "the",
+  "see",
+  "has"
+ ],
+ "I": [
+  "a",
+  "you",
+  "the"
+ ],
+ "see": [
+  "he",
+  "the",
+  "you"
+ ],
+ "has": [
+  "had",
+  "he",
+  "the"
+ ],
+ "you": [
+  "go",
+  "the",
+  "I"
+ ]
+};
+const WORD_WHY = {
+ "a": "That is the word <strong>a</strong>. It is a tiny word with just one letter!",
+ "the": "That is the word <strong>the</strong>. Careful &mdash; <strong>he</strong> looks a lot like it!",
+ "and": "That is the word <strong>and</strong>. We say it in the middle: you <strong>and</strong> me!",
+ "go": "That is the word <strong>go</strong>. Ready, set, <strong>go</strong>!",
+ "had": "That is the word <strong>had</strong>. Look at the last letter &mdash; <strong>had</strong> ends with d, <strong>has</strong> ends with s!",
+ "he": "That is the word <strong>he</strong>. It starts with h. <strong>The</strong> starts with t!",
+ "I": "That is the word <strong>I</strong>. It is the only word that is always a capital letter!",
+ "see": "That is the word <strong>see</strong>. It has two e's in the middle &mdash; like two eyes to see with!",
+ "has": "That is the word <strong>has</strong>. Look at the last letter &mdash; <strong>has</strong> ends with s, <strong>had</strong> ends with d!",
+ "you": "That is the word <strong>you</strong>. It starts with y: <strong>you</strong> can read it!"
+};
+const SENTENCES = [
  {
   "type": "choice",
   "q": "Read this sentence: <strong>I ___ you.</strong> Which word fills the blank?",
   "alt": "Which word makes this sentence work? <strong>I ___ you.</strong>",
-  "options": ["see", "and", "the", "a"],
+  "options": [
+   "see",
+   "and",
+   "the",
+   "a"
+  ],
   "correct": 0,
   "why": "<strong>I see you!</strong> The word <strong>see</strong> fits best."
  },
@@ -174,11 +165,68 @@ const QUESTIONS = [
   "type": "choice",
   "q": "Read this sentence: <strong>He ___ a hat.</strong> Which word fills the blank?",
   "alt": "Which word makes this sentence work? <strong>He ___ a hat.</strong>",
-  "options": ["has", "and", "go", "a"],
+  "options": [
+   "has",
+   "and",
+   "go",
+   "a"
+  ],
   "correct": 0,
   "why": "<strong>He has a hat.</strong> The word <strong>has</strong> fits best."
+ },
+ {
+  "type": "choice",
+  "q": "Which word makes this sentence work? I can ___ the dog.",
+  "alt": "Which word finishes this sentence? I can ___ the dog.",
+  "options": [
+   "see",
+   "go",
+   "has",
+   "a"
+  ],
+  "correct": 0,
+  "why": "I can <strong>see</strong> the dog. See means to look with your eyes."
+ },
+ {
+  "type": "choice",
+  "q": "Which word makes this sentence work? She ___ a red ball.",
+  "alt": "Which word finishes this sentence? She ___ a red ball.",
+  "options": [
+   "has",
+   "the",
+   "and",
+   "go"
+  ],
+  "correct": 0,
+  "why": "She <strong>has</strong> a red ball. Has tells what she holds."
+ },
+ {
+  "type": "choice",
+  "q": "Which word makes this sentence work? Are ___ my friend?",
+  "alt": "Which word finishes this sentence? Are ___ my friend?",
+  "options": [
+   "you",
+   "he",
+   "a",
+   "the"
+  ],
+  "correct": 0,
+  "why": "Are <strong>you</strong> my friend? You is the person I am talking to."
+ },
+ {
+  "type": "choice",
+  "q": "Which word makes this sentence work? We ___ to school.",
+  "alt": "Which word finishes this sentence? We ___ to school.",
+  "options": [
+   "go",
+   "see",
+   "has",
+   "and"
+  ],
+  "correct": 0,
+  "why": "We <strong>go</strong> to school. Go means to move or travel."
  }
-];
+];;
 
 const startScreen = document.getElementById("start-screen");
 const quizScreen = document.getElementById("quiz-screen");
@@ -247,13 +295,35 @@ function shuffle(arr) {
   return a;
 }
 
+function pickDistractors(word) {
+  // Fresh wrong answers every play: mostly the look-alike words this one
+  // gets confused with, filled out from the rest of the Quarter 1 list.
+  const conf = shuffle((CONFUSE[word] || []).slice());
+  const rest = shuffle(WORDS_Q1.filter(function (w) { return w !== word && conf.indexOf(w) === -1; }));
+  const takeConf = Math.random() < 0.5 ? 3 : 2;
+  const ds = conf.slice(0, takeConf);
+  const pool = shuffle(conf.slice(takeConf).concat(rest));
+  while (ds.length < 3 && pool.length) ds.push(pool.shift());
+  return ds;
+}
+
 function buildRun() {
-  // Fresh mix on every play: shuffled question order, and each question
-  // randomly uses its main wording or its alternate wording.
-  RUN = shuffle(QUESTIONS).map(function (item) {
-    const copy = Object.assign({}, item);
-    if (item.alt && Math.random() < 0.5) copy.q = item.alt;
-    return copy;
+  // Fresh mix on every play: every word is asked once, with distractors
+  // drawn new each time; 2 sentence questions are sampled from the pool;
+  // order is shuffled and each question randomly uses main/alt wording.
+  const wordItems = shuffle(WORDS_Q1).map(function (w) {
+    return { type: "choice",
+      q: "\uD83D\uDD0A Listen! Tap the word you hear.",
+      alt: "\uD83D\uDD0A What word did you hear? Tap it!",
+      say: "Tap the word that says: " + w,
+      options: [w].concat(pickDistractors(w)),
+      correct: 0,
+      why: WORD_WHY[w] };
+  });
+  const sents = shuffle(SENTENCES).slice(0, 2).map(function (s) { return Object.assign({}, s); });
+  RUN = shuffle(wordItems.concat(sents)).map(function (item) {
+    if (item.alt && Math.random() < 0.5) item.q = item.alt;
+    return item;
   });
 }
 
