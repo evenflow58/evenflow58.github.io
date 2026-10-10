@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Language Arts Quiz: Main Idea &amp; Details</title>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: ui-rounded, "Segoe UI", system-ui, -apple-system, sans-serif; background: #eef4ff; color: #1e293b; }
+  header { background: linear-gradient(135deg, #6d28d9, #db2777); color: #fff; padding: 28px 20px 24px; text-align: center; border-radius: 0 0 28px 28px; }
+  header h1 { margin: 0 0 6px; font-size: 1.8rem; }
+  header p { margin: 0; font-size: 1.05rem; opacity: .92; }
+  main { max-width: 720px; margin: 0 auto; padding: 24px 16px 48px; }
+  .card { background: #fff; border-radius: 20px; box-shadow: 0 4px 16px rgba(30, 41, 59, .08); padding: 26px 24px; }
+  .btn { display: inline-block; background: #4f46e5; color: #fff; border: none; font: inherit; font-size: 1.2rem; font-weight: 700; padding: 14px 32px; border-radius: 999px; cursor: pointer; box-shadow: 0 4px 0 #312e81; text-decoration: none; }
+  .btn:active { transform: translateY(2px); box-shadow: 0 2px 0 #312e81; }
+  .btn.secondary { background: #e0e7ff; color: #3730a3; box-shadow: 0 4px 0 #a5b4fc; }
+  .progress-wrap { background: #e2e8f0; border-radius: 999px; height: 14px; overflow: hidden; margin: 14px 0 6px; }
+  .progress-bar { background: linear-gradient(90deg, #4f46e5, #06b6d4); height: 100%; width: 0%; transition: width .3s ease; }
+  .progress-label { font-size: .95rem; color: #64748b; font-weight: 600; }
+  .question { font-size: 1.3rem; line-height: 1.45; margin: 14px 0 18px; }
+  .options { display: grid; gap: 12px; }
+  .option { font: inherit; font-size: 1.15rem; text-align: left; padding: 16px 18px; border-radius: 14px; border: 3px solid #e2e8f0; background: #f8fafc; cursor: pointer; width: 100%; }
+  .option:hover:not(:disabled) { border-color: #818cf8; }
+  .option:disabled { cursor: default; }
+  .option.correct { background: #dcfce7; border-color: #22c55e; font-weight: 700; }
+  .option.wrong { background: #fee2e2; border-color: #ef4444; }
+  .feedback { margin-top: 18px; padding: 14px 16px; border-radius: 14px; font-size: 1.08rem; line-height: 1.45; }
+  .feedback.good { background: #f0fdf4; border: 2px solid #86efac; }
+  .feedback.bad { background: #fef2f2; border: 2px solid #fca5a5; }
+  .next-row { margin-top: 20px; text-align: right; }
+  input[type="text"], textarea { font: inherit; font-size: 1.15rem; width: 100%; padding: 14px 16px; border-radius: 14px; border: 3px solid #e2e8f0; background: #f8fafc; }
+  input[type="text"]:focus, textarea:focus { outline: none; border-color: #818cf8; background: #fff; }
+  .check-row { margin-top: 14px; }
+  .stars { font-size: 2.2rem; color: #f59e0b; letter-spacing: .15em; margin: 10px 0; }
+  .score-big { font-size: 2rem; font-weight: 800; margin: 6px 0; }
+  .center { text-align: center; }
+  .home-link { display: inline-block; margin-top: 18px; font-weight: 700; color: #4f46e5; }
+  [hidden] { display: none !important; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Language Arts: Main Idea &amp; Details</h1>
+  <p>Main Idea Quiz Fri, Oct 16 &middot; Unit Assessment Fri, Oct 23</p>
+</header>
+<main>
+  <section id="start-screen" class="card center">
+    <p style="font-size:1.15rem; line-height:1.5;">10 questions about main idea, supporting details, and prefixes.<br>Answer each one and you'll find out right away if you got it right!<br>The questions mix themselves up every time you play &mdash; a fresh quiz each try!</p>
+    <button class="btn" id="start-btn">Start the Quiz</button>
+    <br><a class="home-link" href="index.html">&larr; All quizzes</a>
+  </section>
+
+  <section id="quiz-screen" class="card" hidden>
+    <div class="progress-label" id="progress-label">Question 1 of 10</div>
+    <div class="progress-wrap"><div class="progress-bar" id="progress-bar"></div></div>
+    <div class="question" id="question-text"></div>
+    <div id="answer-area"></div>
+    <div class="feedback" id="feedback" aria-live="polite" hidden></div>
+    <div class="next-row"><button class="btn" id="next-btn" hidden>Next Question &rarr;</button></div>
+  </section>
+
+  <section id="end-screen" class="card center" hidden>
+    <div style="font-size:1.2rem; font-weight:700;">All done!</div>
+    <div class="stars" id="stars"></div>
+    <div class="score-big" id="score-text"></div>
+    <p id="end-message" style="font-size:1.12rem; line-height:1.5;"></p>
+    <button class="btn" id="again-btn">Try Again &mdash; New Mix!</button>
+    <br><a class="home-link" href="index.html">&larr; All quizzes</a>
+  </section>
+</main>
+
+<script>
+const QUESTIONS = [
+ {
+  "type": "choice",
+  "q": "What is the <strong>main idea</strong> of a paragraph?",
+  "alt": "Which choice best tells what a <strong>main idea</strong> is?",
+  "options": [
+   "The very first word of the paragraph",
+   "What the paragraph is mostly about",
+   "The longest sentence in the paragraph",
+   "A funny detail"
+  ],
+  "correct": 1,
+  "why": "The main idea is what the whole paragraph is mostly about \u2014 every detail should point back to it."
+ },
+ {
+  "type": "choice",
+  "q": "<strong>Details</strong> in a paragraph are&hellip;",
+  "alt": "What job do the <strong>details</strong> do in a paragraph?",
+  "options": [
+   "facts and examples that tell more about the main idea",
+   "words that rhyme",
+   "the title of the story",
+   "sentences that do not belong"
+  ],
+  "correct": 0,
+  "why": "Details support the main idea \u2014 they give facts, examples, and more information about it."
+ },
+ {
+  "type": "choice",
+  "q": "Read: &quot;Bees help plants grow. Bees carry pollen from flower to flower. This helps the plants make seeds and fruit.&quot; What is the <strong>main idea</strong>?",
+  "alt": "Read: &quot;Bees help plants grow. Bees carry pollen from flower to flower. This helps the plants make seeds and fruit.&quot; This paragraph is mostly about&hellip;",
+  "options": [
+   "Bees are yellow and black",
+   "Bees help plants grow",
+   "Flowers smell nice",
+   "Fruit tastes sweet"
+  ],
+  "correct": 1,
+  "why": "Every sentence tells how bees help plants \u2014 that is the main idea. The other choices are small details or not in the paragraph at all."
+ },
+ {
+  "type": "choice",
+  "q": "Read: &quot;First, put two slices of bread on a plate. Next, spread peanut butter on one slice. Then add jelly to the other slice. Last, press the slices together.&quot; What is the <strong>main idea</strong>?",
+  "alt": "A paragraph tells you to put bread on a plate, spread peanut butter, add jelly, then press the slices together. The paragraph is mostly about&hellip;",
+  "options": [
+   "Why jelly is sticky",
+   "How to make a peanut butter and jelly sandwich",
+   "Where bread comes from",
+   "How to set a table"
+  ],
+  "correct": 1,
+  "why": "All the steps work together to show how to make the sandwich \u2014 that is what the paragraph is mostly about."
+ },
+ {
+  "type": "choice",
+  "q": "Read: &quot;A library is a great place to visit. You can borrow books, use computers, and join story time. Librarians can help you find just the right book.&quot; Which sentence is a <strong>supporting detail</strong>?",
+  "alt": "Read the library paragraph: &quot;A library is a great place to visit. You can borrow books, use computers, and join story time. Librarians can help you find just the right book.&quot; Which choice is a <strong>detail</strong> that supports the main idea?",
+  "options": [
+   "A library is a great place to visit",
+   "You can borrow books, use computers, and join story time",
+   "Reading is hard",
+   "My house has many rooms"
+  ],
+  "correct": 1,
+  "why": "Borrowing books, computers, and story time are examples that support the main idea that a library is a great place to visit."
+ },
+ {
+  "type": "choice",
+  "q": "True or False: The main idea is usually one small detail from the middle of the paragraph.",
+  "alt": "True or False: To find the main idea, just pick any tiny detail in the paragraph.",
+  "options": [
+   "True",
+   "False"
+  ],
+  "correct": 1,
+  "why": "False. The main idea covers the WHOLE paragraph. Details are the small parts that tell more about it."
+ },
+ {
+  "type": "choice",
+  "q": "Which title best fits a paragraph that tells how rain helps gardens, fills rivers, and gives animals water to drink?",
+  "alt": "A paragraph explains that rain waters gardens, fills rivers, and gives animals drinks. Which title matches its <strong>main idea</strong>?",
+  "options": [
+   "One Rainy Day",
+   "Why Rain Is Important",
+   "My Umbrella",
+   "Puddles Are Fun"
+  ],
+  "correct": 1,
+  "why": "\"Why Rain Is Important\" covers all the details \u2014 gardens, rivers, and animals. The other titles fit only one small detail."
+ },
+ {
+  "type": "choice",
+  "q": "Read: &quot;Owls sleep during the day. At night, owls hunt for food. Their big eyes help them see in the dark, and their soft wings let them fly without a sound.&quot; What is the <strong>main idea</strong>?",
+  "alt": "Read: &quot;Owls sleep during the day. At night, owls hunt for food. Their big eyes help them see in the dark, and their soft wings let them fly without a sound.&quot; This paragraph is mostly about&hellip;",
+  "options": [
+   "Owls are awake and hunting at night",
+   "All birds sleep in trees",
+   "Owls have feathers",
+   "The sun is bright"
+  ],
+  "correct": 0,
+  "why": "Sleeping by day, hunting by night, seeing in the dark, flying quietly \u2014 all the details are about what owls do at night."
+ },
+ {
+  "type": "choice",
+  "q": "Read: &quot;Sam packed a flashlight, a warm blanket, and marshmallows. He helped his dad pitch the tent by the lake.&quot; What will this story <strong>most likely</strong> be about?",
+  "alt": "Sam packs a flashlight, a blanket, and marshmallows, and helps pitch a tent by a lake. The story is probably about&hellip;",
+  "options": [
+   "A trip to the dentist",
+   "A camping trip",
+   "A school spelling test",
+   "Riding a bus"
+  ],
+  "correct": 1,
+  "why": "A tent, flashlight, blanket, and marshmallows by a lake are all clues for a camping trip."
+ },
+ {
+  "type": "selfcheck",
+  "q": "Think of a paragraph you read recently. Say its <strong>main idea</strong> in one sentence, then name one detail that supports it.",
+  "alt": "Pick any paragraph you know. Tell the <strong>main idea</strong> first, then one <strong>detail</strong> that tells more about it.",
+  "sample": "Main idea: Dogs make great pets. Detail: Dogs are loyal and love to play with their families.",
+  "why": "The main idea is one short sentence about the whole paragraph. A detail is one fact or example that supports it."
+ },
+ {
+  "type": "choice",
+  "q": "Read: &quot;Exercise keeps your body strong. Running, swimming, and playing soccer all make your heart work hard and your muscles grow.&quot; Which sentence could be added as a <strong>supporting detail</strong>?",
+  "alt": "A paragraph says exercise keeps your body strong, with running, swimming, and soccer as examples. Which new sentence would fit best?",
+  "options": [
+   "Riding a bike is another fun way to exercise.",
+   "Pizza is my favorite food.",
+   "The sky is blue today.",
+   "Books have many pages."
+  ],
+  "correct": 0,
+  "why": "Riding a bike is another example of exercise, so it supports the main idea. The other sentences are off-topic."
+ },
+ {
+  "type": "choice",
+  "q": "Where is the main idea of a paragraph <strong>often</strong> found?",
+  "alt": "Which sentence in a paragraph often tells the main idea?",
+  "options": [
+   "Only in the last word",
+   "Often in the first sentence (the topic sentence)",
+   "Never in the paragraph",
+   "Only in the title of the book"
+  ],
+  "correct": 1,
+  "why": "The first sentence \u2014 the topic sentence \u2014 often states the main idea, and the rest of the paragraph adds details."
+ },
+ {
+  "type": "text",
+  "q": "Finish this word: the paragraph's big idea is called the ________ idea. (Type one word.)",
+  "alt": "What word completes this? The ________ idea is what a paragraph is mostly about. (Type one word.)",
+  "accept": [
+   "main"
+  ],
+  "display": "main",
+  "why": "It is the MAIN idea \u2014 the big idea the whole paragraph is about."
+ },
+ {
+  "type": "choice",
+  "q": "Read: &quot;Winter is the coldest season. Snow falls, lakes freeze, and many animals sleep until spring.&quot; What is the <strong>main idea</strong>?",
+  "alt": "Read: &quot;Winter is the coldest season. Snow falls, lakes freeze, and many animals sleep until spring.&quot; The paragraph is mostly about&hellip;",
+  "options": [
+   "How to build a snowman",
+   "What winter is like",
+   "Why bears are big",
+   "Summer is hot"
+  ],
+  "correct": 1,
+  "why": "Cold weather, snow, frozen lakes, and sleeping animals all describe what winter is like."
+ },
+ {
+  "type": "choice",
+  "q": "The prefix <strong>un-</strong> means <em>not</em>. What does <strong>unfair</strong> mean?",
+  "alt": "Using the prefix <strong>un-</strong> (not), the word <strong>unfair</strong> means&hellip;",
+  "options": [
+   "Very fair",
+   "Not fair",
+   "Fair again",
+   "A kind of fair (carnival)"
+  ],
+  "correct": 1,
+  "why": "Un- means not, so unfair means not fair. Prefixes are part of this unit's phonics work."
+ },
+ {
+  "type": "choice",
+  "q": "Which word is spelled correctly?",
+  "alt": "Only one of these words is spelled the right way. Which one?",
+  "options": [
+   "becuse",
+   "because",
+   "becauze",
+   "bekause"
+  ],
+  "correct": 1,
+  "why": "Because is spelled b-e-c-a-u-s-e."
+ }
+];
+
+const startScreen = document.getElementById("start-screen");
+const quizScreen = document.getElementById("quiz-screen");
+const endScreen = document.getElementById("end-screen");
+const qText = document.getElementById("question-text");
+const answerArea = document.getElementById("answer-area");
+const feedback = document.getElementById("feedback");
+const nextBtn = document.getElementById("next-btn");
+const progressLabel = document.getElementById("progress-label");
+const progressBar = document.getElementById("progress-bar");
+let idx = 0, score = 0, RUN = [];
+let MISSED = [], resultSent = false;
+const RESULT_FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLScsrQlyXtxRugh8Z5kY2S6tbJ-zMoqVnNcbe4rsf6Vtc0x0Jg/formResponse";
+function plainText(html) { const d = document.createElement("div"); d.innerHTML = String(html); return d.textContent.replace(/\s+/g, " ").trim(); }
+function recordMiss(item, theirs) {
+  let correct = "";
+  if (item.type === "choice") correct = plainText(item.options[item.correct]);
+  else if (item.type === "text") correct = item.display;
+  else correct = item.sample || "";
+  MISSED.push("Q: " + plainText(item.say || item.q) + " | Their answer: " + plainText(theirs) + " | Correct answer: " + correct);
+}
+function submitResult() {
+  if (resultSent) return; resultSent = true;
+  try {
+    const body = new URLSearchParams();
+    body.set("entry.1802018837", document.title);
+    body.set("entry.592121264", score + " / " + RUN.length);
+    body.set("entry.856671312", MISSED.length ? MISSED.join("\n") : "None - perfect score");
+    fetch(RESULT_FORM_URL, { method: "POST", mode: "no-cors", headers: { "Content-Type": "application/x-www-form-urlencoded" }, body: body.toString(), keepalive: true }).catch(function () {});
+  } catch (e) {}
+}
+
+
+function shuffle(arr) {
+  const a = arr.slice();
+  for (let j = a.length - 1; j > 0; j--) {
+    const k = Math.floor(Math.random() * (j + 1));
+    [a[j], a[k]] = [a[k], a[j]];
+  }
+  return a;
+}
+
+// ---- Procedural question generation + helpers (inserted into quiz template) ----
+function ri(a, b) { return a + Math.floor(Math.random() * (b - a + 1)); }
+function pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+function fmt(n) { const s = String(Math.abs(n)); let out = ""; for (let i = 0; i < s.length; i++) { if (i > 0 && (s.length - i) % 3 === 0) out += ","; out += s[i]; } return (n < 0 ? "-" : "") + out; }
+function roundTo(n, p) { const f = Math.pow(10, p); return Math.round(n / f) * f; }
+function dedupeOpts(list) { const seen = {}; const out = []; list.forEach(function (v) { const s = String(v); if (!seen[s]) { seen[s] = 1; out.push(s); } }); return out; }
+function padTo4(arr, cands) { const out = arr.slice(); for (const cand of cands) { if (out.length >= 4) break; const s = String(cand); if (!out.includes(s)) out.push(s); } return out; }
+function optsNum(correct, wrongs) {
+  let out = dedupeOpts([correct].concat(wrongs));
+  let bump = 20;
+  while (out.length < 4) { out = dedupeOpts(out.concat([correct + bump, correct - bump])); bump += 20; }
+  return out.slice(0, 4);
+}
+function noCarrySum(a, b) { let out = 0, mult = 1, x = a, y = b; while (x > 0 || y > 0) { out += (((x % 10) + (y % 10)) % 10) * mult; mult *= 10; x = Math.floor(x / 10); y = Math.floor(y / 10); } return out; }
+function noBorrowDiff(a, b) { let out = 0, mult = 1, x = a, y = b; while (x > 0 || y > 0) { out += Math.abs((x % 10) - (y % 10)) * mult; mult *= 10; x = Math.floor(x / 10); y = Math.floor(y / 10); } return out; }
+function hasCarry(a, b) { let x = a, y = b; while (x > 0 || y > 0) { if ((x % 10) + (y % 10) >= 10) return true; x = Math.floor(x / 10); y = Math.floor(y / 10); } return false; }
+function hasBorrow(a, b) { let x = a, y = b; while (x > 0) { if ((x % 10) < (y % 10)) return true; x = Math.floor(x / 10); y = Math.floor(y / 10); } return false; }
+const ONES_W = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen"];
+const TENS_W = ["", "", "twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eighty", "ninety"];
+function twoWords(n) { if (n < 20) return ONES_W[n]; const t = Math.floor(n / 10), o = n % 10; return TENS_W[t] + (o ? "-" + ONES_W[o] : ""); }
+function numWords(n) { let out = ""; const th = Math.floor(n / 1000), h = Math.floor((n % 1000) / 100), rest = n % 100; if (th) out += ONES_W[th] + " thousand"; if (h) out += (out ? ", " : "") + ONES_W[h] + " hundred"; if (rest) out += (out ? " " : "") + twoWords(rest); return out; }
+function distinctDigits4(minEach) { let ds; do { ds = [ri(1, 9), ri(0, 9), ri(0, 9), ri(0, 9)]; } while (new Set(ds).size < 4 || (minEach && (ds[1] === 0 || ds[2] === 0 || ds[3] === 0))); return ds; }
+const GEN_NAMES = ["Mia", "Liam", "Sofia", "Noah", "Ava", "Ethan", "Zoe", "Lucas", "Ruby", "Owen"];
+const PLACE_NAMES = ["ones", "tens", "hundreds", "thousands"];
+
+const GEN = {
+  genAdd3: function () {
+    let a, b; do { a = ri(125, 899); b = ri(125, 899); } while (!hasCarry(a, b));
+    const c = a + b;
+    return { type: "choice", q: "What is " + fmt(a) + " + " + fmt(b) + "?", alt: "Add: " + fmt(a) + " + " + fmt(b) + " = ?",
+      options: optsNum(c, [noCarrySum(a, b), c + 10, c - 10]), correct: 0,
+      why: fmt(a) + " + " + fmt(b) + " = " + fmt(c) + ". Add each place, and regroup (carry) whenever a column makes ten or more." };
+  },
+  genAdd3Word: function () {
+    let a, b; do { a = ri(135, 799); b = ri(125, 699); } while (!hasCarry(a, b));
+    const c = a + b, name = pick(GEN_NAMES), thing = pick(["marbles", "stickers", "seashells", "baseball cards", "crayons"]);
+    return { type: "choice", q: name + " collected " + fmt(a) + " " + thing + " last summer and " + fmt(b) + " " + thing + " this summer. How many " + thing + " in all?",
+      alt: name + " has " + fmt(a) + " " + thing + " and gets " + fmt(b) + " more. How many " + thing + " now?",
+      options: optsNum(c, [noCarrySum(a, b), c + 10, c - 10]), correct: 0,
+      why: "In all means add: " + fmt(a) + " + " + fmt(b) + " = " + fmt(c) + ". Regroup when a column makes ten or more." };
+  },
+  genSub2: function () {
+    let a, b; do { a = ri(45, 98); b = ri(24, 89); } while (!(b < a && (b % 10) > (a % 10) && (a - b) >= 15));
+    const c = a - b, ta = Math.floor(a / 10), oa = a % 10, tb = Math.floor(b / 10), ob = b % 10;
+    return { type: "choice", q: "What is " + a + " &minus; " + b + "?", alt: "Subtract: " + a + " &minus; " + b + " = ?",
+      options: optsNum(c, [noBorrowDiff(a, b), c + 10, c + 2]), correct: 0,
+      why: a + " - " + b + " = " + c + ". Regroup: " + oa + " ones is not enough to take away " + ob + ", so borrow a ten: " + (oa + 10) + " - " + ob + " = " + (oa + 10 - ob) + ". Then " + (ta - 1) + " - " + tb + " = " + (ta - 1 - tb) + " tens." };
+  },
+  genSub3: function () {
+    let a, b; do { a = ri(350, 980); b = ri(150, 899); } while (!(b < a && hasBorrow(a, b)));
+    const c = a - b;
+    return { type: "choice", q: "What is " + fmt(a) + " &minus; " + fmt(b) + "?", alt: "Subtract: " + fmt(a) + " &minus; " + fmt(b) + " = ?",
+      options: optsNum(c, [noBorrowDiff(a, b), c + 10, c - 10]), correct: 0,
+      why: fmt(a) + " - " + fmt(b) + " = " + fmt(c) + ". Subtract place by place, regrouping (borrowing) whenever a top digit is too small." };
+  },
+  genDiffWord: function () {
+    const tue = ri(320, 960); const mon = ri(140, tue - 130); const c = tue - mon; const name = pick(GEN_NAMES);
+    return { type: "choice", q: name + " counted " + fmt(mon) + " apples that fell on Monday and " + fmt(tue) + " apples that fell on Tuesday. How many <strong>more</strong> apples fell on Tuesday than on Monday?",
+      alt: fmt(tue) + " apples fell on Tuesday and " + fmt(mon) + " fell on Monday. What is the <strong>difference</strong>?",
+      options: dedupeOpts([fmt(c), fmt(tue + mon), fmt(c - 100), fmt(c + 10)]), correct: 0,
+      why: "How many more means subtract: " + fmt(tue) + " - " + fmt(mon) + " = " + fmt(c) + "." };
+  },
+  genSumText: function () {
+    const a = ri(35, 95), b = ri(35, 95), s = a + b;
+    return { type: "text", q: "The cafeteria served " + a + " students at 1:00 and " + b + " students at 2:00. How many students did it serve <strong>in all</strong>? (Type just the number.)",
+      alt: a + " students were served at 1:00 and " + b + " at 2:00. How many students <strong>altogether</strong>? (Type just the number.)",
+      accept: [String(s)], display: String(s),
+      why: "In all means add: " + a + " + " + b + " = " + s + "." };
+  },
+  genEstSum100: function () {
+    const a = ri(150, 950), b = ri(150, 950), ra = roundTo(a, 2), rb = roundTo(b, 2), c = ra + rb, name = pick(GEN_NAMES);
+    const raw = padTo4(dedupeOpts(["About $" + fmt(c), "About $" + fmt(c - 100), "About $" + fmt(c + 100), "About $" + fmt(a + b)]), ["About $" + fmt(c + 200), "About $" + fmt(c - 200), "About $" + fmt(c + 300)]);
+    return { type: "choice", q: name + " made $" + fmt(a) + " on Monday and $" + fmt(b) + " on Tuesday. <em>About</em> how much did " + (name === "Mia" || name === "Sofia" || name === "Ava" || name === "Zoe" || name === "Ruby" ? "she" : "he") + " make in all? (Round first, then add.)",
+      alt: "<em>About</em> how much is $" + fmt(a) + " + $" + fmt(b) + "? Round each number to the nearest hundred first.",
+      options: raw.slice(0, 4), correct: raw.indexOf("About $" + fmt(c)),
+      why: "Round " + fmt(a) + " to " + fmt(ra) + " and " + fmt(b) + " to " + fmt(rb) + ". Then " + fmt(ra) + " + " + fmt(rb) + " = " + fmt(c) + "." };
+  },
+  genEstDiff100: function () {
+    const a = ri(320, 920), b = ri(140, a - 90), ra = roundTo(a, 2), rb = roundTo(b, 2), c = ra - rb;
+    const raw = padTo4(dedupeOpts(["About " + fmt(c), "About " + fmt(a - b), "About " + fmt(c + 100), "About " + fmt(c - 100)]), ["About " + fmt(c + 200), "About " + fmt(c + 300)]);
+    return { type: "choice", q: "A burger shop sold " + fmt(a) + " burgers on Monday and " + fmt(b) + " on Tuesday. <em>About</em> how many more burgers were sold on Monday? (Round first, then subtract.)",
+      alt: "<em>About</em> what is " + fmt(a) + " &minus; " + fmt(b) + "? Round each number to the nearest hundred first.",
+      options: raw.slice(0, 4), correct: raw.indexOf("About " + fmt(c)),
+      why: "Round " + fmt(a) + " to " + fmt(ra) + " and " + fmt(b) + " to " + fmt(rb) + ". Then " + fmt(ra) + " - " + fmt(rb) + " = " + fmt(c) + "." };
+  },
+  genEstSum10: function () {
+    const a = ri(24, 95), b = ri(24, 95), ra = roundTo(a, 1), rb = roundTo(b, 1), c = ra + rb;
+    return { type: "choice", q: "<em>About</em> how much is " + a + " + " + b + "? (Round first, then add.)", alt: "Estimate first (round to the nearest ten, then add): about how much is " + a + " + " + b + "?",
+      options: optsNum(c, [a + b, c + 10, c - 10]), correct: 0,
+      why: "Round " + a + " to " + ra + " and " + b + " to " + rb + ". " + ra + " + " + rb + " = " + c + "." };
+  },
+  genCompare: function () {
+    let x = ri(1000, 9999), y = ri(1000, 9999); if (x === y) y += 7; if (x < y) { const t = x; x = y; y = t; }
+    const sx = String(x), sy = String(y); let place = "thousands", i = 0;
+    while (sx[i] === sy[i]) i++;
+    place = ["thousands", "hundreds", "tens", "ones"][i];
+    return { type: "choice", q: "Which comparison is true?", alt: "Which number sentence is true?",
+      options: [fmt(x) + " &lt; " + fmt(y), fmt(x) + " &gt; " + fmt(y), fmt(x) + " = " + fmt(y), fmt(y) + " &gt; " + fmt(x)], correct: 1,
+      why: "Compare from the left. The first place where " + fmt(x) + " and " + fmt(y) + " differ is the " + place + " place, and " + sx[i] + " is greater than " + sy[i] + ", so " + fmt(x) + " &gt; " + fmt(y) + "." };
+  },
+  genOrder: function () {
+    const H = ri(3, 9) * 100; const tens = shuffle([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]).slice(0, 3);
+    const nums = tens.map(function (t) { return H + t * 10 + ri(0, 9); });
+    const asc = nums.slice().sort(function (p, q) { return p - q; });
+    const ascS = asc.join(", "), descS = asc.slice().reverse().join(", ");
+    const swap1 = [asc[1], asc[0], asc[2]].join(", "), swap2 = [asc[0], asc[2], asc[1]].join(", ");
+    return { type: "choice", q: "Put these numbers in order from <strong>least to greatest</strong>: " + nums.join(", "),
+      alt: "Which list shows " + nums.join(", ") + " ordered from <strong>least to greatest</strong>?",
+      options: dedupeOpts([ascS, descS, swap1, swap2]), correct: 0,
+      why: "All three numbers have " + (H / 100) + " hundreds, so compare the tens place next, then the ones: " + ascS + "." };
+  },
+  genEqualExpr: function () {
+    const a = ri(2, 9), b = ri(2, 9), s = a + b, c = ri(s + 4, s + 14);
+    const dTrue = c - s; const makeTrue = Math.random() < 0.5; const d = makeTrue ? dTrue : dTrue + pick([1, 2, 3]);
+    const right = c - d;
+    return { type: "choice", q: "True or False: " + a + " + " + b + " and " + c + " &minus; " + d + " have the same value, so " + a + " + " + b + " = " + c + " &minus; " + d + ".",
+      alt: "True or False: The two sides of " + a + " + " + b + " = " + c + " &minus; " + d + " are equal.",
+      options: ["True", "False"], correct: (s === right) ? 0 : 1,
+      why: (s === right) ? "True! Solve each side first: " + a + " + " + b + " = " + s + " and " + c + " - " + d + " = " + right + ". Both sides are " + s + ", so they are equal."
+                         : "False. Solve each side first: " + a + " + " + b + " = " + s + ", but " + c + " - " + d + " = " + right + ". " + s + " and " + right + " are not equal." };
+  },
+  genDigitPlace: function () {
+    const ds = distinctDigits4(false), n = ds[0] * 1000 + ds[1] * 100 + ds[2] * 10 + ds[3];
+    const p = ri(0, 3), digit = ds[3 - p];
+    const others = ds.filter(function (d) { return d !== digit; }).map(String);
+    return { type: "choice", q: "In the number <strong>" + fmt(n) + "</strong>, what digit is in the <strong>" + PLACE_NAMES[p] + " place</strong>?",
+      alt: "Look at the number <strong>" + fmt(n) + "</strong>. Which digit sits in the <strong>" + PLACE_NAMES[p] + " place</strong>?",
+      options: [String(digit)].concat(others), correct: 0,
+      why: "Places from the right are ones, tens, hundreds, thousands. In " + fmt(n) + ", the digit in the " + PLACE_NAMES[p] + " place is " + digit + "." };
+  },
+  genDigitValue: function () {
+    const ds = distinctDigits4(false), n = ds[0] * 1000 + ds[1] * 100 + ds[2] * 10 + ds[3];
+    const p = pick([0, 1, 2, 3].filter(function (pp) { return ds[3 - pp] !== 0; })), digit = ds[3 - p], value = digit * Math.pow(10, p);
+    return { type: "choice", q: "In the number <strong>" + fmt(n) + "</strong>, what is the <strong>value</strong> of the " + digit + "?",
+      alt: "In the number <strong>" + fmt(n) + "</strong>, how much is the digit " + digit + " worth?",
+      options: optsNum(value, [digit, digit * 10, digit * 100, digit * 1000].filter(function (v) { return v !== value; })), correct: 0,
+      why: "The " + digit + " sits in the " + PLACE_NAMES[p] + " place, so its value is " + fmt(value) + "." };
+  },
+  genValueDigit: function () {
+    const ds = distinctDigits4(false), n = ds[0] * 1000 + ds[1] * 100 + ds[2] * 10 + ds[3];
+    const p = pick([1, 2, 3].filter(function (pp) { return ds[3 - pp] !== 0; })), digit = ds[3 - p], value = digit * Math.pow(10, p);
+    return { type: "choice", q: "In the number <strong>" + fmt(n) + "</strong>, which digit has a value of <strong>" + fmt(value) + "</strong>?",
+      alt: "Which digit in <strong>" + fmt(n) + "</strong> is worth <strong>" + fmt(value) + "</strong>?",
+      options: ds.map(String), correct: 3 - p,
+      why: "A value of " + fmt(value) + " means the digit sits in the " + PLACE_NAMES[p] + " place. In " + fmt(n) + " that digit is " + digit + "." };
+  },
+  genExpanded: function () {
+    const ds = distinctDigits4(true), n = ds[0] * 1000 + ds[1] * 100 + ds[2] * 10 + ds[3];
+    const parts = [ds[0] * 1000, ds[1] * 100, ds[2] * 10, ds[3]];
+    const correct = parts.map(fmt).join(" + ");
+    const swapped = [ds[0] * 1000, ds[2] * 100, ds[1] * 10, ds[3]].map(fmt).join(" + ");
+    const digitsOnly = ds.join(" + ");
+    const merged = [ds[0] * 1000, ds[1] * 100, ds[2] * 10 + ds[3]].map(fmt).join(" + ");
+    return { type: "choice", q: "Which shows <strong>" + fmt(n) + "</strong> in expanded form?", alt: "Which choice is <strong>" + fmt(n) + "</strong> written in expanded form?",
+      options: [correct, swapped, digitsOnly, merged], correct: 0,
+      why: fmt(n) + " = " + correct + ". Each digit is written with its place value." };
+  },
+  genWordForm: function () {
+    const ds = distinctDigits4(true), n = ds[0] * 1000 + ds[1] * 100 + ds[2] * 10 + ds[3];
+    return { type: "text", q: "Write the number <strong>" + fmt(n) + "</strong> in word form.", alt: "How do you write the number <strong>" + fmt(n) + "</strong> in words?",
+      accept: [numWords(n)], display: numWords(n),
+      why: fmt(n) + " in word form is: " + numWords(n) + "." };
+  },
+  genRound100: function () {
+    let n; do { n = ri(120, 990); } while (n % 100 === 0);
+    const c = roundTo(n, 2), fl = Math.floor(n / 100) * 100, ce = fl + 100, ten = roundTo(n, 1);
+    const raw = padTo4(dedupeOpts([fmt(c), fmt(fl), fmt(ce), fmt(ten)]), [c + 100, c - 100, c + 2 * 100, c - 2 * 100, c + 3 * 100].filter(function (v) { return v >= 0; }).map(fmt));
+    return { type: "choice", q: "Round <strong>" + fmt(n) + "</strong> to the nearest hundred.", alt: "What is <strong>" + fmt(n) + "</strong> when you round it to the nearest hundred?",
+      options: raw.slice(0, 4), correct: raw.indexOf(fmt(c)),
+      why: "Look at the tens digit of " + n + ": " + n + " is closer to " + fmt(c) + ", so it rounds to " + fmt(c) + "." };
+  },
+  genRound1000: function () {
+    let n; do { n = ri(1100, 9800); } while (n % 1000 === 0);
+    const c = roundTo(n, 3), fl = Math.floor(n / 1000) * 1000, ce = fl + 1000, hund = roundTo(n, 2);
+    const raw = padTo4(dedupeOpts([fmt(c), fmt(fl), fmt(ce), fmt(hund)]), [c + 1000, c - 1000, c + 2 * 1000, c - 2 * 1000, c + 3 * 1000].filter(function (v) { return v >= 0; }).map(fmt));
+    return { type: "choice", q: "Round <strong>" + fmt(n) + "</strong> to the nearest thousand.", alt: "What is <strong>" + fmt(n) + "</strong> when you round it to the nearest thousand?",
+      options: raw.slice(0, 4), correct: raw.indexOf(fmt(c)),
+      why: "Look at the hundreds digit of " + fmt(n) + ": it is closer to " + fmt(c) + ", so it rounds to " + fmt(c) + "." };
+  },
+  genRound10: function () {
+    let n; do { n = ri(35, 995); } while (n % 10 === 0);
+    const c = roundTo(n, 1), fl = Math.floor(n / 10) * 10, ce = fl + 10, hund = roundTo(n, 2);
+    const raw = padTo4(dedupeOpts([fmt(c), fmt(fl), fmt(ce), fmt(hund)]), [c + 10, c - 10, c + 2 * 10, c - 2 * 10, c + 3 * 10].filter(function (v) { return v >= 0; }).map(fmt));
+    return { type: "choice", q: "Round <strong>" + fmt(n) + "</strong> to the nearest ten.", alt: "What is <strong>" + fmt(n) + "</strong> when you round it to the nearest ten?",
+      options: raw.slice(0, 4), correct: raw.indexOf(fmt(c)),
+      why: "Look at the ones digit of " + n + ": it is closer to " + fmt(c) + ", so it rounds to " + fmt(c) + "." };
+  },
+  genPattern: function () {
+    const step = pick([3, 4, 5, 6, 9, 10]); const start = ri(2, 60);
+    const terms = [0, 1, 2, 3, 4].map(function (i) { return start + i * step; });
+    const last = terms[4];
+    const next = [last + step, last + 2 * step, last + 3 * step];
+    const wrong1 = [last + step + 1, last + 2 * (step + 1), last + 3 * (step + 1)];
+    const wrong2 = [last + step - 1, last + 2 * (step - 1), last + 3 * (step - 1)];
+    const wrong3 = [last + step, last + 2 * step, last + 4 * step];
+    return { type: "choice", q: "What are the next three numbers in this pattern?<br>" + terms.join(", ") + ", ___, ___, ___",
+      alt: "This pattern counts by " + step + "s. What three numbers come next?<br>" + terms.join(", ") + ", ___, ___, ___",
+      options: [next.join(", "), wrong1.join(", "), wrong2.join(", "), wrong3.join(", ")], correct: 0,
+      why: "Each number grows by " + step + ": " + last + " + " + step + " = " + next[0] + ", then " + next[1] + ", then " + next[2] + "." };
+  }
+};
+
+const PLAY_N = 10;
+function buildRun() {
+  // Fresh mix on every play: sample from the bank when it is bigger than
+  // one play, shuffle the order, generate fresh numbers for "gen" items,
+  // and randomly use each question's main or alternate wording.
+  let pool = shuffle(QUESTIONS);
+  if (pool.length > PLAY_N) pool = pool.slice(0, PLAY_N);
+  RUN = pool.map(function (item) {
+    const copy = item.gen ? GEN[item.gen]() : Object.assign({}, item);
+    if (copy.alt && Math.random() < 0.5) copy.q = copy.alt;
+    return copy;
+  });
+}
+
+function startQuiz() {
+  idx = 0; score = 0;
+  MISSED = []; resultSent = false;
+  buildRun();
+  startScreen.hidden = true;
+  endScreen.hidden = true;
+  quizScreen.hidden = false;
+  renderQuestion();
+}
+
+function showFeedback(ok, why) {
+  feedback.hidden = false;
+  feedback.className = "feedback " + (ok ? "good" : "bad");
+  feedback.innerHTML = (ok ? "<strong>That's right!</strong> " : "<strong>Not quite.</strong> ") + why;
+}
+
+function finishQuestion() {
+  if (idx === RUN.length - 1) submitResult();
+  nextBtn.hidden = false;
+  nextBtn.textContent = (idx === RUN.length - 1) ? "See My Score \u2192" : "Next Question \u2192";
+  nextBtn.focus();
+}
+
+function renderQuestion() {
+  const item = RUN[idx];
+  progressLabel.textContent = "Question " + (idx + 1) + " of " + RUN.length;
+  progressBar.style.width = ((idx / RUN.length) * 100) + "%";
+  qText.innerHTML = item.q;
+  feedback.hidden = true;
+  nextBtn.hidden = true;
+  answerArea.innerHTML = "";
+
+  if (item.type === "choice") {
+    const wrap = document.createElement("div");
+    wrap.className = "options";
+    const order = shuffle(item.options.map(function (_, i) { return i; }));
+    order.forEach(function (origIdx) {
+      const btn = document.createElement("button");
+      btn.className = "option";
+      btn.innerHTML = item.options[origIdx];
+      btn.addEventListener("click", function () {
+        const all = wrap.querySelectorAll(".option");
+        all.forEach(function (b) { b.disabled = true; });
+        const ok = origIdx === item.correct;
+        if (ok) { score++; btn.classList.add("correct"); }
+        else {
+          btn.classList.add("wrong");
+          recordMiss(item, item.options[origIdx]);
+          all.forEach(function (b) { if (b.innerHTML === item.options[item.correct]) b.classList.add("correct"); });
+        }
+        showFeedback(ok, item.why);
+        finishQuestion();
+      });
+      wrap.appendChild(btn);
+    });
+    answerArea.appendChild(wrap);
+  } else if (item.type === "text") {
+    const input = document.createElement("input");
+    input.type = "text";
+    input.placeholder = "Type your answer here";
+    input.setAttribute("aria-label", "Your answer");
+    const row = document.createElement("div");
+    row.className = "check-row";
+    const checkBtn = document.createElement("button");
+    checkBtn.className = "btn";
+    checkBtn.textContent = "Check My Answer";
+    row.appendChild(checkBtn);
+    answerArea.appendChild(input);
+    answerArea.appendChild(row);
+    const norm = function (s) { return s.toLowerCase().replace(/[^a-z0-9 ]/g, " ").replace(/\s+/g, " ").trim(); };
+    checkBtn.addEventListener("click", function () {
+      if (!input.value.trim()) { input.focus(); return; }
+      const ok = item.accept.map(norm).indexOf(norm(input.value)) !== -1;
+      if (ok) score++; else recordMiss(item, input.value);
+      input.disabled = true;
+      checkBtn.disabled = true;
+      showFeedback(ok, item.why + (ok ? "" : " The answer is: <strong>" + item.display + "</strong>"));
+      finishQuestion();
+    });
+    input.addEventListener("keydown", function (e) { if (e.key === "Enter") checkBtn.click(); });
+    input.focus();
+  } else if (item.type === "selfcheck") {
+    const ta = document.createElement("textarea");
+    ta.rows = 3;
+    ta.placeholder = "Type (or say out loud) your answer";
+    ta.setAttribute("aria-label", "Your answer");
+    const row = document.createElement("div");
+    row.className = "check-row";
+    const showBtn = document.createElement("button");
+    showBtn.className = "btn";
+    showBtn.textContent = "Show a Sample Answer";
+    row.appendChild(showBtn);
+    answerArea.appendChild(ta);
+    answerArea.appendChild(row);
+    showBtn.addEventListener("click", function () {
+      showBtn.disabled = true;
+      ta.disabled = true;
+      feedback.hidden = false;
+      feedback.className = "feedback good";
+      feedback.innerHTML = "<strong>Sample answer:</strong> " + item.sample + "<br><br>" + item.why;
+      const judge = document.createElement("div");
+      judge.className = "check-row";
+      const gotIt = document.createElement("button");
+      gotIt.className = "btn";
+      gotIt.textContent = "I got it!";
+      const keepBtn = document.createElement("button");
+      keepBtn.className = "btn secondary";
+      keepBtn.textContent = "Keep practicing";
+      keepBtn.style.marginLeft = "10px";
+      judge.appendChild(gotIt);
+      judge.appendChild(keepBtn);
+      answerArea.appendChild(judge);
+      gotIt.addEventListener("click", function () { score++; gotIt.disabled = true; keepBtn.disabled = true; finishQuestion(); });
+      keepBtn.addEventListener("click", function () { recordMiss(item, ta.value || "(answered out loud)"); gotIt.disabled = true; keepBtn.disabled = true; finishQuestion(); });
+    });
+    ta.focus();
+  }
+}
+
+function showEnd() {
+  quizScreen.hidden = true;
+  endScreen.hidden = false;
+  progressBar.style.width = "100%";
+  const total = RUN.length;
+  document.getElementById("score-text").textContent = "You got " + score + " out of " + total + "!";
+  const stars = document.getElementById("stars");
+  const msg = document.getElementById("end-message");
+  if (score === total) { stars.textContent = "\u2605\u2605\u2605"; msg.textContent = "Perfect score! You are ready for the test. Amazing work!"; }
+  else if (score >= total - 2) { stars.textContent = "\u2605\u2605\u2606"; msg.textContent = "Great job! Look back at the ones you missed and you'll have them down in no time."; }
+  else if (score >= Math.ceil(total / 2)) { stars.textContent = "\u2605\u2606\u2606"; msg.textContent = "Good work! Try the quiz again, or look at the study guide, and watch your score grow."; }
+  else { stars.textContent = "\u2606\u2606\u2606"; msg.textContent = "Good try! Read through the study guide, then take the quiz again. You'll get it!"; }
+}
+
+document.getElementById("start-btn").addEventListener("click", startQuiz);
+document.getElementById("again-btn").addEventListener("click", startQuiz);
+nextBtn.addEventListener("click", function () {
+  idx++;
+  if (idx >= RUN.length) showEnd(); else renderQuestion();
+});
+</script>
+</body>
+</html>
