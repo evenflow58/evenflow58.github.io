@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kindergarten Sight Word Flashcards: Quarter 1</title>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: ui-rounded, "Segoe UI", system-ui, -apple-system, sans-serif; background: #fdf2f8; color: #1e293b; }
+  header { background: linear-gradient(135deg, #db2777, #ec4899); color: #fff; padding: 28px 20px 24px; text-align: center; border-radius: 0 0 28px 28px; }
+  header h1 { margin: 0 0 6px; font-size: 1.9rem; }
+  header p { margin: 0; font-size: 1.1rem; opacity: .92; }
+  main { max-width: 720px; margin: 0 auto; padding: 24px 16px 48px; }
+  .card { background: #fff; border-radius: 20px; box-shadow: 0 4px 16px rgba(30, 41, 59, .08); padding: 26px 24px; }
+  .btn { display: inline-block; background: #db2777; color: #fff; border: none; font: inherit; font-size: 1.3rem; font-weight: 700; padding: 16px 36px; border-radius: 999px; cursor: pointer; box-shadow: 0 4px 0 #9d174d; text-decoration: none; }
+  .btn:active { transform: translateY(2px); box-shadow: 0 2px 0 #9d174d; }
+  .btn.secondary { background: #fce7f3; color: #9d174d; box-shadow: 0 4px 0 #f9a8d4; }
+  .btn.got { background: #059669; box-shadow: 0 4px 0 #065f46; }
+  .btn.got:active { box-shadow: 0 2px 0 #065f46; }
+  .btn.again { background: #f59e0b; box-shadow: 0 4px 0 #b45309; }
+  .btn.again:active { box-shadow: 0 2px 0 #b45309; }
+  .progress-wrap { background: #e2e8f0; border-radius: 999px; height: 14px; overflow: hidden; margin: 14px 0 6px; }
+  .progress-bar { background: linear-gradient(90deg, #db2777, #ec4899); height: 100%; width: 0%; transition: width .3s ease; }
+  .progress-label { font-size: 1rem; color: #64748b; font-weight: 600; }
+  .flashcard { border: 4px solid #f9a8d4; background: #fff; border-radius: 24px; min-height: 240px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 28px 20px; margin: 18px 0 8px; cursor: pointer; text-align: center; }
+  .flashcard .word { font-size: 5rem; font-weight: 800; letter-spacing: .01em; line-height: 1.1; }
+  .flashcard .sentence { font-size: 1.8rem; line-height: 1.4; }
+  .flashcard .sentence strong { color: #db2777; }
+  .flashcard .hint { margin-top: 14px; font-size: 1.05rem; color: #64748b; line-height: 1.45; }
+  .flip-tip { text-align: center; color: #94a3b8; font-size: .95rem; margin: 0 0 14px; }
+  .mark-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 8px; }
+  .mark-row .btn { width: 100%; padding: 16px 10px; font-size: 1.2rem; }
+  .chips { margin: 8px 0 4px; }
+  .chip { display: inline-block; background: #f1f5f9; border: 2px solid #e2e8f0; border-radius: 999px; padding: 6px 16px; margin: 4px 4px 4px 0; font-size: 1.2rem; font-weight: 700; }
+  .chip.known { background: #dcfce7; border-color: #86efac; }
+  .chip.practice { background: #fef3c7; border-color: #fcd34d; }
+  .score-big { font-size: 2rem; font-weight: 800; margin: 6px 0; }
+  .center { text-align: center; }
+  .home-link { display: inline-block; margin-top: 18px; font-weight: 700; color: #db2777; }
+  [hidden] { display: none !important; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Sight Word Flashcards: Quarter 1</h1>
+  <p>Kindergarten &middot; Practice together, one card at a time!</p>
+</header>
+<main>
+  <section id="start-screen" class="card center">
+    <p style="font-size:1.2rem; line-height:1.55;">Flashcards for the Quarter 1 sight words:<br><strong>a &middot; the &middot; and &middot; go &middot; had &middot; he &middot; I &middot; see &middot; has &middot; you</strong><br><br>Show a card and let him read the word out loud.<br>Then tap <strong>&#10003; Got It!</strong> or <strong>&#8635; Practice Again</strong>.<br>Tap the card itself to flip it over and see the word in a sentence.</p>
+    <button class="btn" id="start-btn">Start Flashcards</button>
+    <br><a class="home-link" href="quiz-kindergarten-sight-words-q1.html">Take the Sight Words Quiz &rarr;</a>
+    <br><a class="home-link" href="index.html">&larr; All quizzes</a>
+  </section>
+
+  <section id="deck-screen" class="card" hidden>
+    <div class="progress-label" id="progress-label">Card 1 of 10</div>
+    <div class="progress-wrap"><div class="progress-bar" id="progress-bar"></div></div>
+    <div class="flashcard" id="flashcard" title="Tap to flip">
+      <div class="word" id="card-word">the</div>
+      <div id="card-back" hidden>
+        <div class="sentence" id="card-sentence"></div>
+        <div class="hint" id="card-hint"></div>
+      </div>
+    </div>
+    <p class="flip-tip" id="flip-tip">Tap the card to flip it over</p>
+    <div style="text-align:center; margin-bottom:6px;"><button class="btn secondary" id="speak-btn" style="font-size:1.1rem; padding:12px 26px;">&#128266; Hear the Word</button></div>
+    <div class="mark-row">
+      <button class="btn again" id="again-btn">&#8635; Practice Again</button>
+      <button class="btn got" id="got-btn">&#10003; Got It!</button>
+    </div>
+  </section>
+
+  <section id="end-screen" class="card center" hidden>
+    <div style="font-size:1.3rem; font-weight:700;">Round done!</div>
+    <div class="score-big" id="score-text"></div>
+    <p style="font-size:1.15rem; margin-bottom:2px;"><strong>Words he knows:</strong></p>
+    <div class="chips" id="known-chips"></div>
+    <p style="font-size:1.15rem; margin:14px 0 2px;"><strong>Words to practice:</strong></p>
+    <div class="chips" id="practice-chips"></div>
+    <div style="margin-top:20px;">
+      <button class="btn" id="practice-btn" hidden>Practice the Missed Words</button>
+    </div>
+    <div style="margin-top:14px;">
+      <button class="btn secondary" id="restart-btn">Start Over &mdash; New Shuffle</button>
+    </div>
+    <br><a class="home-link" href="quiz-kindergarten-sight-words-q1.html">Take the Sight Words Quiz &rarr;</a>
+    <br><a class="home-link" href="index.html">&larr; All quizzes</a>
+  </section>
+</main>
+
+<script>
+const CARDS = [
+ { word: "a",   sentence: "I see <strong>a</strong> cat.",        hint: "A tiny word with just one letter." },
+ { word: "the", sentence: "<strong>The</strong> dog can run.",     hint: "Starts with t. Careful — he looks a lot like it!" },
+ { word: "and", sentence: "You <strong>and</strong> I can play.",  hint: "We say it in the middle: you and me." },
+ { word: "go",  sentence: "We <strong>go</strong> to school.",    hint: "Ready, set, go!" },
+ { word: "had", sentence: "He <strong>had</strong> a hat.",        hint: "Ends with the letter d. Has ends with s." },
+ { word: "he",  sentence: "<strong>He</strong> has a ball.",      hint: "Starts with h. The starts with t." },
+ { word: "I",   sentence: "<strong>I</strong> see you.",           hint: "The only word that is always a capital letter." },
+ { word: "see", sentence: "I <strong>see</strong> the sun.",       hint: "Two letter e's in the middle — like two eyes to see with." },
+ { word: "has", sentence: "She <strong>has</strong> a red ball.", hint: "Ends with the letter s. Had ends with d." },
+ { word: "you", sentence: "I like <strong>you</strong>.",          hint: "Starts with the letter y." }
+];
+
+const startScreen = document.getElementById("start-screen");
+const deckScreen = document.getElementById("deck-screen");
+const endScreen = document.getElementById("end-screen");
+const progressLabel = document.getElementById("progress-label");
+const progressBar = document.getElementById("progress-bar");
+const cardWord = document.getElementById("card-word");
+const cardBack = document.getElementById("card-back");
+const cardSentence = document.getElementById("card-sentence");
+const cardHint = document.getElementById("card-hint");
+const flipTip = document.getElementById("flip-tip");
+
+let deck = [], idx = 0, flipped = false;
+let known = [], practice = [], resultSent = false;
+const RESULT_FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLScsrQlyXtxRugh8Z5kY2S6tbJ-zMoqVnNcbe4rsf6Vtc0x0Jg/formResponse";
+
+function shuffle(arr) {
+  const a = arr.slice();
+  for (let j = a.length - 1; j > 0; j--) {
+    const k = Math.floor(Math.random() * (j + 1));
+    [a[j], a[k]] = [a[k], a[j]];
+  }
+  return a;
+}
+
+function speak(text) {
+  try {
+    if (!("speechSynthesis" in window)) return;
+    const synth = window.speechSynthesis;
+    synth.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    u.rate = 0.92;
+    u.pitch = 1.05;
+    u.lang = "en-US";
+    const voices = synth.getVoices().filter(function (v) { return v.lang && v.lang.indexOf("en") === 0; });
+    if (voices.length) u.voice = voices[0];
+    synth.speak(u);
+  } catch (e) { /* voice is a bonus; flashcards work without it */ }
+}
+if ("speechSynthesis" in window) { window.speechSynthesis.onvoiceschanged = function () {}; }
+
+function submitResult() {
+  if (resultSent) return; resultSent = true;
+  try {
+    const missed = practice.map(function (w) {
+      return "Q: Flash card word: " + w + " | Their answer: Marked practice again | Correct answer: " + w;
+    });
+    const body = new URLSearchParams();
+    body.set("entry.1802018837", document.title);
+    body.set("entry.592121264", known.length + " / " + deck.length);
+    body.set("entry.856671312", missed.length ? missed.join("\n") : "None - perfect score");
+    fetch(RESULT_FORM_URL, { method: "POST", mode: "no-cors", headers: { "Content-Type": "application/x-www-form-urlencoded" }, body: body.toString(), keepalive: true }).catch(function () {});
+  } catch (e) {}
+}
+
+function startRound(words) {
+  deck = shuffle(words.slice());
+  idx = 0;
+  known = [];
+  practice = [];
+  resultSent = false;
+  startScreen.hidden = true;
+  endScreen.hidden = true;
+  deckScreen.hidden = false;
+  renderCard();
+}
+
+function renderCard() {
+  const card = deck[idx];
+  flipped = false;
+  progressLabel.textContent = "Card " + (idx + 1) + " of " + deck.length;
+  progressBar.style.width = ((idx / deck.length) * 100) + "%";
+  cardWord.textContent = card.word;
+  cardWord.hidden = false;
+  cardBack.hidden = true;
+  cardSentence.innerHTML = card.sentence;
+  cardHint.textContent = card.hint;
+  flipTip.textContent = "Tap the card to flip it over";
+}
+
+function flipCard() {
+  flipped = !flipped;
+  cardWord.hidden = flipped;
+  cardBack.hidden = !flipped;
+  flipTip.textContent = flipped ? "Tap the card to flip back" : "Tap the card to flip it over";
+}
+
+function markCard(gotIt) {
+  const card = deck[idx];
+  if (gotIt) known.push(card.word); else practice.push(card.word);
+  idx++;
+  if (idx >= deck.length) showEnd(); else renderCard();
+}
+
+function showEnd() {
+  deckScreen.hidden = true;
+  endScreen.hidden = false;
+  progressBar.style.width = "100%";
+  submitResult();
+  document.getElementById("score-text").textContent = "He knew " + known.length + " out of " + deck.length + " words!";
+  document.getElementById("known-chips").innerHTML = known.length
+    ? known.map(function (w) { return '<span class="chip known">' + w + "</span>"; }).join("")
+    : '<span style="color:#64748b;">None yet — keep practicing!</span>';
+  document.getElementById("practice-chips").innerHTML = practice.length
+    ? practice.map(function (w) { return '<span class="chip practice">' + w + "</span>"; }).join("")
+    : '<span style="color:#059669; font-weight:700;">None — he knew them all! &#127881;</span>';
+  document.getElementById("practice-btn").hidden = practice.length === 0;
+  if (practice.length === 0) speak("Round done! He knew all " + deck.length + " words!");
+}
+
+document.getElementById("start-btn").addEventListener("click", function () { startRound(CARDS); });
+document.getElementById("restart-btn").addEventListener("click", function () { startRound(CARDS); });
+document.getElementById("practice-btn").addEventListener("click", function () {
+  startRound(CARDS.filter(function (c) { return practice.indexOf(c.word) !== -1; }));
+});
+document.getElementById("got-btn").addEventListener("click", function () { markCard(true); });
+document.getElementById("again-btn").addEventListener("click", function () { markCard(false); });
+document.getElementById("flashcard").addEventListener("click", flipCard);
+document.getElementById("speak-btn").addEventListener("click", function () { speak(deck[idx].word); });
+</script>
+</body>
+</html>
