@@ -11,70 +11,43 @@
   header h1 { margin: 0 0 8px; font-size: 2.2rem; }
   header p { margin: 0; font-size: 1.1rem; opacity: .92; }
   main { max-width: 720px; margin: 0 auto; padding: 24px 16px 48px; }
-  .card { display: block; background: #fff; border-radius: 20px; box-shadow: 0 4px 16px rgba(30, 41, 59, .08); padding: 22px 24px; margin: 0 0 16px; text-decoration: none; color: inherit; border: 3px solid transparent; transition: transform .08s ease, border-color .08s ease; }
-  .card:hover { transform: translateY(-2px); border-color: #a5b4fc; }
-  .card h2 { margin: 6px 0 6px; font-size: 1.35rem; }
-  .card p { margin: 0 0 4px; font-size: 1rem; color: #475569; }
+  .card { display: block; background: #fff; border-radius: 24px; box-shadow: 0 4px 16px rgba(30, 41, 59, .08); padding: 30px 24px; margin: 0 0 20px; text-decoration: none; color: inherit; border: 4px solid transparent; transition: transform .08s ease, border-color .08s ease; text-align: center; }
+  .card:hover { transform: translateY(-2px); }
+  .card.paige:hover { border-color: #e9d5ff; }
+  .card.wesley:hover { border-color: #fbcfe8; }
+  .card .emoji { font-size: 2.6rem; display: block; margin-bottom: 6px; }
+  .card h2 { margin: 6px 0 6px; font-size: 1.9rem; }
+  .card p { margin: 0 0 4px; font-size: 1.05rem; color: #475569; }
   .badge { display: inline-block; font-size: .8rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; padding: 4px 12px; border-radius: 999px; color: #fff; }
-  .science { background: #0ea5e9; }
-  .la { background: #8b5cf6; }
-  .math { background: #f59e0b; }
-  .social { background: #059669; }
-  .kinder { background: #ec4899; }
-  .health { background: #a855f7; }
-  .go { margin-top: 10px; font-weight: 700; color: #4f46e5; }
+  .paige-badge { background: #a855f7; }
+  .wesley-badge { background: #ec4899; }
+  .go { margin-top: 12px; font-weight: 700; font-size: 1.1rem; }
+  .paige .go { color: #7e22ce; }
+  .wesley .go { color: #db2777; }
   footer { text-align: center; color: #64748b; font-size: .95rem; padding: 0 16px 32px; }
 </style>
 </head>
 <body>
 <header>
   <h1>Practice Quizzes</h1>
-  <p>Tap a quiz, answer the questions, and see your score right away!</p>
+  <p>Whose page do you want?</p>
 </header>
 <main>
-  <a class="card" href="headache-tracker.html">
-    <span class="badge health">Daily Tracker</span>
-    <h2>Headache Tracker</h2>
-    <p>Feeling a headache? Tap one button and it saves the day and whether it is morning or afternoon.</p>
-    <p>For every day &middot; One tap, nothing to fill in</p>
-    <div class="go">Open the tracker &rarr;</div>
+  <a class="card paige" href="paige.html">
+    <span class="emoji">💜</span>
+    <span class="badge paige-badge">3rd Grade</span>
+    <h2>Paige's Page</h2>
+    <p>Quizzes and the headache tracker</p>
+    <div class="go">Go to Paige's page &rarr;</div>
   </a>
-  <a class="card" href="quiz-language-arts-main-idea.html">
-    <span class="badge la">Language Arts</span>
-    <h2>Main Idea &amp; Details</h2>
-    <p>Find the main idea, spot supporting details, and practice prefixes.</p>
-    <p>Main Idea Quiz Fri, Oct 16 &middot; Unit Assessment Fri, Oct 23</p>
-    <div class="go">Start the quiz &rarr;</div>
-  </a>
-  <a class="card" href="quiz-math-place-value.html">
-    <span class="badge math">Math</span>
-    <h2>Place Value &amp; Word Problems</h2>
-    <p>Place value, rounding, number patterns, adding, subtracting, and word problems.</p>
-    <p>Number Patterns Quiz Wed, Oct 14 &middot; Place Value Test Fri, Oct 16</p>
-    <div class="go">Start the quiz &rarr;</div>
-  </a>
-  <a class="card" href="quiz-social-studies-economics.html">
-    <span class="badge social">Social Studies</span>
-    <h2>Economics</h2>
-    <p>Goods, services, producers, consumers, resources, and choices.</p>
-    <p>Economics Test Tue, Oct 13</p>
-    <div class="go">Start the quiz &rarr;</div>
-  </a>
-  <a class="card" href="quiz-kindergarten-sight-words-q1.html">
-    <span class="badge kinder">Kindergarten</span>
-    <h2>Sight Words: Quarter 1</h2>
-    <p>High-frequency words: a, the, and, go, had, he, I, see, has, you. Voice prompts read every question aloud!</p>
-    <p>Kindergarten practice &middot; Quarter 1 words</p>
-    <div class="go">Start the quiz &rarr;</div>
-  </a>
-  <a class="card" href="flashcards-kindergarten-sight-words-q1.html">
-    <span class="badge kinder">Kindergarten</span>
-    <h2>Sight Word Flashcards: Quarter 1</h2>
-    <p>Practice the words together: a, the, and, go, had, he, I, see, has, you. Flip each card to see the word in a sentence!</p>
-    <p>Kindergarten practice &middot; Parent-led flashcards</p>
-    <div class="go">Start the flashcards &rarr;</div>
+  <a class="card wesley" href="wesley.html">
+    <span class="emoji">🧡</span>
+    <span class="badge wesley-badge">Kindergarten</span>
+    <h2>Wesley's Page</h2>
+    <p>Sight words quiz and flashcards</p>
+    <div class="go">Go to Wesley's page &rarr;</div>
   </a>
 </main>
-<footer>Practice quizzes built from class study guides.<br>New quizzes show up here as new study guides come home.</footer>
+<footer>Tap your name to find your quizzes.<br>New quizzes show up on your own page as new study guides come home.</footer>
 </body>
 </html>
