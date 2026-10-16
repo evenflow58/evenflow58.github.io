@@ -108,31 +108,48 @@ function render() {
   if (!document.getElementById("status").dataset.locked) {
     document.getElementById("status").textContent = already ? "Recorded for this " + np.period.toLowerCase() + " ✓ Hope you feel better 💛" : "";
   }
-  // Calendar: 30 days ending today, in Sunday-start weeks.
+  // Calendar: the last 30 days shown as real month calendars — one block
+  // per month the window touches, with proper weekday alignment.
   var end = np.date;
   var start = datePlus(end, -29);
-  var lead = weekdaySun0(start);
-  var cells = [];
-  var i;
-  for (i = 0; i < lead; i++) cells.push(null);
-  for (i = 0; i < 30; i++) cells.push(datePlus(start, i));
-  while (cells.length % 7 !== 0) cells.push(null);
-  var html = '<table class="cal"><tr><th>Sun</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th></tr>';
-  for (i = 0; i < cells.length; i++) {
-    if (i % 7 === 0) html += "<tr>";
-    var c = cells[i];
-    if (!c) { html += '<td class="empty"></td>'; }
-    else {
-      var periods = store[c] || [];
-      var marks = "", cls = "";
-      if (periods.length === 2) { marks = "M + A"; cls = "m-both"; }
-      else if (periods[0] === "Morning") { marks = "● M"; cls = "m-morning"; }
-      else if (periods[0] === "Afternoon") { marks = "● A"; cls = "m-afternoon"; }
-      html += '<td class="' + (c === end ? "today" : "") + '"><span class="d">' + parseInt(c.slice(8, 10), 10) + '</span><span class="marks ' + cls + '">' + marks + "</span></td>";
+  var MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+  var html = "";
+  var cursor = start.slice(0, 8) + "01";
+  while (cursor <= end) {
+    var y = parseInt(cursor.slice(0, 4), 10), mo = parseInt(cursor.slice(5, 7), 10);
+    var firstDow = weekdaySun0(cursor);
+    var dim = new Date(Date.UTC(y, mo, 0)).getUTCDate();
+    var cells = [], i;
+    for (i = 0; i < firstDow; i++) cells.push(null);
+    for (i = 1; i <= dim; i++) {
+      var ds = cursor.slice(0, 8) + (i < 10 ? "0" + i : "" + i);
+      cells.push(ds >= start && ds <= end ? ds : null);
     }
-    if (i % 7 === 6) html += "</tr>";
+    while (cells.length % 7 !== 0) cells.push(null);
+    // Skip leading/trailing weeks that hold no in-window day.
+    while (cells.length && cells.slice(0, 7).every(function (c) { return !c; })) cells = cells.slice(7);
+    while (cells.length && cells.slice(-7).every(function (c) { return !c; })) cells = cells.slice(0, -7);
+    if (cells.length) {
+      html += '<h3 style="text-align:center;margin:18px 0 6px;font-size:1.05rem;">' + MONTHS[mo - 1] + " " + y + "</h3>";
+      html += '<table class="cal"><tr><th>Sun</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th></tr>';
+      for (i = 0; i < cells.length; i++) {
+        if (i % 7 === 0) html += "<tr>";
+        var c = cells[i];
+        if (!c) { html += '<td class="empty"></td>'; }
+        else {
+          var periods = store[c] || [];
+          var marks = "", cls = "";
+          if (periods.length === 2) { marks = "M + A"; cls = "m-both"; }
+          else if (periods[0] === "Morning") { marks = "● M"; cls = "m-morning"; }
+          else if (periods[0] === "Afternoon") { marks = "● A"; cls = "m-afternoon"; }
+          html += '<td class="' + (c === end ? "today" : "") + '"><span class="d">' + parseInt(c.slice(8, 10), 10) + '</span><span class="marks ' + cls + '">' + marks + "</span></td>";
+        }
+        if (i % 7 === 6) html += "</tr>";
+      }
+      html += "</table>";
+    }
+    cursor = mo === 12 ? (y + 1) + "-01-01" : cursor.slice(0, 5) + (mo + 1 < 10 ? "0" + (mo + 1) : "" + (mo + 1)) + "-01";
   }
-  html += "</table>";
   document.getElementById("calendar").innerHTML = html;
 }
 function submitToForm(dateStr, period) {
