@@ -11,18 +11,24 @@
   header h1 { margin: 0 0 8px; font-size: 2rem; }
   header p { margin: 0; font-size: 1.05rem; opacity: .94; }
   main { max-width: 640px; margin: 0 auto; padding: 24px 16px 48px; }
-  .bigbtn { display: block; width: 100%; border: none; cursor: pointer; background: #fff; border-radius: 24px; box-shadow: 0 6px 20px rgba(30,41,59,.12); padding: 34px 20px 28px; text-align: center; border: 4px solid #e9d5ff; transition: transform .08s ease, border-color .08s ease; }
-  .bigbtn:active { transform: scale(.98); }
-  .bigbtn .emoji { font-size: 3.4rem; display: block; margin-bottom: 10px; }
-  .bigbtn .label { font-size: 1.6rem; font-weight: 800; color: #7e22ce; display: block; }
-  .bigbtn .sub { font-size: 1rem; color: #64748b; display: block; margin-top: 8px; }
-  .bigbtn.done { border-color: #86efac; background: #f0fdf4; }
-  .bigbtn.done .label { color: #15803d; }
-  #status { text-align: center; font-size: 1.15rem; font-weight: 700; min-height: 1.6em; margin: 18px 8px 4px; color: #334155; }
+  .ask { text-align: center; font-size: 1.35rem; font-weight: 800; margin: 4px 0 4px; }
+  .asksub { text-align: center; font-size: 1rem; color: #64748b; margin: 0 0 16px; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .loc { border: 4px solid #e9d5ff; background: #fff; border-radius: 22px; padding: 26px 10px 20px; text-align: center; cursor: pointer; box-shadow: 0 4px 14px rgba(30,41,59,.08); transition: transform .08s ease, border-color .08s ease, background .08s ease; user-select: none; -webkit-user-select: none; }
+  .loc:active { transform: scale(.97); }
+  .loc .emoji { font-size: 2.4rem; display: block; margin-bottom: 6px; }
+  .loc .name { font-size: 1.45rem; font-weight: 800; color: #334155; display: block; }
+  .loc .where { font-size: .9rem; color: #94a3b8; display: block; margin-top: 2px; }
+  .loc.sel { border-color: #a855f7; background: #f3e8ff; }
+  .loc.sel .name { color: #7e22ce; }
+  .loc.sel .where { color: #a855f7; }
+  .record { display: block; width: 100%; margin-top: 18px; border: none; border-radius: 22px; padding: 20px; font-size: 1.35rem; font-weight: 800; color: #fff; background: linear-gradient(135deg, #a855f7, #ec4899); cursor: pointer; box-shadow: 0 6px 18px rgba(168,85,247,.35); transition: opacity .1s ease, transform .08s ease; }
+  .record:active { transform: scale(.98); }
+  .record:disabled { opacity: .35; cursor: default; box-shadow: none; }
+  #status { text-align: center; font-size: 1.12rem; font-weight: 700; min-height: 1.5em; margin: 16px 8px 2px; color: #334155; }
   #hint { text-align: center; font-size: .95rem; color: #64748b; margin: 0 8px 8px; }
   .card { background: #fff; border-radius: 20px; box-shadow: 0 4px 16px rgba(30,41,59,.08); padding: 20px 18px; margin-top: 22px; }
   .card h2 { margin: 0 0 4px; font-size: 1.2rem; text-align: center; }
-  .card .sub2 { text-align: center; color: #64748b; font-size: .92rem; margin: 0 0 14px; }
   table.cal { width: 100%; border-collapse: separate; border-spacing: 4px; table-layout: fixed; }
   table.cal th { font-size: .78rem; color: #94a3b8; font-weight: 700; padding: 2px 0; }
   table.cal td { text-align: center; vertical-align: top; background: #f8fafc; border-radius: 10px; padding: 6px 1px 5px; height: 52px; }
@@ -41,16 +47,20 @@
 <body>
 <header>
   <h1>🤕 Headache Tracker</h1>
-  <p id="todayLine">Tap the button if your head hurts.</p>
+  <p id="todayLine">Tap where your head hurts.</p>
 </header>
 <main>
-  <button class="bigbtn" id="tapBtn" type="button">
-    <span class="emoji">🤕</span>
-    <span class="label">I have a headache</span>
-    <span class="sub" id="periodLine">…</span>
-  </button>
+  <p class="ask">Where does it hurt?</p>
+  <p class="asksub" id="periodLine">Tap one block, or tap more than one.</p>
+  <div class="grid" id="locGrid">
+    <div class="loc" data-loc="Front" role="button" tabindex="0"><span class="emoji">🙂</span><span class="name">Front</span><span class="where">forehead</span></div>
+    <div class="loc" data-loc="Back" role="button" tabindex="0"><span class="emoji">🔙</span><span class="name">Back</span><span class="where">back of your head</span></div>
+    <div class="loc" data-loc="Left" role="button" tabindex="0"><span class="emoji">⬅️</span><span class="name">Left</span><span class="where">left side</span></div>
+    <div class="loc" data-loc="Right" role="button" tabindex="0"><span class="emoji">➡️</span><span class="name">Right</span><span class="where">right side</span></div>
+  </div>
+  <button class="record" id="recordBtn" type="button" disabled>Record my headache</button>
   <p id="status"></p>
-  <p id="hint">Tap once. It saves the day and whether it is morning or afternoon all by itself.<br>If you tap by mistake, tell a grown-up.</p>
+  <p id="hint">When you tap Record, it saves the day, whether it is morning or afternoon, and where it hurts.<br>If you record by mistake, tell a grown-up.</p>
 
   <h2 style="text-align:center;margin:26px 0 2px;font-size:1.25rem;">Last 30 Days</h2>
   <p style="text-align:center;color:#64748b;font-size:.92rem;margin:0 0 4px;">Headaches recorded on this device</p>
@@ -61,14 +71,22 @@
 
 <script>
 "use strict";
-// Headache Tracker — one tap records Date + Morning/Afternoon to the
-// "Headache Tracker" Google Form (same silent-POST pattern as the quizzes)
-// and saves a local copy so this page can draw the last-30-days calendar.
+// Headache Tracker — tap the block(s) where it hurts (Front / Back / Left /
+// Right, more than one allowed), then Record. The tap silently POSTs Date +
+// Period (auto Morning/Afternoon) + Locations to the "Headache Tracker"
+// Google Form (same pattern as the quizzes) and saves a local copy so this
+// page can draw the last-30-days calendars.
 var FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSf2tInzodqxcKaiLYm1lULUntAIc7PJXT0atgBdMrHd4JkpnQ/formResponse";
 var ENTRY_DATE = "entry.477360009";
 var ENTRY_PERIOD = "entry.593175305";
+// Locations field entry ID: pending a pre-filled link from Evan. While this
+// is empty, locations ride inside the Period value as "Afternoon: Front,
+// Left" — the daily report reads both formats.
+var ENTRY_LOCATIONS = "";
 var STORE_KEY = "headache-tracker-v1";
 var TZ = "America/New_York";
+var LOC_ORDER = ["Front", "Back", "Left", "Right"];
+var selected = {};
 
 function nowParts() {
   var fmt = new Intl.DateTimeFormat("en-US", { timeZone: TZ, year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", hourCycle: "h23", weekday: "long" });
@@ -78,8 +96,24 @@ function nowParts() {
   var hour = parseInt(parts.hour, 10) % 24;
   return { date: dateStr, hour: hour, period: hour < 12 ? "Morning" : "Afternoon", weekday: parts.weekday };
 }
+// Store shape: { "2026-10-16": { "Morning": ["Front"], "Afternoon": [] } }.
+// A period key exists = a headache was recorded then; its array is the
+// locations (empty for records from before locations existed).
+function normalizeStore(raw) {
+  var out = {}, d, i, p;
+  for (d in raw) {
+    if (Array.isArray(raw[d])) { // legacy shape: { date: ["Morning", ...] }
+      out[d] = {};
+      for (i = 0; i < raw[d].length; i++) out[d][raw[d][i]] = [];
+    } else if (raw[d] && typeof raw[d] === "object") {
+      out[d] = {};
+      for (p in raw[d]) out[d][p] = Array.isArray(raw[d][p]) ? raw[d][p].slice() : [];
+    }
+  }
+  return out;
+}
 function loadStore() {
-  try { return JSON.parse(localStorage.getItem(STORE_KEY) || "{}"); } catch (e) { return {}; }
+  try { return normalizeStore(JSON.parse(localStorage.getItem(STORE_KEY) || "{}")); } catch (e) { return {}; }
 }
 function saveStore(s) {
   try { localStorage.setItem(STORE_KEY, JSON.stringify(s)); } catch (e) {}
@@ -92,21 +126,31 @@ function datePlus(dateStr, days) {
 function weekdaySun0(dateStr) {
   return new Date(dateStr + "T12:00:00Z").getUTCDay();
 }
+function selectedList() {
+  return LOC_ORDER.filter(function (l) { return selected[l]; });
+}
+function renderStatus(np, store) {
+  var day = store[np.date] || {};
+  var status = document.getElementById("status");
+  if (Object.prototype.hasOwnProperty.call(day, np.period)) {
+    var locs = day[np.period] || [];
+    status.textContent = "Recorded for this " + np.period.toLowerCase() +
+      (locs.length ? ": " + locs.join(", ") : "") + " ✓ Hope you feel better 💛";
+  } else {
+    status.textContent = "";
+  }
+}
 function render() {
   var np = nowParts();
   var store = loadStore();
-  var todayPeriods = store[np.date] || [];
-  var already = todayPeriods.indexOf(np.period) >= 0;
-  var btn = document.getElementById("tapBtn");
-  document.getElementById("todayLine").textContent = "Today is " + np.weekday + ". Tap the button if your head hurts.";
-  document.getElementById("periodLine").textContent = already
-    ? "Already recorded for this " + np.period.toLowerCase() + " ✓"
-    : "Right now counts as " + np.period.toLowerCase() + (np.period === "Morning" ? " ☀️" : " 🌤️");
-  btn.classList.toggle("done", already);
-  if (!document.getElementById("status").dataset.locked) {
-    document.getElementById("status").textContent = already ? "Recorded for this " + np.period.toLowerCase() + " ✓ Hope you feel better 💛" : "";
-  }
-  // Calendar: the last 30 days shown as real month calendars — one block
+  document.getElementById("todayLine").textContent = "Today is " + np.weekday + ". Tap where your head hurts.";
+  document.getElementById("periodLine").textContent = "Tap one block, or tap more than one. Right now counts as " + np.period.toLowerCase() + (np.period === "Morning" ? " ☀️" : " 🌤️");
+  document.querySelectorAll(".loc").forEach(function (el) {
+    el.classList.toggle("sel", !!selected[el.dataset.loc]);
+  });
+  document.getElementById("recordBtn").disabled = selectedList().length === 0;
+  if (!document.getElementById("status").dataset.locked) renderStatus(np, store);
+  // Calendar: the last 30 days shown as real month calendars — one box
   // per month the window touches, with proper weekday alignment.
   var end = np.date;
   var start = datePlus(end, -29);
@@ -124,7 +168,6 @@ function render() {
       cells.push(ds >= start && ds <= end ? ds : null);
     }
     while (cells.length % 7 !== 0) cells.push(null);
-    // Skip leading/trailing weeks that hold no in-window day.
     while (cells.length && cells.slice(0, 7).every(function (c) { return !c; })) cells = cells.slice(7);
     while (cells.length && cells.slice(-7).every(function (c) { return !c; })) cells = cells.slice(0, -7);
     if (cells.length) {
@@ -135,11 +178,13 @@ function render() {
         var c = cells[i];
         if (!c) { html += '<td class="empty"></td>'; }
         else {
-          var periods = store[c] || [];
+          var day = store[c] || {};
+          var hasM = Object.prototype.hasOwnProperty.call(day, "Morning");
+          var hasA = Object.prototype.hasOwnProperty.call(day, "Afternoon");
           var marks = "", cls = "";
-          if (periods.length === 2) { marks = "M + A"; cls = "m-both"; }
-          else if (periods[0] === "Morning") { marks = "● M"; cls = "m-morning"; }
-          else if (periods[0] === "Afternoon") { marks = "● A"; cls = "m-afternoon"; }
+          if (hasM && hasA) { marks = "M + A"; cls = "m-both"; }
+          else if (hasM) { marks = "● M"; cls = "m-morning"; }
+          else if (hasA) { marks = "● A"; cls = "m-afternoon"; }
           html += '<td class="' + (c === end ? "today" : "") + '"><span class="d">' + parseInt(c.slice(8, 10), 10) + '</span><span class="marks ' + cls + '">' + marks + "</span></td>";
         }
         if (i % 7 === 6) html += "</tr>";
@@ -150,32 +195,44 @@ function render() {
   }
   document.getElementById("calendar").innerHTML = html;
 }
-function submitToForm(dateStr, period) {
+function submitToForm(dateStr, period, locs) {
   try {
     var body = new URLSearchParams();
     body.set(ENTRY_DATE, dateStr);
-    body.set(ENTRY_PERIOD, period);
+    if (ENTRY_LOCATIONS) {
+      body.set(ENTRY_PERIOD, period);
+      body.set(ENTRY_LOCATIONS, locs.join(", "));
+    } else {
+      body.set(ENTRY_PERIOD, locs.length ? period + ": " + locs.join(", ") : period);
+    }
     fetch(FORM_URL, { method: "POST", mode: "no-cors", headers: { "Content-Type": "application/x-www-form-urlencoded" }, body: body.toString(), keepalive: true }).catch(function () {});
   } catch (e) {}
 }
-document.getElementById("tapBtn").addEventListener("click", function () {
+document.querySelectorAll(".loc").forEach(function (el) {
+  function toggle() {
+    var loc = el.dataset.loc;
+    selected[loc] = !selected[loc];
+    render();
+  }
+  el.addEventListener("click", toggle);
+  el.addEventListener("keydown", function (ev) { if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); toggle(); } });
+});
+document.getElementById("recordBtn").addEventListener("click", function () {
+  var locs = selectedList();
+  if (!locs.length) return;
   var np = nowParts();
   var store = loadStore();
-  var periods = store[np.date] || [];
-  var status = document.getElementById("status");
-  if (periods.indexOf(np.period) >= 0) {
-    status.dataset.locked = "1";
-    status.textContent = "Already recorded for this " + np.period.toLowerCase() + " — no need to tap again ✓";
-    render();
-    return;
-  }
-  periods.push(np.period);
-  periods.sort();
-  store[np.date] = periods;
+  var day = store[np.date] || {};
+  var existing = day[np.period] || [];
+  var merged = LOC_ORDER.filter(function (l) { return existing.indexOf(l) >= 0 || locs.indexOf(l) >= 0; });
+  day[np.period] = merged;
+  store[np.date] = day;
   saveStore(store);
-  submitToForm(np.date, np.period);
+  submitToForm(np.date, np.period, locs);
+  selected = {};
+  var status = document.getElementById("status");
   status.dataset.locked = "1";
-  status.textContent = "Got it — recorded for this " + np.period.toLowerCase() + " ✓ Hope you feel better 💛";
+  status.textContent = "Got it — recorded for this " + np.period.toLowerCase() + ": " + merged.join(", ") + " ✓ Hope you feel better 💛";
   render();
 });
 render();
