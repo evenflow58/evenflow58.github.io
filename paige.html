@@ -23,6 +23,14 @@
   .health { background: #a855f7; }
   .go { margin-top: 10px; font-weight: 700; color: #7e22ce; }
   footer { text-align: center; color: #64748b; font-size: .95rem; padding: 0 16px 32px; }
+
+  .house-board { background: linear-gradient(135deg, #1d4ed8, #3b82f6); color: #fff; border-radius: 20px; box-shadow: 0 4px 16px rgba(30, 41, 59, .12); padding: 20px 24px; margin: 0 0 16px; }
+  .house-board h2 { margin: 0 0 4px; font-size: 1.35rem; }
+  .house-mine { margin: 0; font-size: 1.1rem; }
+  .house-list { list-style: none; padding: 0; margin: 12px 0 8px; }
+  .house-list li { display: flex; justify-content: space-between; align-items: center; background: rgba(255, 255, 255, .16); padding: 8px 14px; border-radius: 10px; margin: 6px 0; font-size: 1.05rem; }
+  .house-list li.mine { background: #fff; color: #1e3a8a; font-weight: 800; }
+  .house-note { margin: 4px 0 0; font-size: .95rem; opacity: .88; }
   footer a { color: #7e22ce; font-weight: 700; text-decoration: none; }
 </style>
 </head>
@@ -32,6 +40,18 @@
   <p>3rd Grade &middot; Your quizzes and headache tracker</p>
 </header>
 <main>
+  <section class="house-board">
+    <h2>&#127942; House Points &mdash; House Reveur</h2>
+    <p class="house-mine">Paige has earned <strong>17 points</strong> for Reveur!</p>
+    <ol class="house-list">
+      <li><span>1. Nukumori</span><strong>1,354</strong></li>
+      <li><span>2. Isibindi</span><strong>1,311</strong></li>
+      <li class="mine"><span>3. Reveur &#11088;</span><strong>1,274</strong></li>
+      <li><span>4. Altruismo</span><strong>1,247</strong></li>
+      <li><span>5. Amistad</span><strong>1,208</strong></li>
+    </ol>
+    <p class="house-note">Reveur is 3rd of 5 houses at school &middot; Updated Oct 19, 2026</p>
+  </section>
   <a class="card" href="headache-tracker.html">
     <span class="badge health">Daily Tracker</span>
     <h2>Headache Tracker</h2>
