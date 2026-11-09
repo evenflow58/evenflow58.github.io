@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Kindergarten Sight Words Quiz: Quarter 1</title>
+<title>Kindergarten Sight Words Quiz: Quarters 1 & 2</title>
 <style>
   * { box-sizing: border-box; }
   body { margin: 0; font-family: ui-rounded, "Segoe UI", system-ui, -apple-system, sans-serif; background: #fff7ed; color: #1e293b; }
@@ -39,12 +39,12 @@
 </head>
 <body>
 <header>
-  <h1>Sight Words: Quarter 1</h1>
+  <h1>Sight Words: Quarters 1 &amp; 2</h1>
   <p>Kindergarten &middot; Read the word, tap the match!</p>
 </header>
 <main>
   <section id="start-screen" class="card center">
-    <p style="font-size:1.2rem; line-height:1.5;">12 questions about the Quarter 1 sight words:<br><strong>a &middot; the &middot; and &middot; go &middot; had &middot; he &middot; I &middot; see &middot; has &middot; you</strong><br><br>Listen to each question, then tap the word that matches.<br>The questions mix themselves up every time you play!</p>
+    <p style="font-size:1.2rem; line-height:1.5;">12 questions about the Quarter 1 and Quarter 2 sight words:<br><strong>a &middot; the &middot; and &middot; go &middot; had &middot; he &middot; I &middot; see &middot; has &middot; you &middot; we &middot; of &middot; am &middot; at &middot; to &middot; as &middot; have &middot; in &middot; is &middot; it &middot; can &middot; his &middot; him &middot; on &middot; did &middot; girl</strong><br><br>Listen to each question, then tap the word that matches.<br>The questions mix themselves up every time you play!</p>
     <button class="btn" id="start-btn">Start the Quiz</button>
     <div style="margin-top:14px;"><button class="btn secondary" id="listen-btn" style="font-size:1.1rem; padding:12px 26px;">&#128266; Hear How It Works</button></div>
     <div style="margin-top:14px;"><a class="btn secondary" href="flashcards-kindergarten-sight-words-q1.html" style="font-size:1.1rem; padding:12px 26px;">&#128218; Practice with Flashcards</a></div>
@@ -84,6 +84,25 @@ const WORDS_Q1 = [
  "has",
  "you"
 ];
+const WORDS_Q2 = [
+ "we",
+ "of",
+ "am",
+ "at",
+ "to",
+ "as",
+ "have",
+ "in",
+ "is",
+ "it",
+ "can",
+ "his",
+ "him",
+ "on",
+ "did",
+ "girl"
+];
+const WORDS_ALL = WORDS_Q1.concat(WORDS_Q2);
 const CONFUSE = {
  "a": [
   "and",
@@ -134,6 +153,86 @@ const CONFUSE = {
   "go",
   "the",
   "I"
+ ],
+ "we": [
+  "he",
+  "the",
+  "see"
+ ],
+ "of": [
+  "on",
+  "to",
+  "go"
+ ],
+ "am": [
+  "as",
+  "at",
+  "I"
+ ],
+ "at": [
+  "am",
+  "as",
+  "it"
+ ],
+ "to": [
+  "go",
+  "of",
+  "on"
+ ],
+ "as": [
+  "am",
+  "has",
+  "at"
+ ],
+ "have": [
+  "has",
+  "had",
+  "he"
+ ],
+ "in": [
+  "is",
+  "it",
+  "on"
+ ],
+ "is": [
+  "in",
+  "it",
+  "his"
+ ],
+ "it": [
+  "is",
+  "in",
+  "at"
+ ],
+ "can": [
+  "and",
+  "as",
+  "had"
+ ],
+ "his": [
+  "has",
+  "is",
+  "him"
+ ],
+ "him": [
+  "his",
+  "he",
+  "in"
+ ],
+ "on": [
+  "in",
+  "of",
+  "to"
+ ],
+ "did": [
+  "had",
+  "and",
+  "he"
+ ],
+ "girl": [
+  "go",
+  "you",
+  "see"
  ]
 };
 const WORD_WHY = {
@@ -146,7 +245,23 @@ const WORD_WHY = {
  "I": "That is the word <strong>I</strong>. It is the only word that is always a capital letter!",
  "see": "That is the word <strong>see</strong>. It has two e's in the middle &mdash; like two eyes to see with!",
  "has": "That is the word <strong>has</strong>. Look at the last letter &mdash; <strong>has</strong> ends with s, <strong>had</strong> ends with d!",
- "you": "That is the word <strong>you</strong>. It starts with y: <strong>you</strong> can read it!"
+ "you": "That is the word <strong>you</strong>. It starts with y: <strong>you</strong> can read it!",
+ "we": "That is the word <strong>we</strong>. We means you and me together!",
+ "of": "That is the word <strong>of</strong>. It is a tiny word: o-f!",
+ "am": "That is the word <strong>am</strong>. It goes with I: I <strong>am</strong> happy!",
+ "at": "That is the word <strong>at</strong>. A tiny word: a-t!",
+ "to": "That is the word <strong>to</strong>. We go <strong>to</strong> school!",
+ "as": "That is the word <strong>as</strong>. It starts with a and ends with s &mdash; like <strong>has</strong>, but shorter!",
+ "have": "That is the word <strong>have</strong>. It ends with e: I <strong>have</strong> a dog!",
+ "in": "That is the word <strong>in</strong>. The ball is <strong>in</strong> the box!",
+ "is": "That is the word <strong>is</strong>. He <strong>is</strong> my friend!",
+ "it": "That is the word <strong>it</strong>. It starts with i like <strong>is</strong> and <strong>in</strong> &mdash; look at the last letter: t!",
+ "can": "That is the word <strong>can</strong>. I <strong>can</strong> read!",
+ "his": "That is the word <strong>his</strong>. It starts with h like <strong>him</strong> &mdash; <strong>his</strong> ends with s!",
+ "him": "That is the word <strong>him</strong>. It starts with h and ends with m &mdash; give it to <strong>him</strong>!",
+ "on": "That is the word <strong>on</strong>. The cat is <strong>on</strong> the mat!",
+ "did": "That is the word <strong>did</strong>. It starts and ends with the letter d: d-i-d!",
+ "girl": "That is the word <strong>girl</strong>. It is the longest word on the list: g-i-r-l!"
 };
 const SENTENCES = [
  {
@@ -226,6 +341,110 @@ const SENTENCES = [
   ],
   "correct": 0,
   "why": "We <strong>go</strong> to school. Go means to move or travel."
+ },
+ {
+  "type": "choice",
+  "q": "Which word makes this sentence work? I ___ happy.",
+  "alt": "Which word finishes this sentence? I ___ happy.",
+  "options": [
+   "am",
+   "is",
+   "and",
+   "the"
+  ],
+  "correct": 0,
+  "why": "I <strong>am</strong> happy. The word <strong>am</strong> goes with I."
+ },
+ {
+  "type": "choice",
+  "q": "Read this sentence: <strong>The dog is ___ the mat.</strong> Which word fills the blank?",
+  "alt": "Which word makes this sentence work? <strong>The dog is ___ the mat.</strong>",
+  "options": [
+   "on",
+   "in",
+   "to",
+   "and"
+  ],
+  "correct": 0,
+  "why": "The dog is <strong>on</strong> the mat."
+ },
+ {
+  "type": "choice",
+  "q": "Which word makes this sentence work? Did you see ___?",
+  "alt": "Which word finishes this sentence? Did you see ___?",
+  "options": [
+   "him",
+   "his",
+   "he",
+   "the"
+  ],
+  "correct": 0,
+  "why": "Did you see <strong>him</strong>?"
+ },
+ {
+  "type": "choice",
+  "q": "Which word makes this sentence work? The ___ can run.",
+  "alt": "Which word finishes this sentence? The ___ can run.",
+  "options": [
+   "girl",
+   "go",
+   "the",
+   "see"
+  ],
+  "correct": 0,
+  "why": "The <strong>girl</strong> can run."
+ },
+ {
+  "type": "choice",
+  "q": "Which word makes this sentence work? It ___ red.",
+  "alt": "Which word finishes this sentence? It ___ red.",
+  "options": [
+   "is",
+   "in",
+   "it",
+   "as"
+  ],
+  "correct": 0,
+  "why": "<strong>It is red.</strong> The word <strong>is</strong> fits best."
+ },
+ {
+  "type": "choice",
+  "q": "Which word makes this sentence work? I ___ go fast.",
+  "alt": "Which word finishes this sentence? I ___ go fast.",
+  "options": [
+   "can",
+   "and",
+   "had",
+   "has"
+  ],
+  "correct": 0,
+  "why": "I <strong>can</strong> go fast!"
+ },
+ {
+  "type": "choice",
+  "q": "Which word makes this sentence work? This is ___ book.",
+  "alt": "Which word finishes this sentence? This is ___ book.",
+  "options": [
+   "his",
+   "him",
+   "has",
+   "he"
+  ],
+  "correct": 0,
+  "why": "This is <strong>his</strong> book."
+ },
+ {
+  "type": "choice",
+  "q": "Which word makes this sentence work? She ___ it!",
+  "alt": "Which word finishes this sentence? She ___ it!",
+  "options": [
+   "did",
+   "had",
+   "and",
+   "go"
+  ],
+  "correct": 0,
+  "why": "She <strong>did</strong> it!"
  }
 ];;
 
@@ -298,9 +517,9 @@ function shuffle(arr) {
 
 function pickDistractors(word) {
   // Fresh wrong answers every play: mostly the look-alike words this one
-  // gets confused with, filled out from the rest of the Quarter 1 list.
+  // gets confused with, filled out from the rest of the full list.
   const conf = shuffle((CONFUSE[word] || []).slice());
-  const rest = shuffle(WORDS_Q1.filter(function (w) { return w !== word && conf.indexOf(w) === -1; }));
+  const rest = shuffle(WORDS_ALL.filter(function (w) { return w !== word && conf.indexOf(w) === -1; }));
   const takeConf = Math.random() < 0.5 ? 3 : 2;
   const ds = conf.slice(0, takeConf);
   const pool = shuffle(conf.slice(takeConf).concat(rest));
@@ -309,10 +528,11 @@ function pickDistractors(word) {
 }
 
 function buildRun() {
-  // Fresh mix on every play: every word is asked once, with distractors
-  // drawn new each time; 2 sentence questions are sampled from the pool;
+  // Fresh mix on every play: 10 words are sampled from the full
+  // Quarter 1 + Quarter 2 list, with distractors drawn new each time;
+  // 2 sentence questions are sampled from the pool;
   // order is shuffled and each question randomly uses main/alt wording.
-  const wordItems = shuffle(WORDS_Q1).map(function (w) {
+  const wordItems = shuffle(WORDS_ALL).slice(0, 10).map(function (w) {
     return { type: "choice",
       q: "\uD83D\uDD0A Listen! Tap the word you hear.",
       alt: "\uD83D\uDD0A What word did you hear? Tap it!",

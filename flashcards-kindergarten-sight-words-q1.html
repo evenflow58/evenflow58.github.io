@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Kindergarten Sight Word Flashcards: Quarter 1</title>
+<title>Kindergarten Sight Word Flashcards: Quarters 1 & 2</title>
 <style>
   * { box-sizing: border-box; }
   body { margin: 0; font-family: ui-rounded, "Segoe UI", system-ui, -apple-system, sans-serif; background: #fdf2f8; color: #1e293b; }
@@ -42,12 +42,12 @@
 </head>
 <body>
 <header>
-  <h1>Sight Word Flashcards: Quarter 1</h1>
+  <h1>Sight Word Flashcards: Quarters 1 &amp; 2</h1>
   <p>Kindergarten &middot; Practice together, one card at a time!</p>
 </header>
 <main>
   <section id="start-screen" class="card center">
-    <p style="font-size:1.2rem; line-height:1.55;">Flashcards for the Quarter 1 sight words:<br><strong>a &middot; the &middot; and &middot; go &middot; had &middot; he &middot; I &middot; see &middot; has &middot; you</strong><br><br>Show a card and let him read the word out loud.<br>Then tap <strong>&#10003; Got It!</strong> or <strong>&#8635; Practice Again</strong>.<br>Tap the card itself to flip it over and see the word in a sentence.</p>
+    <p style="font-size:1.2rem; line-height:1.55;">Flashcards for the Quarter 1 and Quarter 2 sight words:<br><strong>a &middot; the &middot; and &middot; go &middot; had &middot; he &middot; I &middot; see &middot; has &middot; you</strong><br><strong>we &middot; of &middot; am &middot; at &middot; to &middot; as &middot; have &middot; in &middot; is &middot; it &middot; can &middot; his &middot; him &middot; on &middot; did &middot; girl</strong><br><br>Show a card and let him read the word out loud.<br>Then tap <strong>&#10003; Got It!</strong> or <strong>&#8635; Practice Again</strong>.<br>Tap the card itself to flip it over and see the word in a sentence.</p>
     <button class="btn" id="start-btn">Start Flashcards</button>
     <br><a class="home-link" href="quiz-kindergarten-sight-words-q1.html">Take the Sight Words Quiz &rarr;</a>
     <br><a class="home-link" href="wesley.html">&larr; Back to Wesley's page</a>
@@ -100,7 +100,23 @@ const CARDS = [
  { word: "I",   sentence: "<strong>I</strong> see you.",           hint: "The only word that is always a capital letter." },
  { word: "see", sentence: "I <strong>see</strong> the sun.",       hint: "Two letter e's in the middle — like two eyes to see with." },
  { word: "has", sentence: "She <strong>has</strong> a red ball.", hint: "Ends with the letter s. Had ends with d." },
- { word: "you", sentence: "I like <strong>you</strong>.",          hint: "Starts with the letter y." }
+ { word: "you", sentence: "I like <strong>you</strong>.",          hint: "Starts with the letter y." },
+ { word: "we",   sentence: "<strong>We</strong> can play.",            hint: "We means you and me together." },
+ { word: "of",   sentence: "I want a glass <strong>of</strong> water.", hint: "A tiny word: o-f." },
+ { word: "am",   sentence: "I <strong>am</strong> happy.",              hint: "Am goes with I: I am." },
+ { word: "at",   sentence: "Look <strong>at</strong> the dog.",         hint: "A tiny word: a-t." },
+ { word: "to",   sentence: "We go <strong>to</strong> the park.",       hint: "T-o. We go to school." },
+ { word: "as",   sentence: "It is <strong>as</strong> big as a bus.",   hint: "Starts with a, ends with s — like has, but shorter." },
+ { word: "have", sentence: "I <strong>have</strong> a dog.",            hint: "Ends with the letter e." },
+ { word: "in",   sentence: "The ball is <strong>in</strong> the box.",  hint: "I-n. The cat is in the box." },
+ { word: "is",   sentence: "He <strong>is</strong> my friend.",         hint: "I-s. It is, he is, she is." },
+ { word: "it",   sentence: "<strong>It</strong> is red.",               hint: "Starts with i like is and in — it ends with t." },
+ { word: "can",  sentence: "I <strong>can</strong> read.",              hint: "C-a-n. You can do it!" },
+ { word: "his",  sentence: "This is <strong>his</strong> book.",        hint: "Starts with h like him — his ends with s." },
+ { word: "him",  sentence: "I see <strong>him</strong>.",               hint: "Starts with h, ends with the letter m." },
+ { word: "on",   sentence: "The cat is <strong>on</strong> the mat.",   hint: "O-n. On top!" },
+ { word: "did",  sentence: "She <strong>did</strong> it!",              hint: "Starts and ends with the letter d: d-i-d." },
+ { word: "girl", sentence: "The <strong>girl</strong> can run.",        hint: "The longest word: g-i-r-l." }
 ];
 
 const startScreen = document.getElementById("start-screen");
