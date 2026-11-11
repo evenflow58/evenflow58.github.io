@@ -44,7 +44,7 @@
 </header>
 <main>
   <section id="start-screen" class="card center">
-    <p style="font-size:1.2rem; line-height:1.5;">12 questions about the Quarter 1 and Quarter 2 sight words:<br><strong>a &middot; the &middot; and &middot; go &middot; had &middot; he &middot; I &middot; see &middot; has &middot; you &middot; we &middot; of &middot; am &middot; at &middot; to &middot; as &middot; have &middot; in &middot; is &middot; it &middot; can &middot; his &middot; him &middot; on &middot; did &middot; girl</strong><br><br>Listen to each question, then tap the word that matches.<br>The questions mix themselves up every time you play!</p>
+    <p style="font-size:1.2rem; line-height:1.5;">12 questions about the Quarter 1 and Quarter 2 sight words, plus class words:<br><strong>a &middot; the &middot; and &middot; go &middot; had &middot; he &middot; I &middot; see &middot; has &middot; you &middot; we &middot; of &middot; am &middot; at &middot; to &middot; as &middot; have &middot; in &middot; is &middot; it &middot; can &middot; his &middot; him &middot; on &middot; did &middot; girl &middot; bat &middot; but &middot; lit &middot; pat &middot; kit</strong><br><br>Listen to each question, then tap the word that matches.<br>The questions mix themselves up every time you play!</p>
     <button class="btn" id="start-btn">Start the Quiz</button>
     <div style="margin-top:14px;"><button class="btn secondary" id="listen-btn" style="font-size:1.1rem; padding:12px 26px;">&#128266; Hear How It Works</button></div>
     <div style="margin-top:14px;"><a class="btn secondary" href="flashcards-kindergarten-sight-words-q1.html" style="font-size:1.1rem; padding:12px 26px;">&#128218; Practice with Flashcards</a></div>
@@ -102,7 +102,14 @@ const WORDS_Q2 = [
  "did",
  "girl"
 ];
-const WORDS_ALL = WORDS_Q1.concat(WORDS_Q2);
+const WORDS_CLASS = [
+ "bat",
+ "but",
+ "lit",
+ "pat",
+ "kit"
+];
+const WORDS_ALL = WORDS_Q1.concat(WORDS_Q2, WORDS_CLASS);
 const CONFUSE = {
  "a": [
   "and",
@@ -233,6 +240,31 @@ const CONFUSE = {
   "go",
   "you",
   "see"
+ ],
+ "bat": [
+  "pat",
+  "but",
+  "at"
+ ],
+ "but": [
+  "bat",
+  "pat",
+  "at"
+ ],
+ "lit": [
+  "kit",
+  "it",
+  "in"
+ ],
+ "pat": [
+  "bat",
+  "but",
+  "at"
+ ],
+ "kit": [
+  "lit",
+  "it",
+  "in"
  ]
 };
 const WORD_WHY = {
@@ -261,7 +293,12 @@ const WORD_WHY = {
  "him": "That is the word <strong>him</strong>. It starts with h and ends with m &mdash; give it to <strong>him</strong>!",
  "on": "That is the word <strong>on</strong>. The cat is <strong>on</strong> the mat!",
  "did": "That is the word <strong>did</strong>. It starts and ends with the letter d: d-i-d!",
- "girl": "That is the word <strong>girl</strong>. It is the longest word on the list: g-i-r-l!"
+ "girl": "That is the word <strong>girl</strong>. It is the longest word on the list: g-i-r-l!",
+ "bat": "That is the word <strong>bat</strong>. It rhymes with <strong>pat</strong> &mdash; but it starts with b!",
+ "but": "That is the word <strong>but</strong>. B-u-t &mdash; look at the middle letter: u!",
+ "lit": "That is the word <strong>lit</strong>. It rhymes with <strong>kit</strong> &mdash; but it starts with l!",
+ "pat": "That is the word <strong>pat</strong>. It rhymes with <strong>bat</strong> &mdash; but it starts with p!",
+ "kit": "That is the word <strong>kit</strong>. It rhymes with <strong>lit</strong> &mdash; but it starts with k!"
 };
 const SENTENCES = [
  {
@@ -445,6 +482,32 @@ const SENTENCES = [
   ],
   "correct": 0,
   "why": "She <strong>did</strong> it!"
+ },
+ {
+  "type": "choice",
+  "q": "Which word makes this sentence work? I can ___ the dog.",
+  "alt": "Which word finishes this sentence? I can ___ the dog.",
+  "options": [
+   "pat",
+   "bat",
+   "but",
+   "go"
+  ],
+  "correct": 0,
+  "why": "I can <strong>pat</strong> the dog. Pat means to tap softly."
+ },
+ {
+  "type": "choice",
+  "q": "Which word makes this sentence work? The ___ can fly.",
+  "alt": "Which word finishes this sentence? The ___ can fly.",
+  "options": [
+   "bat",
+   "but",
+   "lit",
+   "kit"
+  ],
+  "correct": 0,
+  "why": "The <strong>bat</strong> can fly. A bat flies at night."
  }
 ];;
 

@@ -47,7 +47,7 @@
 </header>
 <main>
   <section id="start-screen" class="card center">
-    <p style="font-size:1.2rem; line-height:1.55;">Flashcards for the Quarter 1 and Quarter 2 sight words:<br><strong>a &middot; the &middot; and &middot; go &middot; had &middot; he &middot; I &middot; see &middot; has &middot; you</strong><br><strong>we &middot; of &middot; am &middot; at &middot; to &middot; as &middot; have &middot; in &middot; is &middot; it &middot; can &middot; his &middot; him &middot; on &middot; did &middot; girl</strong><br><br>Show a card and let him read the word out loud.<br>Then tap <strong>&#10003; Got It!</strong> or <strong>&#8635; Practice Again</strong>.<br>Tap the card itself to flip it over and see the word in a sentence.</p>
+    <p style="font-size:1.2rem; line-height:1.55;">Flashcards for the Quarter 1 and Quarter 2 sight words, plus class words:<br><strong>a &middot; the &middot; and &middot; go &middot; had &middot; he &middot; I &middot; see &middot; has &middot; you</strong><br><strong>we &middot; of &middot; am &middot; at &middot; to &middot; as &middot; have &middot; in &middot; is &middot; it &middot; can &middot; his &middot; him &middot; on &middot; did &middot; girl &middot; bat &middot; but &middot; lit &middot; pat &middot; kit</strong><br><br>Show a card and let him read the word out loud.<br>Then tap <strong>&#10003; Got It!</strong> or <strong>&#8635; Practice Again</strong>.<br>Tap the card itself to flip it over and see the word in a sentence.</p>
     <button class="btn" id="start-btn">Start Flashcards</button>
     <br><a class="home-link" href="quiz-kindergarten-sight-words-q1.html">Take the Sight Words Quiz &rarr;</a>
     <br><a class="home-link" href="wesley.html">&larr; Back to Wesley's page</a>
@@ -116,7 +116,12 @@ const CARDS = [
  { word: "him",  sentence: "I see <strong>him</strong>.",               hint: "Starts with h, ends with the letter m." },
  { word: "on",   sentence: "The cat is <strong>on</strong> the mat.",   hint: "O-n. On top!" },
  { word: "did",  sentence: "She <strong>did</strong> it!",              hint: "Starts and ends with the letter d: d-i-d." },
- { word: "girl", sentence: "The <strong>girl</strong> can run.",        hint: "The longest word: g-i-r-l." }
+ { word: "girl", sentence: "The <strong>girl</strong> can run.",        hint: "The longest word: g-i-r-l." },
+ { word: "bat",  sentence: "The <strong>bat</strong> can fly.",         hint: "B-a-t. It rhymes with pat — bat starts with b." },
+ { word: "but",  sentence: "I see a cat, <strong>but</strong> no dog.",  hint: "B-u-t. Look at the middle letter: u." },
+ { word: "lit",  sentence: "The lamp is <strong>lit</strong>.",         hint: "L-i-t. It rhymes with kit." },
+ { word: "pat",  sentence: "I <strong>pat</strong> the dog.",            hint: "P-a-t. It rhymes with bat — pat starts with p." },
+ { word: "kit",  sentence: "A baby fox is a <strong>kit</strong>.",      hint: "K-i-t. It rhymes with lit." }
 ];
 
 const startScreen = document.getElementById("start-screen");
