@@ -28,6 +28,7 @@
   .feedback { margin-top: 18px; padding: 14px 16px; border-radius: 14px; font-size: 1.08rem; line-height: 1.45; }
   .feedback.good { background: #f0fdf4; border: 2px solid #86efac; }
   .feedback.bad { background: #fef2f2; border: 2px solid #fca5a5; }
+  .feedback.info { background: #eff6ff; border: 2px solid #93c5fd; }
   .next-row { margin-top: 20px; text-align: right; }
   input[type="text"], textarea { font: inherit; font-size: 1.15rem; width: 100%; padding: 14px 16px; border-radius: 14px; border: 3px solid #e2e8f0; background: #f8fafc; }
   input[type="text"]:focus, textarea:focus { outline: none; border-color: #818cf8; background: #fff; }
@@ -738,17 +739,36 @@ function renderQuestion() {
     ta.setAttribute("aria-label", "Your answer");
     const row = document.createElement("div");
     row.className = "check-row";
+    const outLoudBtn = document.createElement("button");
+    outLoudBtn.className = "btn secondary";
+    outLoudBtn.textContent = "I Answered Out Loud";
     const showBtn = document.createElement("button");
     showBtn.className = "btn";
     showBtn.textContent = "Show a Sample Answer";
+    showBtn.style.marginLeft = "10px";
+    row.appendChild(outLoudBtn);
     row.appendChild(showBtn);
     answerArea.appendChild(ta);
     answerArea.appendChild(row);
+    let answeredOutLoud = false;
+    outLoudBtn.addEventListener("click", function () {
+      answeredOutLoud = true;
+      outLoudBtn.disabled = true;
+      outLoudBtn.textContent = "Answered out loud \u2713";
+    });
     showBtn.addEventListener("click", function () {
+      if (!ta.value.trim() && !answeredOutLoud) {
+        feedback.hidden = false;
+        feedback.className = "feedback info";
+        feedback.innerHTML = "<strong>Answer first!</strong> Type your answer in the box &mdash; or if you said it out loud, tap <strong>I Answered Out Loud</strong> &mdash; then peek at the sample.";
+        ta.focus();
+        return;
+      }
       showBtn.disabled = true;
+      outLoudBtn.disabled = true;
       ta.disabled = true;
       feedback.hidden = false;
-      feedback.className = "feedback good";
+      feedback.className = "feedback info";
       feedback.innerHTML = "<strong>Sample answer:</strong> " + item.sample + "<br><br>" + item.why;
       const judge = document.createElement("div");
       judge.className = "check-row";
