@@ -47,7 +47,7 @@
 </header>
 <main>
   <section id="start-screen" class="card center">
-    <p style="font-size:1.2rem; line-height:1.55;">Flashcards for the Quarter 1 and Quarter 2 sight words, plus class words:<br><strong>a &middot; the &middot; and &middot; go &middot; had &middot; he &middot; I &middot; see &middot; has &middot; you</strong><br><strong>we &middot; of &middot; am &middot; at &middot; to &middot; as &middot; have &middot; in &middot; is &middot; it &middot; can &middot; his &middot; him &middot; on &middot; did &middot; girl &middot; bat &middot; but &middot; lit &middot; pat &middot; kit</strong><br><br>Show a card and let him read the word out loud.<br>Then tap <strong>&#10003; Got It!</strong> or <strong>&#8635; Practice Again</strong>.<br>Tap the card itself to flip it over and see the word in a sentence.</p>
+    <p style="font-size:1.2rem; line-height:1.55;">Flashcards for the Quarter 1 and Quarter 2 sight words, plus class words:<br><strong>a &middot; the &middot; and &middot; go &middot; had &middot; he &middot; I &middot; see &middot; has &middot; you</strong><br><strong>we &middot; of &middot; am &middot; at &middot; to &middot; as &middot; have &middot; in &middot; is &middot; it &middot; can &middot; his &middot; him &middot; on &middot; did &middot; girl &middot; bat &middot; but &middot; lit &middot; pat &middot; kit</strong><br><br>Show a card and let him read the word out loud.<br>Then tap <strong>&#10003; Got It!</strong> or <strong>&#8635; Practice Again</strong>.<br>Tap the card itself to flip it over and see the word in a sentence.<br>Each round is 12 cards. Words marked <strong>Practice Again</strong> come back more often in later rounds, so the tricky ones get extra turns.</p>
     <button class="btn" id="start-btn">Start Flashcards</button>
     <br><a class="home-link" href="say-the-word-kindergarten-sight-words.html">Play Say the Word &rarr;</a>
     <br><a class="home-link" href="wesley.html">&larr; Back to Wesley's page</a>
@@ -139,6 +139,38 @@ let deck = [], idx = 0, flipped = false;
 let known = [], practice = [], resultSent = false;
 const RESULT_FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLScsrQlyXtxRugh8Z5kY2S6tbJ-zMoqVnNcbe4rsf6Vtc0x0Jg/formResponse";
 
+// Per-word practice history, kept on this device. Words he struggles with
+// get picked more often; words he has down still rotate in, just less.
+const ROUND_SIZE = 12;
+const STATS_KEY = "wesleyFlashStatsV1";
+let stats = {};
+try { stats = JSON.parse(localStorage.getItem(STATS_KEY) || "{}") || {}; } catch (e) { stats = {}; }
+function saveStats() { try { localStorage.setItem(STATS_KEY, JSON.stringify(stats)); } catch (e) {} }
+function weightFor(word) {
+  const s = stats[word];
+  if (!s) return 2;
+  const w = 1 + 2.5 * Math.min(s.missed || 0, 3) - 0.15 * (s.known || 0);
+  return Math.max(0.3, w);
+}
+function recordResult(word, gotIt) {
+  const s = stats[word] || (stats[word] = { known: 0, missed: 0 });
+  if (gotIt) s.known++; else s.missed++;
+  saveStats();
+}
+function pickRound() {
+  const pool = CARDS.slice();
+  const picks = [];
+  while (picks.length < ROUND_SIZE && pool.length) {
+    let total = 0;
+    for (const c of pool) total += weightFor(c.word);
+    let r = Math.random() * total, i = 0;
+    while (i < pool.length - 1 && r > weightFor(pool[i].word)) { r -= weightFor(pool[i].word); i++; }
+    picks.push(pool.splice(i, 1)[0]);
+  }
+  return picks;
+}
+function freshRound() { startRound(pickRound()); }
+
 function shuffle(arr) {
   const a = arr.slice();
   for (let j = a.length - 1; j > 0; j--) {
@@ -212,6 +244,7 @@ function flipCard() {
 
 function markCard(gotIt) {
   const card = deck[idx];
+  recordResult(card.word, gotIt);
   if (gotIt) known.push(card.word); else practice.push(card.word);
   idx++;
   if (idx >= deck.length) showEnd(); else renderCard();
@@ -233,8 +266,8 @@ function showEnd() {
   if (practice.length === 0) speak("Round done! He knew all " + deck.length + " words!");
 }
 
-document.getElementById("start-btn").addEventListener("click", function () { startRound(CARDS); });
-document.getElementById("restart-btn").addEventListener("click", function () { startRound(CARDS); });
+document.getElementById("start-btn").addEventListener("click", freshRound);
+document.getElementById("restart-btn").addEventListener("click", freshRound);
 document.getElementById("practice-btn").addEventListener("click", function () {
   startRound(CARDS.filter(function (c) { return practice.indexOf(c.word) !== -1; }));
 });
